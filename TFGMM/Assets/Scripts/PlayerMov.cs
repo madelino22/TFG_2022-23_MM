@@ -1,0 +1,63 @@
+﻿
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using Photon.Pun;
+
+public class PlayerMov : MonoBehaviour
+{
+    [SerializeField]
+    Joystick joystick;
+
+    [SerializeField]
+    Transform playerBall;
+
+    [SerializeField]
+    float movementLimit = 0.05f;
+
+    [SerializeField]
+    float speed = 1;
+
+
+    public GameObject healtSystemBar;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+
+    }
+
+    public void GetJoystick(Joystick a)
+    {
+        joystick = a;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (joystick != null)
+        {
+            //Debug.Log("Moviendose...");
+            //Mover bola inferior
+            playerBall.position = new Vector3(joystick.Horizontal + transform.position.x, transform.position.y, joystick.Vertical + transform.position.z);
+
+            //Mirar hacia adelante
+            transform.LookAt(new Vector3(playerBall.position.x, 0, playerBall.position.z));
+            transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
+
+            //Mover jugador
+            if (joystick.Horizontal > movementLimit || -movementLimit > joystick.Horizontal || joystick.Vertical > movementLimit || -movementLimit > joystick.Vertical)
+            {
+                float value = 1; //En funcion de la distancia mas o menos velocidad
+
+                float movAux = transform.position.x;
+
+                transform.Translate(Vector3.forward * Time.deltaTime * speed * value);
+
+                movAux -= transform.position.x;
+
+                //healtSystemBar.transform.position = new Vector3(healtSystemBar.transform.position.x + movAux, healtSystemBar.transform.position.y, healtSystemBar.transform.position.z);
+            }
+        }
+    }
+}
