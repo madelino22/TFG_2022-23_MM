@@ -36,34 +36,44 @@ public class WinLoseManager : MonoBehaviour
 
     [Header("Left Player Rank")]
     [SerializeField]
-    public GameObject leftProgress;
+    public GameObject leftProgress; //How many progress in the match
 
     [SerializeField]
-    public GameObject leftRealRank;
+    public GameObject leftRealRank; //The rank of the player
 
     [SerializeField]
-    public GameObject leftNewRank;
+    public GameObject leftNewRank; // Image visible in case player promote o downgrade
+
+
 
     rankUpdate leftUpdate = rankUpdate.none;
 
-
     [Header("Right Player Rank")]
     [SerializeField]
-    public GameObject rightProgress;
+    public GameObject rightProgress; 
 
     [SerializeField]
-    public GameObject rightrealRank;
+    public GameObject rightRealRank;
 
     [SerializeField]
     public GameObject rightNewRank;
 
+    [Header("Mid Player Rank")]
+    [SerializeField]
+    public GameObject midProgress;
+
     rankUpdate rightUpdate = rankUpdate.none;
 
 
+    private float newRankTimer = 0;
+
+    private float sidesTimer = 0;
 
     private float amountProgress = 0;
 
     private float multiplayer = 1;
+
+    private Vector4 colors;
 
     void Awake()
     {
@@ -88,9 +98,33 @@ public class WinLoseManager : MonoBehaviour
 
 
         //Set Rank Progresss visual
+        colors = rightProgress.GetComponent<Image>().color;
+        colors.w = 0;
+        rightProgress.GetComponent<Image>().color = colors;
 
-        rightProgress.GetComponent<Image>().CrossFadeAlpha(1, 2.0f, false);
+        colors = leftProgress.GetComponent<Image>().color;
+        colors.w = 0;
+        leftProgress.GetComponent<Image>().color = colors;
 
+        colors = leftRealRank.GetComponent<Image>().color;
+        colors.w = 0;
+        leftRealRank.GetComponent<Image>().color = colors;
+
+        colors = rightRealRank.GetComponent<Image>().color;
+        colors.w = 0;
+        rightRealRank.GetComponent<Image>().color = colors;
+
+        colors = leftNewRank.GetComponent<Image>().color;
+        colors.w = 0;
+        leftNewRank.GetComponent<Image>().color = colors;
+
+        colors = rightNewRank.GetComponent<Image>().color;
+        colors.w = 0;
+        rightNewRank.GetComponent<Image>().color = colors;
+
+        colors = midProgress.GetComponent<Image>().color;
+        colors.w = 0;
+        midProgress.GetComponent<Image>().color = colors;
 
     }
 
@@ -99,14 +133,17 @@ public class WinLoseManager : MonoBehaviour
     {
         UpdateProgressBar();
 
+        //midPlayer
+        colors = midProgress.GetComponent<Image>().color;
+        if(colors.w < 1)
+        {
+            colors.w += Time.deltaTime;
+            midProgress.GetComponent<Image>().color = colors;
+            moveUI(midProgress, new Vector2(0, -1), 50);
+        }
+        sidesTimer += Time.deltaTime;
 
-
-
-
-
-
-
-
+        if(sidesTimer > 0.3f)  UpdateImageAnimation();
     }
 
     private void UpdateProgressBar()
@@ -116,7 +153,7 @@ public class WinLoseManager : MonoBehaviour
             float auxValue = progressBar.GetComponent<Slider>().value;
 
             float progress = Time.deltaTime * multiplayer;
-            multiplayer *= 1.1f;
+            multiplayer *= 1.01f;
 
             auxValue += progress;
 
@@ -127,5 +164,63 @@ public class WinLoseManager : MonoBehaviour
 
             progressBar.GetComponent<Slider>().value = auxValue;
         }
+    }
+
+    private void UpdateImageAnimation()
+    {
+        colors = rightProgress.GetComponent<Image>().color;
+        if (colors.w < 1)
+        {
+            //rightPlayer
+            colors.w += Time.deltaTime;
+            rightProgress.GetComponent<Image>().color = colors;
+
+            moveUI(rightProgress, new Vector2(0, -1), 40);
+
+            //leftPlayer
+            colors = leftProgress.GetComponent<Image>().color;
+            colors.w += Time.deltaTime;
+            leftProgress.GetComponent<Image>().color = colors;
+
+            moveUI(leftProgress, new Vector2(0, -1), 40);
+        }
+        else //already visible how they perform
+        {
+            newRankTimer += Time.deltaTime;
+
+            colors = rightRealRank.GetComponent<Image>().color;
+            if (newRankTimer >= 1f && colors.w < 1) //Appear the new rank and if updagraded/downgraded
+            {
+                //rightPlayer
+                colors.w += Time.deltaTime;
+                rightRealRank.GetComponent<Image>().color = colors;
+
+                colors = rightNewRank.GetComponent<Image>().color;
+                colors.w += Time.deltaTime;
+                rightNewRank.GetComponent<Image>().color = colors;
+
+                moveUI(rightRealRank, new Vector2(1, 0), 50);
+
+                moveUI(rightProgress, new Vector2(-1, 0), 45);
+
+                //leftPlayer
+                colors = leftRealRank.GetComponent<Image>().color;
+                colors.w += Time.deltaTime;
+                leftRealRank.GetComponent<Image>().color = colors;
+
+                colors = leftNewRank.GetComponent<Image>().color;
+                colors.w += Time.deltaTime;
+                leftNewRank.GetComponent<Image>().color = colors;
+
+                moveUI(leftRealRank, new Vector2(1, 0), 50);
+
+                moveUI(leftProgress, new Vector2(-1, 0), 45);
+            }
+        }
+    }
+
+    private void moveUI(GameObject obj, Vector2 dir, int force)
+    {
+        obj.transform.position = new Vector3(obj.transform.position.x + Time.deltaTime * force * dir.x, obj.transform.position.y + Time.deltaTime * force * dir.y, obj.transform.position.z);
     }
 }
