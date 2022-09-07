@@ -6,6 +6,11 @@ using UnityEngine.UI;
 
 public class WinLoseManager : MonoBehaviour
 {
+    private enum rankUpdate
+    {
+        promotion, downgrade, none
+    }
+
     [SerializeField]
     public GameObject winLoseText;
 
@@ -28,6 +33,32 @@ public class WinLoseManager : MonoBehaviour
 
     [SerializeField]
     public GameObject nextRank;
+
+    [Header("Left Player Rank")]
+    [SerializeField]
+    public GameObject leftProgress;
+
+    [SerializeField]
+    public GameObject leftRealRank;
+
+    [SerializeField]
+    public GameObject leftNewRank;
+
+    rankUpdate leftUpdate = rankUpdate.none;
+
+
+    [Header("Right Player Rank")]
+    [SerializeField]
+    public GameObject rightProgress;
+
+    [SerializeField]
+    public GameObject rightrealRank;
+
+    [SerializeField]
+    public GameObject rightNewRank;
+
+    rankUpdate rightUpdate = rankUpdate.none;
+
 
 
     private float amountProgress = 0;
@@ -55,12 +86,32 @@ public class WinLoseManager : MonoBehaviour
 
         ComInfo.addRankProgress(amountProgress);
 
+
+        //Set Rank Progresss visual
+
+        rightProgress.GetComponent<Image>().CrossFadeAlpha(1, 2.0f, false);
+
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(progressBar.GetComponent<Slider>().value < ComInfo.getRankProgress())
+        UpdateProgressBar();
+
+
+
+
+
+
+
+
+
+    }
+
+    private void UpdateProgressBar()
+    {
+        if (progressBar.GetComponent<Slider>().value < ComInfo.getRankProgress())
         {
             float auxValue = progressBar.GetComponent<Slider>().value;
 
@@ -69,11 +120,11 @@ public class WinLoseManager : MonoBehaviour
 
             auxValue += progress;
 
-            if(auxValue > ComInfo.getRankProgress())
+            if (auxValue > ComInfo.getRankProgress())
             {
                 auxValue = ComInfo.getRankProgress();
             }
-            Debug.Log(auxValue);
+
             progressBar.GetComponent<Slider>().value = auxValue;
         }
     }
