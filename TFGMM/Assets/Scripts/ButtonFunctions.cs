@@ -17,7 +17,7 @@ public class ButtonFunctions : MonoBehaviour
         
     }
 
-    public void returnFromHeros()
+    public void returnToMenu()
     {
         SceneManager.LoadScene("Lobby", LoadSceneMode.Single);
     }

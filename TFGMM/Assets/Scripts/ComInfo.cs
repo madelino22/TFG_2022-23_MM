@@ -15,6 +15,11 @@ public enum ranks
     mystic3, master
 }
 
+public enum result
+{
+    win, lose, draw
+}
+
 public struct friendInfo
 {
     string name;
@@ -51,6 +56,35 @@ public static class ComInfo
     public static string getPlayerID()
     {
         return playerID;
+    }
+
+    static result gameResult = result.win;
+
+    public static result getGameResult()
+    {
+        return gameResult;
+    }
+
+    public static void setGameResult(result gameEnd)
+    {
+        gameResult = gameEnd;
+    }
+
+    static float rankProgress = 20f;
+
+    public static float getRankProgress()
+    {
+        return rankProgress;
+    }
+
+    public static void addRankProgress(float progress)
+    {
+        rankProgress += progress;
+    }
+
+    public static void setRankProgress(float progress)
+    {
+        rankProgress = progress;
     }
 
     static ranks soloRank = ranks.gold1;
