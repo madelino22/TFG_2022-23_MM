@@ -37,4 +37,9 @@ public class ButtonFunctions : MonoBehaviour
     {
         SceneManager.LoadScene("addFriends", LoadSceneMode.Additive);
     }
+
+    public void goSearch()
+    {
+        SceneManager.LoadScene("Searching", LoadSceneMode.Single);
+    }
 }

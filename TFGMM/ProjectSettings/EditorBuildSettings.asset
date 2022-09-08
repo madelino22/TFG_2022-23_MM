@@ -26,4 +26,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/WinLose.unity
     guid: b8a3fdce5e9e2cb4597bfe95cb8d95f4
+  - enabled: 1
+    path: Assets/Scenes/Searching.unity
+    guid: 2e92ac3c955373e43a6d045690708d83
   m_configObjects: {}
