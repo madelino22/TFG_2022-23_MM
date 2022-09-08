@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class roomControl : MonoBehaviour
@@ -44,7 +45,7 @@ public class roomControl : MonoBehaviour
         //Create room
         int random = Random.Range(10000, 99999);
 
-        roomText.GetComponent<TMPro.TextMeshProUGUI>().text = random.ToString();
+        roomText.GetComponent<Text>().text = random.ToString();
 
         ComInfo.setSalaKey(random, true);
     }
@@ -64,7 +65,7 @@ public class roomControl : MonoBehaviour
             int sala = int.Parse("12345");
 
             //roomText.GetComponent<TMPro.TextMeshProUGUI>().text = inputFieldText.GetComponent<TMPro.TextMeshProUGUI>().text;
-            roomText.GetComponent<TMPro.TextMeshProUGUI>().text = sala.ToString();
+            roomText.GetComponent<Text>().text = sala.ToString();
 
             ComInfo.setSalaKey(sala, false);
 

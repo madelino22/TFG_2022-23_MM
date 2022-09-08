@@ -11,7 +11,7 @@ public class LoadMenuInfo : MonoBehaviour
 
     public Text midButtonName;
 
-    public TextMeshProUGUI roomCode;
+    public Text roomCode;
 
     public 
     // Start is called before the first frame update
