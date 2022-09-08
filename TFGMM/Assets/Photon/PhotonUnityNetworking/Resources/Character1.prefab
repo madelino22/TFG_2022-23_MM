@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7789677641887104362}
   - component: {fileID: 5948307446251572756}
   - component: {fileID: 7202114716180245716}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: ContornoExterior
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 7194184193762080048}
   - component: {fileID: 8343923220493310603}
   - component: {fileID: 5954444355675390534}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: VidaNum
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -222,7 +222,7 @@ GameObject:
   - component: {fileID: 4853799288834667610}
   - component: {fileID: 663722373137850267}
   - component: {fileID: 8820165612364776598}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: ContornoInterior
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -298,7 +298,7 @@ GameObject:
   - component: {fileID: 1142720123207348998}
   - component: {fileID: 7431712922767521849}
   - component: {fileID: 1421393048686682816}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: VidaRojo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1010,7 +1010,7 @@ GameObject:
   - component: {fileID: 6245102497037772819}
   - component: {fileID: 4084677112055167523}
   - component: {fileID: 1184359120003843510}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: HealthbarCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1025,8 +1025,8 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8797149447456608567}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.62}
-  m_LocalScale: {x: 0.01, y: 0.01, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4033775234080949512}
@@ -1037,8 +1037,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 274.9476, y: 216.6465}
+  m_AnchoredPosition: {x: 0, y: -1}
+  m_SizeDelta: {x: 244.8452, y: 221.1509}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &7298526383765046244
 Canvas:
@@ -1098,7 +1098,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
+  m_BlockingObjects: 3
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -1123,7 +1123,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4033775234080949512}
-  m_Layer: 6
+  m_Layer: 5
   m_Name: Contornos
   m_TagString: Untagged
   m_Icon: {fileID: 0}

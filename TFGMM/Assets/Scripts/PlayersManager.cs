@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class Asignar : MonoBehaviour
+public class PlayersManager : MonoBehaviour
 {
     [SerializeField]
     Joystick mov;
@@ -13,12 +13,21 @@ public class Asignar : MonoBehaviour
 
     [SerializeField]
     GameObject[] spawns;
+
+
+    
     // Start is called before the first frame update
     void Start()
     {
         GameObject player;
         Debug.Log("ID: " + PhotonNetwork.LocalPlayer.ActorNumber);
         player = PhotonNetwork.Instantiate("Character1", spawns[PhotonNetwork.LocalPlayer.ActorNumber].transform.position, Quaternion.identity);
+        //GameManager.Instance.AddNewPlayerToList(player);
+
+
+        Debug.Log("CAMARA ASIGNADA TARGET");
+
+        Camera.main.GetComponent<CameraFollow>().target = player.GetComponentInChildren<PlayerMov>().gameObject.transform;
         //if (PhotonNetwork.IsMasterClient)
         //{
         //    player = PhotonNetwork.Instantiate("Character1", new Vector3(-8f, 1, 0), Quaternion.identity);
