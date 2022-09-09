@@ -6,6 +6,9 @@ using Photon.Pun;
 public class BasicShooter : MonoBehaviour
 {
     [SerializeField]
+    bool testingScene = false;
+
+    [SerializeField]
     Joystick attackJoystick;
 
     [SerializeField]
@@ -61,7 +64,8 @@ public class BasicShooter : MonoBehaviour
                 bulletPos += desfase * spawnDistance;
                 object[] array = { bulletPos, transform.rotation};
                 view.RPC("ShootBullet", RpcTarget.All, array);
-                //Instantiate(bulletPrefab, bulletPos/*transform.position*/, transform.rotation); //Test one player
+                if(testingScene)
+                    Instantiate(bulletPrefab, bulletPos/*transform.position*/, transform.rotation); //Test one player
                 shoot = false;
                 //PhotonNetwork.Instantiate(bulletPrefab.name, transform.position, transform.rotation);
             }
