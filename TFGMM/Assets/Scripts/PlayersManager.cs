@@ -15,13 +15,13 @@ public class PlayersManager : MonoBehaviour
     GameObject[] spawns;
 
 
-    
+
     // Start is called before the first frame update
     void Start()
     {
         GameObject player;
         Debug.Log("ID: " + PhotonNetwork.LocalPlayer.ActorNumber);
-        player = PhotonNetwork.Instantiate("Character1", spawns[PhotonNetwork.LocalPlayer.ActorNumber].transform.position, Quaternion.identity);
+        player = PhotonNetwork.Instantiate("Character1", spawns[PhotonNetwork.LocalPlayer.ActorNumber - 1].transform.position, Quaternion.identity);
         //GameManager.Instance.AddNewPlayerToList(player);
 
 
