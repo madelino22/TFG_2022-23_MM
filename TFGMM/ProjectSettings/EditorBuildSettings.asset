@@ -8,25 +8,25 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/ChangeHero.unity
     guid: b65b62b512ffbe148a8bd7e63c2bc11d
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Lobby.unity
     guid: 1956cbd668f234941b1f1c473de05c64
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/PruebaRed.unity
     guid: 97acc2a90c1a653498fe4c5f350d7592
   - enabled: 1
     path: Assets/Scenes/PruebasPersonajes.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/PlayerInfo.unity
     guid: 1a94c90be5746b14aa10058d875b2f67
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/addFriends.unity
     guid: 7b06c360e5c205242ba98da5a780ae14
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/WinLose.unity
     guid: b8a3fdce5e9e2cb4597bfe95cb8d95f4
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Searching.unity
     guid: 2e92ac3c955373e43a6d045690708d83
   m_configObjects: {}
