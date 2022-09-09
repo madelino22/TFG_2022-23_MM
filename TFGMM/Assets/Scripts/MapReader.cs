@@ -8,6 +8,8 @@ public class MapReader : MonoBehaviour
     public GameObject grassPrefab;
     public GameObject waterPrefab;
     public GameObject obstaclePrefab;
+    public GameObject bushPrefab;
+
 
 
 
@@ -19,11 +21,11 @@ public class MapReader : MonoBehaviour
     GameObject[] vertexObjs;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         LoadMap();
     }
-    private void LoadMap()
+    public void LoadMap()
     {
         string path = Application.dataPath + "/" + mapsDir + "/" + mapName;
             StreamReader strmRdr = new StreamReader(path);
@@ -51,8 +53,8 @@ public class MapReader : MonoBehaviour
                     line = strmRdr.ReadLine();
                     for (j = 0; j < numCols; j++)
                     {
-                        position.x = j;
-                        position.z = i;
+                        position.x = j*2;
+                        position.z = i*2;
                         position.y = 1;
 
 
@@ -60,16 +62,27 @@ public class MapReader : MonoBehaviour
                         {
                             vertexObjs[id] = Instantiate(grassPrefab, position, Quaternion.identity) as GameObject;
                         }
+                        else if (line[j] == 'S')
+                        {
+                            vertexObjs[id] = Instantiate(grassPrefab, position, Quaternion.identity) as GameObject;
+                            vertexObjs[id].gameObject.tag = "Spawn";
+                        }
                         else if (line[j] == 'T')
                         {
-                            vertexObjs[id] = Instantiate(obstaclePrefab, position, Quaternion.identity) as GameObject;
+                            vertexObjs[id] = Instantiate(grassPrefab, position, Quaternion.identity) as GameObject;
+                            vertexObjs[id] = Instantiate(obstaclePrefab, new Vector3(position.x, position.y +1, position.z), Quaternion.identity) as GameObject;
                         }
                         else if (line[j] == 'A')
                         {
-                            vertexObjs[id] = Instantiate(waterPrefab, position, Quaternion.identity) as GameObject;
+                            vertexObjs[id] = Instantiate(waterPrefab, new Vector3(position.x, position.y, position.z), Quaternion.identity) as GameObject;
+                            vertexObjs[id].transform.Rotate(new Vector3(-90.0f, 0f, 0f));
+                        }
+                        else if (line[j] == 'B')
+                        {
+                            vertexObjs[id] = Instantiate(bushPrefab, new Vector3(position.x, position.y + 1, position.z), Quaternion.identity) as GameObject;
                         }
 
-                    }
+                }
                 }
             }
         }

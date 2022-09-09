@@ -14,14 +14,25 @@ public class PlayersManager : MonoBehaviour
     [SerializeField]
     GameObject[] spawns;
 
-
+    [SerializeField]
+    GameObject mapGenerator;
 
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("mapiar");
+
+            spawns = GameObject.FindGameObjectsWithTag("Spawn");
+            for(int x=0; x < spawns.Length; x++)
+            {
+                Debug.Log("Hola" + spawns[x].name);
+            }
+
+        Debug.Log(spawns.Length);
         GameObject player;
         Debug.Log("ID: " + PhotonNetwork.LocalPlayer.ActorNumber);
-        player = PhotonNetwork.Instantiate("Character1", spawns[PhotonNetwork.LocalPlayer.ActorNumber - 1 + 2].transform.position, Quaternion.identity);
+        player = PhotonNetwork.Instantiate("Character1", new Vector3(spawns[PhotonNetwork.LocalPlayer.ActorNumber - 1 + 2].transform.position.x,
+            spawns[PhotonNetwork.LocalPlayer.ActorNumber - 1 + 2].transform.position.y+1, spawns[PhotonNetwork.LocalPlayer.ActorNumber - 1 + 2].transform.position.z), Quaternion.identity);
         //GameManager.Instance.AddNewPlayerToList(player);
 
 

@@ -331,8 +331,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grassPrefab: {fileID: 9114352215432771044, guid: 052caa252cafe2743bdf052ddb90ba9b, type: 3}
-  waterPrefab: {fileID: 3319989838025362742, guid: babded08ee19361469565b620b920ae7, type: 3}
-  obstaclePrefab: {fileID: 5340404178464275357, guid: 97b2e2a8fe6f36143b83615c0fe6d318, type: 3}
+  waterPrefab: {fileID: 919132149155446097, guid: 7716ac9b287ad994bb21bfff67889ed2, type: 3}
+  obstaclePrefab: {fileID: 919132149155446097, guid: e2b44af87e93e294eaf9d02162b749c5, type: 3}
+  bushPrefab: {fileID: 919132149155446097, guid: 081b6921fae189948a49d4f6c808fa1a, type: 3}
   mapsDir: Maps
   mapName: mapa1.map
 --- !u!4 &1311578056
@@ -350,62 +351,3 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &3166748583485593381
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 2
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 5340404178464275357, guid: 97b2e2a8fe6f36143b83615c0fe6d318, type: 3}
-      propertyPath: m_Name
-      value: Muro
-      objectReference: {fileID: 0}
-    - target: {fileID: 7327163733576525592, guid: 97b2e2a8fe6f36143b83615c0fe6d318, type: 3}
-      propertyPath: m_RootOrder
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 7327163733576525592, guid: 97b2e2a8fe6f36143b83615c0fe6d318, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7327163733576525592, guid: 97b2e2a8fe6f36143b83615c0fe6d318, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7327163733576525592, guid: 97b2e2a8fe6f36143b83615c0fe6d318, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7327163733576525592, guid: 97b2e2a8fe6f36143b83615c0fe6d318, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7327163733576525592, guid: 97b2e2a8fe6f36143b83615c0fe6d318, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7327163733576525592, guid: 97b2e2a8fe6f36143b83615c0fe6d318, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7327163733576525592, guid: 97b2e2a8fe6f36143b83615c0fe6d318, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7327163733576525592, guid: 97b2e2a8fe6f36143b83615c0fe6d318, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7327163733576525592, guid: 97b2e2a8fe6f36143b83615c0fe6d318, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7327163733576525592, guid: 97b2e2a8fe6f36143b83615c0fe6d318, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_AddedGameObjects: []
-  m_SourcePrefab: {fileID: 100100000, guid: 97b2e2a8fe6f36143b83615c0fe6d318, type: 3}

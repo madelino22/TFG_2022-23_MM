@@ -471,6 +471,7 @@ Transform:
   - {fileID: 1743492016}
   - {fileID: 1291859815}
   - {fileID: 984029365}
+  - {fileID: 1975664508}
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -888,7 +889,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1189058076
 Transform:
   m_ObjectHideFlags: 0
@@ -941,13 +942,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mov: {fileID: 1098727388}
   att: {fileID: 3894840}
-  spawns:
-  - {fileID: 1547812968}
-  - {fileID: 2039834268}
-  - {fileID: 216054932}
-  - {fileID: 917867287}
-  - {fileID: 682735630}
-  - {fileID: 614085471}
+  spawns: []
+  mapGenerator: {fileID: 1975664507}
 --- !u!4 &1291859815
 Transform:
   m_ObjectHideFlags: 0
@@ -981,7 +977,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &1478210595
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1403,6 +1399,56 @@ PrefabInstance:
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 880b9758d38df7f4d9c080839247f1c8, type: 3}
+--- !u!1 &1975664507
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1975664508}
+  - component: {fileID: 1975664509}
+  m_Layer: 0
+  m_Name: MapGenerator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1975664508
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1975664507}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.10668585, y: 0.06514317, z: -0.0007677078}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 685715145}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1975664509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1975664507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36346fa7926dc3b4284b04463a01afe1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grassPrefab: {fileID: 9114352215432771044, guid: 052caa252cafe2743bdf052ddb90ba9b, type: 3}
+  waterPrefab: {fileID: 858960650420305407, guid: 9133c7af07aa1d8499df7f8bc23b3ea0, type: 3}
+  obstaclePrefab: {fileID: 9160811703209859950, guid: 0aea290ada34afd438c1702f83c7e716, type: 3}
+  bushPrefab: {fileID: 919132149155446097, guid: 081b6921fae189948a49d4f6c808fa1a, type: 3}
+  mapsDir: Maps
+  mapName: mapa1.map
 --- !u!1 &2039834268
 GameObject:
   m_ObjectHideFlags: 0
