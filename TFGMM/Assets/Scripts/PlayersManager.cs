@@ -21,12 +21,17 @@ public class PlayersManager : MonoBehaviour
     {
         GameObject player;
         Debug.Log("ID: " + PhotonNetwork.LocalPlayer.ActorNumber);
-        player = PhotonNetwork.Instantiate("Character1", spawns[PhotonNetwork.LocalPlayer.ActorNumber - 1].transform.position, Quaternion.identity);
+        player = PhotonNetwork.Instantiate("Character1", spawns[PhotonNetwork.LocalPlayer.ActorNumber - 1 + 2].transform.position, Quaternion.identity);
         //GameManager.Instance.AddNewPlayerToList(player);
 
 
         Debug.Log("CAMARA ASIGNADA TARGET");
 
+        if (PhotonNetwork.LocalPlayer.ActorNumber >= 2)
+        {
+            Camera.main.transform.Rotate(new Vector3(90, 180, Camera.main.transform.rotation.z));
+            Camera.main.GetComponent<CameraFollow>().offset.z = 15;
+        }
         Camera.main.GetComponent<CameraFollow>().target = player.GetComponentInChildren<PlayerMov>().gameObject.transform;
         //if (PhotonNetwork.IsMasterClient)
         //{
