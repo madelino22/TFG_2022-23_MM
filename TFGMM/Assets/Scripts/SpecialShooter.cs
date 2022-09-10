@@ -42,6 +42,7 @@ public class SpecialShooter : MonoBehaviour
     {
         attackLookPoint = aLP;
     }
+
     // Update is called once per frame
     void Update()
     {

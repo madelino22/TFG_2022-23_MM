@@ -20,17 +20,23 @@ public class BasicShooter : MonoBehaviour
     [SerializeField]
     float spawnDistance = 1.5f;
 
+    [SerializeField]
+    ActivateSpecialModule specialAttack = null;
+
     PhotonView view;
 
-    int numBullets = 10;
+    [SerializeField]
+    int bulletsNeededForSpecialAttack = 4;
+    int numBullets = 0;
     bool shoot = false;
-
    
 
     // Start is called before the first frame update
     void Start()
     {
         view = GetComponent<PhotonView>();
+        if (specialAttack == null) 
+            Debug.Log("Player doesn't have a SpecialAttackModule.");
     }
 
     public void GetJoystick(Joystick a)
@@ -56,6 +62,19 @@ public class BasicShooter : MonoBehaviour
             else if (shoot && Input.GetMouseButtonUp(0))
             {
                 Debug.Log("Shoot");
+                numBullets++;
+                //ACTIVATE SPECIAL ATTACK
+                if(numBullets == bulletsNeededForSpecialAttack && specialAttack != null)
+                {
+                    specialAttack.IncreaseAplha(bulletsNeededForSpecialAttack);
+                    specialAttack.Activate(true);
+                    numBullets = 0;
+                }
+                else if (specialAttack != null)
+                {
+                    specialAttack.IncreaseAplha(bulletsNeededForSpecialAttack);
+                }
+                
                 //view.RPC("ShootBullet", RpcTarget.All, array);
                 //CALCULATE BULLET POS-------------------------------
                 Vector3 bulletPos = transform.position;
