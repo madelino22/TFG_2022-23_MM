@@ -66,6 +66,7 @@ public class MapReader : MonoBehaviour
                         {
                             vertexObjs[id] = Instantiate(grassPrefab, position, Quaternion.identity) as GameObject;
                             vertexObjs[id].gameObject.tag = "Spawn";
+                            Debug.Log(vertexObjs[id].gameObject.tag);
                         }
                         else if (line[j] == 'T')
                         {
