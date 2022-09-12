@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI; //Image
 using Photon.Pun;
 
 public class PlayersManager : MonoBehaviour
@@ -11,11 +12,21 @@ public class PlayersManager : MonoBehaviour
     [SerializeField]
     Joystick att;
 
+
     [SerializeField]
     GameObject[] spawns;
 
     [SerializeField]
     GameObject mapGenerator;
+
+    //SPECIAL ATTACK
+    [SerializeField]
+    Joystick speAtt;
+    [SerializeField]
+    Image joystickImage;
+
+    [SerializeField]
+    Image handleImage;
 
     // Start is called before the first frame update
     void Start()
@@ -52,8 +63,17 @@ public class PlayersManager : MonoBehaviour
 
         player.GetComponentInChildren<PlayerMov>().GetJoystick(mov);
         player.GetComponentInChildren<PlayerAttackTrail>().GetJoystick(att);
+        
+        //SPECIAL ATTACK
+        player.GetComponentInChildren<SpecialShooter>().GetJoystick(speAtt);
+        ActivateSpecialModule ASM = player.GetComponentInChildren<ActivateSpecialModule>();
+        ASM.GetJoystick(speAtt);
+        ASM.setImage(joystickImage);
+        ASM.setHandleImage(handleImage);
+        //NORMAL ATTACK
         BasicShooter bS = player.GetComponentInChildren<BasicShooter>();
         bS.GetJoystick(att);
+        bS.setSpecialModule(ASM);
     }
 
     // Update is called once per frame

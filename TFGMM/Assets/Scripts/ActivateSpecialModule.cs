@@ -26,6 +26,19 @@ public class ActivateSpecialModule : MonoBehaviour
 
     private bool shoot = false;
 
+    public void GetJoystick(Joystick a)
+    {
+        specialJoystick = a;
+    }
+    public void setImage(Image a)
+    {
+        joystickImage = a;
+    }
+    public void setHandleImage(Image a)
+    {
+        handleImage = a;
+    }
+
     // Start is called before the first frame update
     void Start()
     {

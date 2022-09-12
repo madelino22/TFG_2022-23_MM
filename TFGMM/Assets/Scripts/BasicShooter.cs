@@ -44,6 +44,11 @@ public class BasicShooter : MonoBehaviour
         attackJoystick = a;
     }
 
+    public void setSpecialModule(ActivateSpecialModule sa)
+    {
+        specialAttack = sa;
+    }
+
     public void SetAttackLookPoint(Transform aLP)
     {
         attackLookPoint = aLP;

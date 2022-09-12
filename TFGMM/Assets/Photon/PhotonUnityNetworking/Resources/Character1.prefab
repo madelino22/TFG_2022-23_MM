@@ -718,10 +718,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72f434b147ea85a4e9c07aaee0894891, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  testingScene: 0
   attackJoystick: {fileID: 0}
   bulletPrefab: {fileID: 2586110811864843864, guid: c34f0699b59b03b4f956eaf891ca61e6, type: 3}
   attackLookPoint: {fileID: 5392789746882938381}
   spawnDistance: 1.5
+  specialAttack: {fileID: 0}
+  bulletsNeededForSpecialAttack: 4
 --- !u!114 &98814125554151070
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -775,6 +778,7 @@ Transform:
   - {fileID: 5392789745961030524}
   - {fileID: 5392789747050125098}
   - {fileID: 5392789746882938381}
+  - {fileID: 4117449351544493002}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1152,3 +1156,87 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1001 &5589183599595689866
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 2
+    m_TransformParent: {fileID: 5392789747132827403}
+    m_Modifications:
+    - target: {fileID: 8409586648658986048, guid: bcee30ffd673ad8448cf54837757fccd, type: 3}
+      propertyPath: m_RootOrder
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8409586648658986048, guid: bcee30ffd673ad8448cf54837757fccd, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8409586648658986048, guid: bcee30ffd673ad8448cf54837757fccd, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 8409586648658986048, guid: bcee30ffd673ad8448cf54837757fccd, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8409586648658986048, guid: bcee30ffd673ad8448cf54837757fccd, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8409586648658986048, guid: bcee30ffd673ad8448cf54837757fccd, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8409586648658986048, guid: bcee30ffd673ad8448cf54837757fccd, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8409586648658986048, guid: bcee30ffd673ad8448cf54837757fccd, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8409586648658986048, guid: bcee30ffd673ad8448cf54837757fccd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8409586648658986048, guid: bcee30ffd673ad8448cf54837757fccd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8409586648658986048, guid: bcee30ffd673ad8448cf54837757fccd, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8409586648658986051, guid: bcee30ffd673ad8448cf54837757fccd, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 5392789745961030524}
+    - target: {fileID: 8409586648658986051, guid: bcee30ffd673ad8448cf54837757fccd, type: 3}
+      propertyPath: trailDistance
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 8409586648658986051, guid: bcee30ffd673ad8448cf54837757fccd, type: 3}
+      propertyPath: attackLookPoint
+      value: 
+      objectReference: {fileID: 5392789746882938381}
+    - target: {fileID: 8409586648658986055, guid: bcee30ffd673ad8448cf54837757fccd, type: 3}
+      propertyPath: m_Name
+      value: SpecialAttackModule
+      objectReference: {fileID: 0}
+    - target: {fileID: 8409586648658986060, guid: bcee30ffd673ad8448cf54837757fccd, type: 3}
+      propertyPath: testingScene
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8409586648658986060, guid: bcee30ffd673ad8448cf54837757fccd, type: 3}
+      propertyPath: attackLookPoint
+      value: 
+      objectReference: {fileID: 5392789746882938381}
+    m_RemovedComponents: []
+    m_AddedGameObjects: []
+  m_SourcePrefab: {fileID: 100100000, guid: bcee30ffd673ad8448cf54837757fccd, type: 3}
+--- !u!4 &4117449351544493002 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8409586648658986048, guid: bcee30ffd673ad8448cf54837757fccd, type: 3}
+  m_PrefabInstance: {fileID: 5589183599595689866}
+  m_PrefabAsset: {fileID: 0}
