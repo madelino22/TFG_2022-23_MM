@@ -32,6 +32,17 @@ public class PlayerMov : MonoBehaviour
         joystick = a;
     }
 
+    public void BuffSpeed(float buff)
+    {
+        Debug.Log("Speed buffed");
+        speed += buff;
+    }
+    public void DeBuffSpeed(float buff)
+    {
+        Debug.Log("Speed Debuffed");
+        speed -= buff;
+    }
+
     // Update is called once per frame
     void Update()
     {
