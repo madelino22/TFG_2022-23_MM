@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 using Photon.Pun;
 
@@ -23,11 +24,23 @@ public class BasicShooter : MonoBehaviour
     [SerializeField]
     ActivateSpecialModule specialAttack = null;
 
+    [SerializeField]
+    Image ammoBar = null;
+
+    float ammoBarFullAmmount = 0;
+
+
+    [SerializeField]
+    float timeToReload = 2;
+    float currentElapsedTime = 0f;
+
+
     PhotonView view;
 
     [SerializeField]
-    int bulletsNeededForSpecialAttack = 4;
+    int bulletsNeededForSpecialAttack = 3;
     int numBullets = 0;
+    int maxNumBullets = 3;
     bool shoot = false;
    
 
@@ -37,6 +50,10 @@ public class BasicShooter : MonoBehaviour
         view = GetComponent<PhotonView>();
         if (specialAttack == null) 
             Debug.Log("Player doesn't have a SpecialAttackModule.");
+
+        ammoBarFullAmmount = ammoBar.fillAmount;
+        numBullets = 0;
+        ammoBar.fillAmount = 0;
     }
 
     public void GetJoystick(Joystick a)
@@ -64,10 +81,10 @@ public class BasicShooter : MonoBehaviour
                 if (!shoot) shoot = true;
             }
             //JOYSTICK WAS RELEASED
-            else if (shoot && Input.GetMouseButtonUp(0))
+            else if (shoot && Input.GetMouseButtonUp(0) && numBullets > 0)
             {
                 Debug.Log("Shoot");
-                numBullets++;
+                numBullets--;
                 //ACTIVATE SPECIAL ATTACK
                 if(numBullets == bulletsNeededForSpecialAttack && specialAttack != null)
                 {
@@ -93,8 +110,25 @@ public class BasicShooter : MonoBehaviour
                 shoot = false;
                 //PhotonNetwork.Instantiate(bulletPrefab.name, transform.position, transform.rotation);
             }
+
+
+            if(numBullets < maxNumBullets)
+            {
+                Debug.Log(ammoBarFullAmmount);
+                currentElapsedTime += Time.deltaTime;
+                if(currentElapsedTime >= timeToReload)
+                {
+                    numBullets++;
+                    currentElapsedTime = 0;
+                }
+
+                ammoBar.fillAmount = ((currentElapsedTime / timeToReload + numBullets) * ammoBarFullAmmount / maxNumBullets);
+            }
         }
     }
+
+
+   
 
     //private void FixedUpdate()
     //{

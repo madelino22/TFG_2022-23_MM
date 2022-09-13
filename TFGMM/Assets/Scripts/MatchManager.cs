@@ -93,7 +93,7 @@ public class MatchManager : MonoBehaviour
                 ComInfo.setGameResult(result.draw);
             }
 
-            SceneManager.LoadScene("WinLose", LoadSceneMode.Single);
+           // SceneManager.LoadScene("WinLose", LoadSceneMode.Single);
         }
     }
 
