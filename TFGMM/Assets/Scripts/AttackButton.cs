@@ -83,23 +83,7 @@ public class AttackButton : MonoBehaviour, IPointerUpHandler, IPointerDownHandle
             image.color = new Vector4(color.x, color.y, color.z, alpha); //0 trasparent - 1 full
         }
 
-        if (pressing && alreadyPressing && this.gameObject.transform.localScale != minorScale) //scale the button a little
-        {
-
-            this.gameObject.transform.localScale -= normalScale * Time.deltaTime * 1.5f;
-
-            if (this.gameObject.transform.localScale.x < minorScale.x) this.gameObject.transform.localScale = minorScale;
-            Debug.Log("Escalar pequeño");
-        }
-        else if (!alreadyPressing && this.gameObject.transform.localScale != normalScale) //scale the button if not normal
-        {
-            this.gameObject.transform.localScale += normalScale * Time.deltaTime * 1.5f;
-
-            if (this.gameObject.transform.localScale.x > normalScale.x) this.gameObject.transform.localScale = normalScale;
-
-            Debug.Log("Escalar normal");
-        }
-        else if (useAttack) //Use the attack and start the cooldown of the button
+        if (useAttack) //Use the attack and start the cooldown of the button
         {
             player.GetComponent<PlayerMov>().BuffSpeed(speedChange);
             isAttacking = true;
