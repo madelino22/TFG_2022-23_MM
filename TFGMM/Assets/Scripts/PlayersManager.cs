@@ -52,7 +52,6 @@ public class PlayersManager : MonoBehaviour
         if (PhotonNetwork.LocalPlayer.ActorNumber >= 2)
         {
             Camera.main.transform.Rotate(new Vector3(90, 180, Camera.main.transform.rotation.z));
-            Camera.main.GetComponent<CameraFollow>().offset.z = 15;
         }
         Camera.main.GetComponent<CameraFollow>().target = player.GetComponentInChildren<PlayerMov>().gameObject.transform;
         //if (PhotonNetwork.IsMasterClient)

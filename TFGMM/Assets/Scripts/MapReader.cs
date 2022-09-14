@@ -27,7 +27,74 @@ public class MapReader : MonoBehaviour
     }
     public void LoadMap()
     {
-        string path = Application.dataPath + "/" + mapsDir + "/" + mapName;
+        TextAsset level = Resources.Load<TextAsset>("Maps/" + mapName);
+        Debug.Log("Hola");
+        if (level != null)
+        {
+            Debug.Log("Entre");
+            using (StreamReader sr = new StreamReader(new MemoryStream(level.bytes)))
+            {
+
+                    int j = 0;
+                    int i = 0;
+                    int id = 0;
+                    string line;
+
+                    Vector3 position = Vector3.zero;
+                    Vector3 scale = Vector3.zero;
+                    line = sr.ReadLine();// non-important line
+                    line = sr.ReadLine();// height
+                    numRows = int.Parse(line.Split(' ')[1]);
+                    line = sr.ReadLine();// width
+                    numCols = int.Parse(line.Split(' ')[1]);
+                    line = sr.ReadLine();// "map" line in file
+
+                    vertexObjs = new GameObject[numRows * numCols];
+
+
+                    for (i = 0; i < numRows; i++)
+                    {
+                        line = sr.ReadLine();
+                        for (j = 0; j < numCols; j++)
+                        {
+                            position.x = j * 2;
+                            position.z = i * 2;
+                            position.y = 1;
+
+
+                            if (line[j] == 'C')
+                            {
+                                vertexObjs[id] = Instantiate(grassPrefab, position, Quaternion.identity) as GameObject;
+                            }
+                            else if (line[j] == 'S')
+                            {
+                                vertexObjs[id] = Instantiate(grassPrefab, position, Quaternion.identity) as GameObject;
+                                vertexObjs[id].gameObject.tag = "Spawn";
+                                Debug.Log(vertexObjs[id].gameObject.tag);
+                            }
+                            else if (line[j] == 'T')
+                            {
+                                vertexObjs[id] = Instantiate(grassPrefab, position, Quaternion.identity) as GameObject;
+                                vertexObjs[id] = Instantiate(obstaclePrefab, new Vector3(position.x, position.y + 1, position.z), Quaternion.identity) as GameObject;
+                            }
+                            else if (line[j] == 'A')
+                            {
+                                vertexObjs[id] = Instantiate(waterPrefab, new Vector3(position.x, position.y, position.z), Quaternion.identity) as GameObject;
+                                vertexObjs[id].transform.Rotate(new Vector3(-90.0f, 0f, 0f));
+                            }
+                            else if (line[j] == 'B')
+                            {
+                                vertexObjs[id] = Instantiate(bushPrefab, new Vector3(position.x, position.y + 1, position.z), Quaternion.identity) as GameObject;
+                            }
+
+                        }
+                    }
+
+            }
+        }
+        else
+        {
+            string path = Application.dataPath + "/" + mapsDir + "/" + mapName;
             StreamReader strmRdr = new StreamReader(path);
             using (strmRdr)
             {
@@ -53,8 +120,8 @@ public class MapReader : MonoBehaviour
                     line = strmRdr.ReadLine();
                     for (j = 0; j < numCols; j++)
                     {
-                        position.x = j*2;
-                        position.z = i*2;
+                        position.x = j * 2;
+                        position.z = i * 2;
                         position.y = 1;
 
 
@@ -71,7 +138,7 @@ public class MapReader : MonoBehaviour
                         else if (line[j] == 'T')
                         {
                             vertexObjs[id] = Instantiate(grassPrefab, position, Quaternion.identity) as GameObject;
-                            vertexObjs[id] = Instantiate(obstaclePrefab, new Vector3(position.x, position.y +1, position.z), Quaternion.identity) as GameObject;
+                            vertexObjs[id] = Instantiate(obstaclePrefab, new Vector3(position.x, position.y + 1, position.z), Quaternion.identity) as GameObject;
                         }
                         else if (line[j] == 'A')
                         {
@@ -83,8 +150,69 @@ public class MapReader : MonoBehaviour
                             vertexObjs[id] = Instantiate(bushPrefab, new Vector3(position.x, position.y + 1, position.z), Quaternion.identity) as GameObject;
                         }
 
-                }
+                    }
                 }
             }
         }
+        /*string path = Application.dataPath + "/" + mapsDir + "/" + mapName;
+        StreamReader strmRdr = new StreamReader(path);
+        using (strmRdr)
+        {
+            int j = 0;
+            int i = 0;
+            int id = 0;
+            string line;
+
+            Vector3 position = Vector3.zero;
+            Vector3 scale = Vector3.zero;
+            line = strmRdr.ReadLine();// non-important line
+            line = strmRdr.ReadLine();// height
+            numRows = int.Parse(line.Split(' ')[1]);
+            line = strmRdr.ReadLine();// width
+            numCols = int.Parse(line.Split(' ')[1]);
+            line = strmRdr.ReadLine();// "map" line in file
+
+            vertexObjs = new GameObject[numRows * numCols];
+
+
+            for (i = 0; i < numRows; i++)
+            {
+                line = strmRdr.ReadLine();
+                for (j = 0; j < numCols; j++)
+                {
+                    position.x = j*2;
+                    position.z = i*2;
+                    position.y = 1;
+
+
+                    if (line[j] == 'C')
+                    {
+                        vertexObjs[id] = Instantiate(grassPrefab, position, Quaternion.identity) as GameObject;
+                    }
+                    else if (line[j] == 'S')
+                    {
+                        vertexObjs[id] = Instantiate(grassPrefab, position, Quaternion.identity) as GameObject;
+                        vertexObjs[id].gameObject.tag = "Spawn";
+                        Debug.Log(vertexObjs[id].gameObject.tag);
+                    }
+                    else if (line[j] == 'T')
+                    {
+                        vertexObjs[id] = Instantiate(grassPrefab, position, Quaternion.identity) as GameObject;
+                        vertexObjs[id] = Instantiate(obstaclePrefab, new Vector3(position.x, position.y +1, position.z), Quaternion.identity) as GameObject;
+                    }
+                    else if (line[j] == 'A')
+                    {
+                        vertexObjs[id] = Instantiate(waterPrefab, new Vector3(position.x, position.y, position.z), Quaternion.identity) as GameObject;
+                        vertexObjs[id].transform.Rotate(new Vector3(-90.0f, 0f, 0f));
+                    }
+                    else if (line[j] == 'B')
+                    {
+                        vertexObjs[id] = Instantiate(bushPrefab, new Vector3(position.x, position.y + 1, position.z), Quaternion.identity) as GameObject;
+                    }
+
+            }
+            }
+        }
+    }*/
     }
+}
