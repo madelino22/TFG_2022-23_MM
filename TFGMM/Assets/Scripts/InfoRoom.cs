@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class InfoRoom : MonoBehaviourPunCallbacks
 {
-
-   
     [SerializeField]
     TextMesh texto;
 
@@ -37,10 +37,25 @@ public class InfoRoom : MonoBehaviourPunCallbacks
         Debug.Log("Sala creada numero: " + a.ToString());
     }
 
+    public void ButtonPress()
+    {
+        Debug.Log("Saliendo Room");
+        PhotonNetwork.LeaveRoom();
+        PhotonNetwork.Disconnect();
+        SceneManager.LoadScene("Lobby");
+    }
+
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        Debug.Log("Se fue");
+        texto.text = PhotonNetwork.CurrentRoom.PlayerCount.ToString();
+    }
+
     public override void OnJoinedRoom()
     {
         texto.text = PhotonNetwork.CurrentRoom.PlayerCount.ToString();
     }
+
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         Debug.Log("New Player");
