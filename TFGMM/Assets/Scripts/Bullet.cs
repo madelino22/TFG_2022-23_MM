@@ -31,12 +31,23 @@ public class Bullet : MonoBehaviour
     {
         Debug.Log("Bullet Collision");
 
-        ////CAN BE DESTROYED
         Destroyable other = collision.gameObject.GetComponent<Destroyable>();
-        //ENEMY
-        if (other != null) //BETTER THAN USING TAGS
+        
+        //Enemy team
+        if ((collision.gameObject.CompareTag("Red Team") && ComInfo.getTeam() == team.blue) || 
+            (collision.gameObject.CompareTag("Blue Team") && ComInfo.getTeam() == team.red))
         {
-            //DECREASE ENEMY HEALTH
+            Debug.Log("Soy enemigo");
+            CodeMonkey.HealthSystemCM.HealthSystem live = collision.gameObject.GetComponent<CodeMonkey.HealthSystemCM.HealthSystemComponent>().GetHealthSystem();
+
+            int damage = 300;
+
+            //if() //Hacer a mano aqui los daños si hacemos varios personajes
+
+            live.Damage(damage);
+        }
+        else if(other != null) //Destroyable wall
+        {
             Destroy(collision.gameObject);
         }
         //DESTROY BULLET

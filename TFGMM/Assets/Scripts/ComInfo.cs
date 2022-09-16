@@ -20,6 +20,11 @@ public enum result
     win, lose, draw
 }
 
+public enum team
+{
+    red, blue, none
+}
+
 public struct friendInfo
 {
     string name;
@@ -118,6 +123,18 @@ public static class ComInfo
     public static void addPoints(int points)
     {
         playerPoints += points;
+    }
+
+    static team t = team.none;
+
+    public static team getTeam()
+    {
+        return t;
+    }
+
+    public static void setTeam(team newTeam)
+    {
+        t = newTeam;
     }
 
     static int salaKey = -1;
