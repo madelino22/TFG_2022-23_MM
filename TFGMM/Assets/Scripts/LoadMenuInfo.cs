@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 
 public class LoadMenuInfo : MonoBehaviour
 {
-    public TextMeshProUGUI topLeftName;
+    public Text topLeftName;
 
     public Text midButtonName;
 
