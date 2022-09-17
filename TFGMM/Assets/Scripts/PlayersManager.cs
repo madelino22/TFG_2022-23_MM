@@ -28,12 +28,20 @@ public class PlayersManager : MonoBehaviour
     [SerializeField]
     Image handleImage;
 
+    List<GameObject> playersList;
+
+
+
+    PhotonView view;
+
     // Start is called before the first frame update
     void Start()
     {
         Debug.Log("mapiar");
+        playersList = new List<GameObject>();
+        view = GetComponent<PhotonView>();
 
-            spawns = GameObject.FindGameObjectsWithTag("Spawn");
+        spawns = GameObject.FindGameObjectsWithTag("Spawn");
             for(int x=0; x < spawns.Length; x++)
             {
                 Debug.Log("Hola" + spawns[x].name);
@@ -45,7 +53,7 @@ public class PlayersManager : MonoBehaviour
         player = PhotonNetwork.Instantiate("Character1", new Vector3(spawns[PhotonNetwork.LocalPlayer.ActorNumber - 1 + 2].transform.position.x,
             spawns[PhotonNetwork.LocalPlayer.ActorNumber - 1 + 2].transform.position.y+1, spawns[PhotonNetwork.LocalPlayer.ActorNumber - 1 + 2].transform.position.z), Quaternion.identity);
         //GameManager.Instance.AddNewPlayerToList(player);
-
+        //playersList.Add(player);
 
         Debug.Log("CAMARA ASIGNADA TARGET");
 
@@ -79,4 +87,29 @@ public class PlayersManager : MonoBehaviour
     void Update()
     {
     }
+   
+
+    public void AddNewPlayerToList(GameObject nPlayer)
+    {
+        playersList.Add(nPlayer);
+    }
+
+
+    public void PlayerHit(object[] arr)
+    {
+        Debug.Log("Envia mensaje");
+        view.RPC("PlayerHitCallable", RpcTarget.Others, arr);
+    }
+
+    [PunRPC]
+    private void PlayerHitCallable(object[] arr)
+    {
+        //Two options
+        //First to pass the gameObject and the hit points and see if the gameObject value is the same on every PC
+        //Second to pass the index of the playerList arrray and the hit point, but coution with cohesion of indexes on every PC
+
+        //First
+        ((GameObject)arr[0]).SetActive(false);
+    }
+
 }

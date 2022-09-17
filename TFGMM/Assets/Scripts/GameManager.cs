@@ -10,7 +10,6 @@ public class GameManager : MonoBehaviour
 
     public PlayersManager playersManager;
 
-    List<GameObject> playersList;
 
     public static GameManager Instance
     {
@@ -20,21 +19,13 @@ public class GameManager : MonoBehaviour
             {
                 GameObject go = new GameObject("GameManager");
                 _instance = go.AddComponent<GameManager>();
-
             }
             return _instance;
         }
     }
 
 
-    private void Start()
-    {
-        playersList = new List<GameObject>();
-    }
+    
 
-    public void AddNewPlayerToList(GameObject nPlayer)
-    {
-        playersList.Add(nPlayer);
-    }
-
+   
 }

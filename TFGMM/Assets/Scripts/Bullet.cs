@@ -32,7 +32,15 @@ public class Bullet : MonoBehaviour
         Debug.Log("Bullet Collision");
 
         Destroyable other = collision.gameObject.GetComponent<Destroyable>();
+      
         
+        
+        object[] array = { other.gameObject };
+        GameManager.Instance.playersManager.PlayerHit(array);
+
+
+
+
         //Enemy team
         if ((collision.gameObject.CompareTag("Red Team") && ComInfo.getTeam() == team.blue) || 
             (collision.gameObject.CompareTag("Blue Team") && ComInfo.getTeam() == team.red))
@@ -45,6 +53,8 @@ public class Bullet : MonoBehaviour
             //if() //Hacer a mano aqui los daños si hacemos varios personajes
 
             live.Damage(damage);
+
+            
         }
         else if(other != null) //Destroyable wall
         {
