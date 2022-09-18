@@ -7,15 +7,15 @@ namespace CodeMonkey.HealthSystemCM {
     /// <summary>
     /// Adds a HealthSystem to a Game Object
     /// </summary>
-    public class HealthSystemComponent : MonoBehaviour, IGetHealthSystem {
+    public class HealthSystemComponent : MonoBehaviour {
 
         [Tooltip("Maximum Health amount")]
         [SerializeField] private float healthAmountMax = 100f;
 
+        private float health;
+
         [Tooltip("Starting Health amount, leave at 0 to start at full health.")]
         [SerializeField] private float startingHealthAmount;
-
-        private HealthSystem healthSystem;
 
         private bool receivingDamage = false;
 
@@ -33,58 +33,57 @@ namespace CodeMonkey.HealthSystemCM {
 
         private void Awake() {
             // Create Health System
-            healthSystem = new HealthSystem(healthAmountMax);
-
-            if (startingHealthAmount != 0) {
-                healthSystem.SetHealth(startingHealthAmount);
-            }
-
-            //Testing Bar
-            healthSystem.Damage(50);
-            cured = false;
+            health = startingHealthAmount;
         }
 
         private void Update()
         {
-            //Timer for recover life
-            if(!cured && !receivingDamage && healthSystem.GetHealth() != healthAmountMax)
-            {
-               
-                timer += Time.deltaTime;
-                if(alreadyhealing && timer >= 1f) //Heal not first time
-                {
-                    healthSystem.Heal((healthAmountMax / 100) * 7);
-                    timer = 0;
-                    if (healthSystem.GetHealth() == healthAmountMax) cured = true;
-                }
-                else if (!alreadyhealing && timer >= recoverLifeTime) //Heal first time
-                {
-                    healthSystem.Heal((healthAmountMax / 100) * 7);
-                    timer = 0;
-                    if (healthSystem.GetHealth() == healthAmountMax)
-                    {
-                        cured = true;
-                    }
-                    else alreadyhealing = true;
-                }
-            }
-
-            if(receivingDamage)
+            if (receivingDamage)
             {
                 cured = false;
                 alreadyhealing = false;
                 timer = 0;
                 receivingDamage = false;
             }
+
+            //Timer for recover life
+            if (!cured && !receivingDamage && health >= healthAmountMax)
+            {
+               
+                timer += Time.deltaTime;
+                if(alreadyhealing && timer >= 1f) //Heal not first time
+                {
+                    health += (healthAmountMax / 100) * 7;
+                    timer = 0;
+                    if (health >= healthAmountMax)
+                    {
+                        health = startingHealthAmount;
+                        cured = true;
+                    }
+                }
+                else if (!alreadyhealing && timer >= recoverLifeTime) //Heal first time
+                {
+                    health += (healthAmountMax / 100) * 7;
+                    timer = 0;
+                    if (health >= healthAmountMax)
+                    {
+                        health = startingHealthAmount;
+                        cured = true;
+                    }
+                    else alreadyhealing = true;
+                }
+            }
         }
 
         /// <summary>
         /// Get the Health System created by this Component
         /// </summary>
-        public HealthSystem GetHealthSystem() {
-            return healthSystem;
+        
+        public void receiveDamage(int damage)
+        {
+            health -= damage;
+            receivingDamage = true;
         }
-
 
     }
 

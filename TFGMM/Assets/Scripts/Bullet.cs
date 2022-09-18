@@ -10,6 +10,8 @@ public class Bullet : MonoBehaviour
     [SerializeField]
     public float speed = 1;
 
+    [SerializeField]
+    public int damage = 300;
     Vector3 bulletEndDist;
 
     // Start is called before the first frame update
@@ -46,13 +48,13 @@ public class Bullet : MonoBehaviour
             (collision.gameObject.CompareTag("Blue Team") && ComInfo.getTeam() == team.red))
         {
             Debug.Log("Soy enemigo");
-            CodeMonkey.HealthSystemCM.HealthSystem live = collision.gameObject.GetComponent<CodeMonkey.HealthSystemCM.HealthSystemComponent>().GetHealthSystem();
+            CodeMonkey.HealthSystemCM.HealthSystemComponent live = collision.gameObject.GetComponent<CodeMonkey.HealthSystemCM.HealthSystemComponent>();
 
-            int damage = 300;
+            damage = 300;
 
             //if() //Hacer a mano aqui los daños si hacemos varios personajes
 
-            live.Damage(damage);
+            live.receiveDamage(damage);
 
             
         }

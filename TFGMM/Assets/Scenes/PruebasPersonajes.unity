@@ -1740,6 +1740,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -36
       objectReference: {fileID: 0}
+    - target: {fileID: 4117449351544492998, guid: 23ee9747f2b7cfa4abc0d0b87839dd39, type: 3}
+      propertyPath: specialJoystick
+      value: 
+      objectReference: {fileID: 1358169721}
+    - target: {fileID: 4117449351544493001, guid: 23ee9747f2b7cfa4abc0d0b87839dd39, type: 3}
+      propertyPath: attackJoystick
+      value: 
+      objectReference: {fileID: 598363662}
     - target: {fileID: 4117449351544493003, guid: 23ee9747f2b7cfa4abc0d0b87839dd39, type: 3}
       propertyPath: sceneViewId
       value: 6
