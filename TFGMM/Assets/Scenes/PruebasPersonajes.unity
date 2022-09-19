@@ -2074,6 +2074,18 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1376114784}
     - target: {fileID: 8409586648658986061, guid: bcee30ffd673ad8448cf54837757fccd, type: 3}
+      propertyPath: joystickColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8409586648658986061, guid: bcee30ffd673ad8448cf54837757fccd, type: 3}
+      propertyPath: joystickColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8409586648658986061, guid: bcee30ffd673ad8448cf54837757fccd, type: 3}
+      propertyPath: joystickColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8409586648658986061, guid: bcee30ffd673ad8448cf54837757fccd, type: 3}
       propertyPath: specialJoystick
       value: 
       objectReference: {fileID: 1358169721}

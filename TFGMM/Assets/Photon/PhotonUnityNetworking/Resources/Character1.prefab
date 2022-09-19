@@ -1690,6 +1690,18 @@ PrefabInstance:
       propertyPath: attackLookPoint
       value: 
       objectReference: {fileID: 5392789746882938381}
+    - target: {fileID: 8409586648658986061, guid: bcee30ffd673ad8448cf54837757fccd, type: 3}
+      propertyPath: joystickColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8409586648658986061, guid: bcee30ffd673ad8448cf54837757fccd, type: 3}
+      propertyPath: joystickColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8409586648658986061, guid: bcee30ffd673ad8448cf54837757fccd, type: 3}
+      propertyPath: joystickColor.r
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: bcee30ffd673ad8448cf54837757fccd, type: 3}

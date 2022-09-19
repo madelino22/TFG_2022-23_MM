@@ -15,6 +15,8 @@ public class ActivateSpecialModule : MonoBehaviour
     [SerializeField]
     Joystick specialJoystick;
 
+    //empieza con ALPHA = 0.2 por defecto
+    //A los 4 disparos, es 1 ==> 1 disparo = Alpha += 0.2
     [SerializeField]
     Color joystickColor;
 
@@ -64,13 +66,13 @@ public class ActivateSpecialModule : MonoBehaviour
         }
     }
 
-    public void IncreaseAplha(float numBullets)
+    public void IncreaseAplha(float numBullets) 
     {
         //CALCULATE ALPHA
-        Debug.Log(joystickColor.a + "+" + 1 / numBullets);
-        joystickColor.a = joystickColor.a + 1 / numBullets;
+        Debug.Log(joystickColor.a + "+" + 0.8 / numBullets);
+        joystickColor.a = joystickColor.a + 0.8f / numBullets;
         if (joystickColor.a > 1) joystickColor.a = 1;
-        else if (joystickColor.a < 0) joystickColor.a = 0;
+        else if (joystickColor.a < 0) joystickColor.a = 0.2f;
 
         //CHANGE COLOR
         joystickImage.color = joystickColor;
@@ -83,7 +85,7 @@ public class ActivateSpecialModule : MonoBehaviour
 
         if (!active)
         {
-            joystickColor.a = 0;
+            joystickColor.a = 0.2f;
             specialJoystick.enabled = false;
         }
         else
