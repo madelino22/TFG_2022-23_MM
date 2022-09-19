@@ -83,8 +83,8 @@ using System.Collections.Generic;
             health -= damage;
             receivingDamage = true;
 
-        //if (health <= 0) this.gameObject.GetComponent<Respawn>().enabled = false;
-    }
+            //if(health <= 0) this.gameObject.GetComponent<Respawn>().setActive(false);
+        }
 
         public void recoverMaxLife()
         {

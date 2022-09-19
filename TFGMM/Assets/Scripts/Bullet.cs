@@ -48,7 +48,7 @@ public class Bullet : MonoBehaviour
             (collision.gameObject.CompareTag("Blue Team") && ComInfo.getTeam() == team.red))
         {
             Debug.Log("Soy enemigo");
-            CodeMonkey.HealthSystemCM.HealthSystemComponent live = collision.gameObject.GetComponent<CodeMonkey.HealthSystemCM.HealthSystemComponent>();
+            HealthSystemComponent live = collision.gameObject.GetComponent<HealthSystemComponent>();
 
             damage = 300;
 
