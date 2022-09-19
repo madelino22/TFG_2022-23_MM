@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "539906118243",
+    "project_id": "tfgmm-23e0e",
+    "storage_bucket": "tfgmm-23e0e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:539906118243:android:2b3899641b60d91dd85e56",
+        "android_client_info": {
+          "package_name": "com.DefaultCompany.TFGMM"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "539906118243-qdhodm5ggavhu8e0fhppta8r3ae4n4ph.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfXq3E6rs54VjF2FaNmREo6WVyamOYIMU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "539906118243-qdhodm5ggavhu8e0fhppta8r3ae4n4ph.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "539906118243-1n20bma9q17b8vr07bl4halsnfmd5976.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.DefaultCompany.TFGMM"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
