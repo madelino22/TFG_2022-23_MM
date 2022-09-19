@@ -12,6 +12,9 @@ public class Respawn : MonoBehaviour
     public GameObject emptyPlayer;
 
     [SerializeField]
+    public GameObject player;
+
+    [SerializeField]
     public GameObject canvasRespawn;
 
     [SerializeField]
@@ -38,7 +41,9 @@ public class Respawn : MonoBehaviour
 
     private void OnDisable()
     {
-        this.gameObject.GetComponent<HealthSystemComponent>().recoverMaxLife();
+        Debug.Log("Desactivado");
+        player.gameObject.GetComponent<HealthSystem>().recoverMaxLife();
+
 
         emptyPlayer.transform.position = respawnPosition.position;
         emptyPlayer.SetActive(true);
@@ -52,6 +57,7 @@ public class Respawn : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         timer -= Time.deltaTime;
 
         if (timer <= 0)
@@ -60,9 +66,10 @@ public class Respawn : MonoBehaviour
         }
         else
         {
+            
             int aux = (int)timer + 1;
             countdown.text = aux.ToString();
         }
-
+        
     }
 }

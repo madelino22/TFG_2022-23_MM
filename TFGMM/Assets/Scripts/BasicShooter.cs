@@ -114,7 +114,7 @@ public class BasicShooter : MonoBehaviour
 
             if(numBullets < maxNumBullets)
             {
-                Debug.Log(ammoBarFullAmmount);
+                //Debug.Log(ammoBarFullAmmount);
                 currentElapsedTime += Time.deltaTime;
                 if(currentElapsedTime >= timeToReload)
                 {

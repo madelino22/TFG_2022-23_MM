@@ -8,6 +8,8 @@ using System.Collections.Generic;
 /// </summary>
 public class HealthSystem : MonoBehaviour
 {
+    [Tooltip("Part of the player wont be disabled")]
+    [SerializeField] private GameObject playerTop;
 
     [Tooltip("Maximum Health amount")]
     [SerializeField] private float healthAmountMax = 100f;
@@ -39,6 +41,8 @@ public class HealthSystem : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Space)) receiveDamage(300000);
+
         if (receivingDamage)
         {
             cured = false;
@@ -84,8 +88,7 @@ public class HealthSystem : MonoBehaviour
     {
         health -= damage;
         receivingDamage = true;
-
-        if (health <= 0) this.gameObject.GetComponent<Respawn>().enabled = false;
+        if (health <= 0) playerTop.gameObject.GetComponent<Respawn>().enabled = true;
     }
 
     public void recoverMaxLife()

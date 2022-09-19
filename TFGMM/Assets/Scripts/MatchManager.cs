@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MatchManager : MonoBehaviour
 {
@@ -12,15 +13,15 @@ public class MatchManager : MonoBehaviour
 
     // Start is called before the first frame update
 
-    public TMPro.TextMeshProUGUI redPointsText;
+    public Text redPointsText;
 
     private int redPoints = 0;
 
-    public TMPro.TextMeshProUGUI bluePointsText;
+    public Text bluePointsText;
 
     private int bluePoints = 0;
 
-    public TMPro.TextMeshProUGUI timeText;
+    public Text timeText;
 
     private float time = 15f;
 
