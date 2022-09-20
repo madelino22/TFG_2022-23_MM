@@ -804,7 +804,7 @@ GameObject:
   - component: {fileID: 5392789745961030527}
   - component: {fileID: 7709747431321528853}
   - component: {fileID: 79370133501205364}
-  - component: {fileID: 8423613819347495860}
+  - component: {fileID: 252252059318784925}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -967,8 +967,8 @@ MonoBehaviour:
     InterpolateOption: 0
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 0
---- !u!114 &8423613819347495860
-MonoBehaviour:
+--- !u!54 &252252059318784925
+Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
