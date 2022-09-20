@@ -16,8 +16,6 @@ public class PlayersManager : MonoBehaviour
     [SerializeField]
     GameObject[] spawns;
 
-    [SerializeField]
-    GameObject mapGenerator;
 
     //SPECIAL ATTACK
     [SerializeField]
@@ -37,17 +35,9 @@ public class PlayersManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("mapiar");
         playersList = new List<GameObject>();
         view = GetComponent<PhotonView>();
 
-        spawns = GameObject.FindGameObjectsWithTag("Spawn");
-            for(int x=0; x < spawns.Length; x++)
-            {
-                Debug.Log("Hola" + spawns[x].name);
-            }
-
-        Debug.Log(spawns.Length);
         GameObject player;
         Debug.Log("ID: " + PhotonNetwork.LocalPlayer.ActorNumber);
         player = PhotonNetwork.Instantiate("Character1", new Vector3(spawns[PhotonNetwork.LocalPlayer.ActorNumber - 1 + 2].transform.position.x,
