@@ -804,6 +804,7 @@ GameObject:
   - component: {fileID: 5392789745961030527}
   - component: {fileID: 7709747431321528853}
   - component: {fileID: 79370133501205364}
+  - component: {fileID: 8423613819347495860}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -966,6 +967,24 @@ MonoBehaviour:
     InterpolateOption: 0
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 0
+--- !u!114 &8423613819347495860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5392789745961030512}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7552f031495678b4780a4496d2b30a88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerTop: {fileID: 0}
+  healthAmountMax: 100
+  healthBar: {fileID: 1421393048686682816}
+  startingHealthAmount: 80
+  recoverLifeTime: 1
+  lifeText: {fileID: 1982066408885418140}
 --- !u!1 &5392789746882938370
 GameObject:
   m_ObjectHideFlags: 0

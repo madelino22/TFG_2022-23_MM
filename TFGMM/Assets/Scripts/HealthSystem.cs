@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
+
+using TMPro;
 
 
 /// <summary>
@@ -14,8 +17,10 @@ public class HealthSystem : MonoBehaviour
     [Tooltip("Maximum Health amount")]
     [SerializeField] private float healthAmountMax = 100f;
 
-    private float health;
+    [SerializeField] Image healthBar;
+    float initialHBFill;
 
+    private float health;
     [Tooltip("Starting Health amount, leave at 0 to start at full health.")]
     [SerializeField] private float startingHealthAmount;
 
@@ -31,17 +36,34 @@ public class HealthSystem : MonoBehaviour
     [SerializeField] private float recoverLifeTime;
 
     [Tooltip("Starting Health amount, leave at 0 to start at full health.")]
-    [SerializeField] private GameObject lifeText;
+    [SerializeField] private TMP_Text lifeText;
+    
 
     private void Awake()
     {
         // Create Health System
         health = startingHealthAmount;
+        initialHBFill = healthBar.fillAmount;
+
+    }
+    private void Start()
+    {
+        UpdateHealthbarUI();
+
     }
 
+
+    private void UpdateHealthbarUI()
+    {
+        if (healthBar)
+        {
+            lifeText.text = health.ToString();
+            healthBar.fillAmount = health / healthAmountMax * initialHBFill;
+        }
+    }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space)) receiveDamage(300000);
+        if (Input.GetKeyDown(KeyCode.Space)) receiveDamage(20);
 
         if (receivingDamage)
         {
@@ -65,6 +87,7 @@ public class HealthSystem : MonoBehaviour
                     health = startingHealthAmount;
                     cured = true;
                 }
+                UpdateHealthbarUI();
             }
             else if (!alreadyhealing && timer >= recoverLifeTime) //Heal first time
             {
@@ -76,8 +99,14 @@ public class HealthSystem : MonoBehaviour
                     cured = true;
                 }
                 else alreadyhealing = true;
+
+                UpdateHealthbarUI();
+
             }
         }
+
+
+       
     }
 
     /// <summary>
@@ -88,6 +117,7 @@ public class HealthSystem : MonoBehaviour
     {
         health -= damage;
         receivingDamage = true;
+        UpdateHealthbarUI();
         if (health <= 0) playerTop.gameObject.GetComponent<Respawn>().enabled = true;
     }
 
