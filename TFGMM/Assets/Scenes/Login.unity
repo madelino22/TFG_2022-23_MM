@@ -329,7 +329,7 @@ RectTransform:
   m_GameObject: {fileID: 519148348}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2.2021, y: 2.2021, z: 2.2021}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1511633430}
@@ -384,7 +384,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 519148351}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1059022446}
+        m_TargetAssemblyTypeName: GoogleSignInDemo, Assembly-CSharp
+        m_MethodName: SignOutFromGoogle
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &519148351
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -553,7 +565,7 @@ RectTransform:
   m_GameObject: {fileID: 744144882}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3.162217, y: 2.0651104, z: 1}
+  m_LocalScale: {x: 7.158943, y: 4.675204, z: 2.2639}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1324020076}
@@ -586,10 +598,10 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_NormalColor: {r: 0.12829298, g: 0.8773585, b: 0.16060708, a: 1}
+    m_HighlightedColor: {r: 0.85651577, g: 0.8584906, b: 0.068841234, a: 1}
+    m_PressedColor: {r: 0.9056604, g: 0, b: 0, a: 1}
+    m_SelectedColor: {r: 0, g: 0.39954376, b: 1, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -799,7 +811,7 @@ RectTransform:
   m_GameObject: {fileID: 1186666340}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3.162217, y: 2.0651104, z: 1}
+  m_LocalScale: {x: 3.1443753, y: 2.053459, z: 0.99435794}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1256107563}
@@ -807,8 +819,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 387.328, y: -596.355}
-  m_SizeDelta: {x: 974.655, y: 138.71}
+  m_AnchoredPosition: {x: 51, y: -414}
+  m_SizeDelta: {x: 983.624, y: 875.345}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1186666343
 CanvasRenderer:
@@ -840,10 +852,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 64
+    m_FontSize: 48
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 6
+    m_MinSize: 4
     m_MaxSize: 64
     m_Alignment: 0
     m_AlignByGeometry: 0

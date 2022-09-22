@@ -33,7 +33,6 @@ public class GoogleSignInDemo : MonoBehaviour
                 if (task.Result == DependencyStatus.Available)
                 {
                     auth = FirebaseAuth.DefaultInstance;
-                    Debug.Log("Dependencias resueltas");
                 }
                 else
                     AddToInformation("Could not resolve all Firebase dependencies: " + task.Result.ToString());
@@ -50,6 +49,7 @@ public class GoogleSignInDemo : MonoBehaviour
 
     private void OnSignIn()
     {
+        Debug.Log("Sign In");
         GoogleSignIn.Configuration = configuration;
         GoogleSignIn.Configuration.UseGameSignIn = false;
         GoogleSignIn.Configuration.RequestIdToken = true;
