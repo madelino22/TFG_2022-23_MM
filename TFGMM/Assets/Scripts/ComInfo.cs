@@ -57,11 +57,22 @@ public static class ComInfo
         return playerName;
     }
 
+    public static void setPlayerName(string name)
+    {
+        playerName = name;
+    }
+
     static string playerID = "#696969";
     public static string getPlayerID()
     {
         return playerID;
     }
+
+    public static void setPlayerID(string id)
+    {
+        playerID = id;
+    }
+
 
     static result gameResult = result.win;
 
