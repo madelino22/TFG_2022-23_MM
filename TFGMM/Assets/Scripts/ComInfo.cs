@@ -51,15 +51,20 @@ public struct friendInfo
 
 public static class ComInfo 
 {
-    static string playerName = "Pepe"; //Access the server with the info
+    public static User player = new User();
+
+    public static User getPlayerData()
+    {
+        return player;
+    }
     public static string getPlayerName()
     {
-        return playerName;
+        return player.userName;
     }
 
     public static void setPlayerName(string name)
     {
-        playerName = name;
+        player.userName = name;
     }
 
     static string playerID = "#696969";
@@ -86,33 +91,24 @@ public static class ComInfo
         gameResult = gameEnd;
     }
 
-    static float rankProgress = 20f;
-
     public static float getRankProgress()
     {
-        return rankProgress;
+        return player.rankProgress;
     }
 
     public static void addRankProgress(float progress)
     {
-        rankProgress += progress;
+        player.rankProgress += progress;
     }
 
     public static void setRankProgress(float progress)
     {
-        rankProgress = progress;
+        player.rankProgress = progress;
     }
 
-    static ranks soloRank = ranks.gold1;
     public static ranks getPlayerSoloRank()
     {
-        return soloRank;
-    }
-
-    static ranks teamTank = ranks.gold1;
-    public static ranks getPlayerTeamRank()
-    {
-        return teamTank;
+        return player.soloRank;
     }
 
     static heroes PlayerHero = heroes.rojo;
@@ -198,22 +194,4 @@ public static class ComInfo
         }
         
     }
-
-
-    //public static friendInfo[] getFriendsList()
-    //{
-    //    friendInfo[] amigos;
-
-    //    int nFriends = 5; //getFromServer
-
-    //    for (int i = 0; i < nFriends; i++)
-    //    {
-    //        friendInfo f("Pepe", 1, ranks.iron1, ranks.iron1, false, false);
-
-    //        amigos[i] = f;
-    //    }
-
-
-    //    return amigos;
-    //}
 }

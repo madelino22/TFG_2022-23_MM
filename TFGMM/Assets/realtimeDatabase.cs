@@ -9,20 +9,17 @@ public class realtimeDatabase : MonoBehaviour
     DatabaseReference reference;
 
 
-    User user = new User();
+    User user = ComInfo.getPlayerData();
     // Start is called before the first frame update
     void Start()
     {
         reference = FirebaseDatabase.DefaultInstance.RootReference;
-
-        saveData();
+        
         readData();
     }
 
     public void saveData()
     {
-        
-
         string json = JsonUtility.ToJson(user);
 
         reference.Child("User").Child(user.userName).SetRawJsonValueAsync(json).ContinueWith(task =>
@@ -41,19 +38,21 @@ public class realtimeDatabase : MonoBehaviour
 
     public void readData()
     {
-        reference.Child("User").Child("Este es mi usuario").GetValueAsync().ContinueWith(task =>
+        reference.Child("User").Child(user.userName).GetValueAsync().ContinueWith(task =>
         {
-            if (task.IsCompleted)
+            if (task.IsCompleted) //If player exist put existing data
             {
                 Debug.Log("Datos enviados");
+
                 DataSnapshot snapshot = task.Result;
 
-                Debug.Log("Nombre: " + snapshot.Child("userName").Value.ToString());
-                Debug.Log("Correo Electronico: " + snapshot.Child("email").Value.ToString());
+                user.loadInfo(snapshot);
+
+                
             }
-            else
+            else //Create a new player in the database
             {
-                Debug.Log("No se han recibido los datos o no existen");
+                saveData();
             }
 
         });
