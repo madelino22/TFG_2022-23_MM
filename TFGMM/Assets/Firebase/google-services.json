@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "539906118243",
+    "firebase_url": "https://tfgmm-23e0e-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "tfgmm-23e0e",
     "storage_bucket": "tfgmm-23e0e.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "539906118243-43tl0s58h0462nug6jthmfpsd3hq2bjv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.DefaultCompany.TFGMM",
+            "certificate_hash": "e655cf064baf5dc9ba7bf126e72ac281445c2348"
+          }
+        },
         {
           "client_id": "539906118243-qdhodm5ggavhu8e0fhppta8r3ae4n4ph.apps.googleusercontent.com",
           "client_type": 3
