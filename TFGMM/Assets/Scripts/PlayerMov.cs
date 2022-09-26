@@ -50,11 +50,23 @@ public class PlayerMov : MonoBehaviour
         {
             //Debug.Log("Moviendose...");
             //Mover bola inferior
-            playerBall.position = new Vector3(joystick.Horizontal + transform.position.x, transform.position.y, joystick.Vertical + transform.position.z);
+            if (PhotonNetwork.LocalPlayer.ActorNumber >= 2)
+            {
+                playerBall.position = new Vector3(-joystick.Horizontal + transform.position.x, transform.position.y, -joystick.Vertical + transform.position.z);
 
-            //Mirar hacia adelante
-            transform.LookAt(new Vector3(playerBall.position.x, 0, playerBall.position.z));
-            transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
+                //Mirar hacia adelante
+                transform.LookAt(new Vector3(playerBall.position.x, 0, playerBall.position.z));
+                transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
+                Debug.Log("Mi posicion: " + playerBall.position);
+            }
+            else
+            {
+                playerBall.position = new Vector3(joystick.Horizontal + transform.position.x, transform.position.y, joystick.Vertical + transform.position.z);
+
+                //Mirar hacia adelante
+                transform.LookAt(new Vector3(playerBall.position.x, 0, playerBall.position.z));
+                transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
+            }
 
             //Mover jugador
             if (joystick.Horizontal > movementLimit || -movementLimit > joystick.Horizontal || joystick.Vertical > movementLimit || -movementLimit > joystick.Vertical)
@@ -63,7 +75,10 @@ public class PlayerMov : MonoBehaviour
 
                 float movAux = transform.position.x;
 
-                transform.Translate(Vector3.forward * Time.deltaTime * speed * value);
+                //if (PhotonNetwork.LocalPlayer.ActorNumber >= 2)
+                //    transform.Translate(Vector3.back * Time.deltaTime * speed * value);
+                //else
+                    transform.Translate(Vector3.forward * Time.deltaTime * speed * value);
 
                 movAux -= transform.position.x;
 

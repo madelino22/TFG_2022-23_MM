@@ -645,7 +645,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7274215651970060480, guid: e9bd299592a52fd4cb23405efbe9289d, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7274215651970060480, guid: e9bd299592a52fd4cb23405efbe9289d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -723,6 +723,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: MatchCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 7274215651970060483, guid: e9bd299592a52fd4cb23405efbe9289d, type: 3}
+      propertyPath: timeText
+      value: 
+      objectReference: {fileID: 1290762988}
+    - target: {fileID: 7274215651970060483, guid: e9bd299592a52fd4cb23405efbe9289d, type: 3}
+      propertyPath: redPointsText
+      value: 
+      objectReference: {fileID: 1588756002}
+    - target: {fileID: 7274215651970060483, guid: e9bd299592a52fd4cb23405efbe9289d, type: 3}
+      propertyPath: bluePointsText
+      value: 
+      objectReference: {fileID: 619855680}
     - target: {fileID: 7274215652081773346, guid: e9bd299592a52fd4cb23405efbe9289d, type: 3}
       propertyPath: m_SizeDelta.y
       value: 100
@@ -789,6 +801,17 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 0
+--- !u!114 &619855680 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2131245304279734872, guid: e9bd299592a52fd4cb23405efbe9289d, type: 3}
+  m_PrefabInstance: {fileID: 619855676}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 619855677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &682735630
 GameObject:
   m_ObjectHideFlags: 0
@@ -813,7 +836,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 682735630}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 32, y: 2.5, z: 46}
+  m_LocalPosition: {x: 23.4, y: 3.9, z: 43.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1303,6 +1326,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1290762988 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8986538204850897184, guid: e9bd299592a52fd4cb23405efbe9289d, type: 3}
+  m_PrefabInstance: {fileID: 619855676}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1291859813
 GameObject:
   m_ObjectHideFlags: 0
@@ -1335,9 +1369,8 @@ MonoBehaviour:
   mov: {fileID: 528261274}
   att: {fileID: 3894840}
   spawns:
-  - {fileID: 1624230299}
-  - {fileID: 818851023}
-  - {fileID: 438762026}
+  - {fileID: 1547812968}
+  - {fileID: 682735630}
   speAtt: {fileID: 1942593872}
   joystickImage: {fileID: 1942593871}
   handleImage: {fileID: 1942593869}
@@ -1477,13 +1510,24 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1547812968}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 14, y: 2.5, z: 2}
+  m_LocalPosition: {x: 20.12, y: 5.7, z: 4.12}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1189058076}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1588756002 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3710291550337081323, guid: e9bd299592a52fd4cb23405efbe9289d, type: 3}
+  m_PrefabInstance: {fileID: 619855676}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1624230299
 GameObject:
   m_ObjectHideFlags: 0

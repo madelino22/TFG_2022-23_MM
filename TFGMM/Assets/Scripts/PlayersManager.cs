@@ -40,8 +40,8 @@ public class PlayersManager : MonoBehaviour
 
         GameObject player;
         Debug.Log("ID: " + PhotonNetwork.LocalPlayer.ActorNumber);
-        player = PhotonNetwork.Instantiate("Character1", new Vector3(spawns[PhotonNetwork.LocalPlayer.ActorNumber - 1 + 2].transform.position.x,
-            spawns[PhotonNetwork.LocalPlayer.ActorNumber - 1 + 2].transform.position.y+1, spawns[PhotonNetwork.LocalPlayer.ActorNumber - 1 + 2].transform.position.z), Quaternion.identity);
+        //player = PhotonNetwork.Instantiate("Character1", new Vector3(spawns[PhotonNetwork.LocalPlayer.ActorNumber - 1 + 2].transform.position.x,
+        //    spawns[PhotonNetwork.LocalPlayer.ActorNumber - 1 + 2].transform.position.y+1, spawns[PhotonNetwork.LocalPlayer.ActorNumber - 1 + 2].transform.position.z), Quaternion.identity);
         //GameManager.Instance.AddNewPlayerToList(player);
         //playersList.Add(player);
 
@@ -49,8 +49,16 @@ public class PlayersManager : MonoBehaviour
 
         if (PhotonNetwork.LocalPlayer.ActorNumber >= 2)
         {
-            Camera.main.transform.Rotate(new Vector3(90, 180, Camera.main.transform.rotation.z));
+            Debug.Log("Jugador contrario");
+            Camera.main.transform.Rotate(new Vector3(140, 180, Camera.main.transform.rotation.z));
+            Camera.main.GetComponent<CameraFollow>().offset.z = 5;
+            player = PhotonNetwork.Instantiate("Character1", new Vector3(spawns[1].transform.position.x,
+           spawns[1].transform.position.y + 1, spawns[1].transform.position.z),
+           new Quaternion(transform.rotation.x,180,transform.rotation.z,1));
         }
+        else
+            player = PhotonNetwork.Instantiate("Character1", new Vector3(spawns[0].transform.position.x,
+           spawns[0].transform.position.y + 1, spawns[0].transform.position.z), Quaternion.identity);
         Camera.main.GetComponent<CameraFollow>().target = player.GetComponentInChildren<PlayerMov>().gameObject.transform;
         //if (PhotonNetwork.IsMasterClient)
         //{
