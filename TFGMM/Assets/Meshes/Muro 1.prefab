@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6953592443147070315}
   - component: {fileID: 5650867144073526142}
   - component: {fileID: 1557552373728808013}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Muro 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

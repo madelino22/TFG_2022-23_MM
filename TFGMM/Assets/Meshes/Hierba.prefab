@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1564997089489182258}
   - component: {fileID: 8102870435318498366}
   - component: {fileID: 4078917111903914897}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Hierba
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -33,7 +33,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8873289121104023268
 MeshFilter:
