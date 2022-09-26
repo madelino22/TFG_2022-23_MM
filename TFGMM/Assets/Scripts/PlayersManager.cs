@@ -54,7 +54,7 @@ public class PlayersManager : MonoBehaviour
             Camera.main.GetComponent<CameraFollow>().offset.z = 5;
             player = PhotonNetwork.Instantiate("Character1", new Vector3(spawns[1].transform.position.x,
            spawns[1].transform.position.y + 1, spawns[1].transform.position.z),
-           new Quaternion(transform.rotation.x,180,transform.rotation.z,1));
+           new Quaternion(transform.rotation.x, transform.rotation.y, transform.rotation.z,1));
         }
         else
             player = PhotonNetwork.Instantiate("Character1", new Vector3(spawns[0].transform.position.x,

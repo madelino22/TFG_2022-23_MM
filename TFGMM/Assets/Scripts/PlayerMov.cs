@@ -58,6 +58,8 @@ public class PlayerMov : MonoBehaviour
                 transform.LookAt(new Vector3(playerBall.position.x, 0, playerBall.position.z));
                 transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
                 Debug.Log("Mi posicion: " + playerBall.position);
+
+               
             }
             else
             {

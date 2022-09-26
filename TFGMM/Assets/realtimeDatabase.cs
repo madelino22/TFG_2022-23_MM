@@ -22,11 +22,13 @@ public class realtimeDatabase : MonoBehaviour
     {
         string json = JsonUtility.ToJson(user);
 
+        Debug.Log(json);
+
         reference.Child("User").Child(user.userName).SetRawJsonValueAsync(json).ContinueWith(task =>
         {
             if(task.IsCompleted)
             {
-                Debug.Log("Datos enviados");
+                Debug.Log("saved Data");
             }
             else
             {
@@ -38,21 +40,47 @@ public class realtimeDatabase : MonoBehaviour
 
     public void readData()
     {
-        reference.Child("User").Child(user.userName).GetValueAsync().ContinueWith(task =>
+        //Check if player exist
+        reference.Child("User").GetValueAsync().ContinueWith(task =>
         {
             if (task.IsCompleted) //If player exist put existing data
             {
-                Debug.Log("Datos enviados");
-
                 DataSnapshot snapshot = task.Result;
 
-                user.loadInfo(snapshot);
+                if(snapshot.HasChild(user.userName)) //Check if player already in database
+                {
+                    Debug.Log("Player already registered");
 
-                
+                    reference.Child("User").Child(user.userName).GetValueAsync().ContinueWith(task =>
+                    {
+                        if (task.IsCompleted) //If player exist put existing data
+                        {
+                            Debug.Log("Data read");
+
+                            DataSnapshot snapshot = task.Result;
+
+                            user.loadInfo(snapshot);
+
+
+                        }
+                        else //Create a new player in the database
+                        {
+                            Debug.Log("Error reading data");
+                        }
+
+                    });
+                }
+                else //Player dont exist create it
+                {
+                    Debug.Log("New player created");
+                    saveData();
+                }
+
+
             }
             else //Create a new player in the database
             {
-                saveData();
+                Debug.Log("Error checking if player exist ");
             }
 
         });
