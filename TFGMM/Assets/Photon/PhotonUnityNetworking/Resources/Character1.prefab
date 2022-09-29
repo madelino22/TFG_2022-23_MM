@@ -806,6 +806,7 @@ GameObject:
   - component: {fileID: 79370133501205364}
   - component: {fileID: 252252059318784925}
   - component: {fileID: 9054620625918029514}
+  - component: {fileID: 6477780598934705471}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -997,6 +998,24 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 2, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6477780598934705471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5392789745961030512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7552f031495678b4780a4496d2b30a88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerTop: {fileID: 5392789747132827400}
+  healthAmountMax: 100
+  healthBar: {fileID: 1421393048686682816}
+  startingHealthAmount: 100
+  recoverLifeTime: 1
+  lifeText: {fileID: 5954444355675390534}
 --- !u!1 &5392789746882938370
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using Photon.Pun;
 
 using TMPro;
 
@@ -32,19 +33,21 @@ public class HealthSystem : MonoBehaviour
 
     private bool cured = true;
 
+    PhotonView view;
+
     [Tooltip("Time Before Reovering Life")]
     [SerializeField] private float recoverLifeTime;
 
     [Tooltip("Starting Health amount, leave at 0 to start at full health.")]
     [SerializeField] private TMP_Text lifeText;
-    
+
 
     private void Awake()
     {
         // Create Health System
         health = startingHealthAmount;
         initialHBFill = healthBar.fillAmount;
-
+        view = GetComponent<PhotonView>();
     }
     private void Start()
     {
@@ -63,7 +66,13 @@ public class HealthSystem : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space)) receiveDamage(20);
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Debug.Log("ESPACIO");
+            if (view != null)
+                view.RPC("ReduceHealth", RpcTarget.All, 20);
+        }
 
         if (receivingDamage)
         {
@@ -104,9 +113,6 @@ public class HealthSystem : MonoBehaviour
 
             }
         }
-
-
-       
     }
 
     /// <summary>
@@ -128,6 +134,22 @@ public class HealthSystem : MonoBehaviour
         alreadyhealing = false;
         timer = 0;
         receivingDamage = false;
+    }
+
+    private void ModifyHealth(int damage)
+    {
+        if (view.IsMine)
+        {
+            Debug.Log("Reduzco mi vida");
+            receiveDamage(20);
+        }
+    }
+
+    [PunRPC]
+    public void ReduceHealth(int damage)
+    {
+        Debug.Log("DAÑO");
+        ModifyHealth(damage);
     }
 }
 
