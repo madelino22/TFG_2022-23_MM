@@ -913,6 +913,7 @@ MonoBehaviour:
   movementLimit: 0.05
   speed: 2
   healtSystemBar: {fileID: 0}
+  testing: 0
 --- !u!114 &7709747431321528853
 MonoBehaviour:
   m_ObjectHideFlags: 0

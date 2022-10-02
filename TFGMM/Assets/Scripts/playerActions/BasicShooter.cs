@@ -104,9 +104,9 @@ public class BasicShooter : MonoBehaviour
                 desfase.Normalize();
                 bulletPos += desfase * spawnDistance;
                 object[] array = { bulletPos, transform.rotation};
-                view.RPC("ShootBullet", RpcTarget.All, array);
                 if(testingScene)
                     Instantiate(bulletPrefab, bulletPos/*transform.position*/, transform.rotation); //Test one player
+                else view.RPC("ShootBullet", RpcTarget.All, array);
                 shoot = false;
                 //PhotonNetwork.Instantiate(bulletPrefab.name, transform.position, transform.rotation);
             }

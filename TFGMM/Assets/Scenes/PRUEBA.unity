@@ -260,6 +260,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5392789745961030527, guid: 23ee9747f2b7cfa4abc0d0b87839dd39, type: 3}
+      propertyPath: testing
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5392789745961030527, guid: 23ee9747f2b7cfa4abc0d0b87839dd39, type: 3}
       propertyPath: healtSystemBar
       value: 
       objectReference: {fileID: 2132291954}

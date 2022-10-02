@@ -21,6 +21,8 @@ public class PlayerMov : MonoBehaviour
 
     public GameObject healtSystemBar;
 
+    [SerializeField]
+    bool testing = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -48,9 +50,10 @@ public class PlayerMov : MonoBehaviour
     {
         if (joystick != null)
         {
+        Debug.Log("Que ase");   
             //Debug.Log("Moviendose...");
             //Mover bola inferior
-            if (PhotonNetwork.LocalPlayer.ActorNumber >= 2)
+            if (PhotonNetwork.LocalPlayer.ActorNumber >= 2 && !testing || testing)
             {
                 playerBall.position = new Vector3(-joystick.Horizontal + transform.position.x, transform.position.y, -joystick.Vertical + transform.position.z);
 
@@ -68,6 +71,7 @@ public class PlayerMov : MonoBehaviour
                 //Mirar hacia adelante
                 transform.LookAt(new Vector3(playerBall.position.x, 0, playerBall.position.z));
                 transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
+                Debug.Log("Rotar");
             }
 
             //Mover jugador
@@ -83,6 +87,7 @@ public class PlayerMov : MonoBehaviour
                     transform.Translate(Vector3.forward * Time.deltaTime * speed * value);
 
                 movAux -= transform.position.x;
+                Debug.Log("Mover");
 
                 //healtSystemBar.transform.position = new Vector3(healtSystemBar.transform.position.x + movAux, healtSystemBar.transform.position.y, healtSystemBar.transform.position.z);
             }
