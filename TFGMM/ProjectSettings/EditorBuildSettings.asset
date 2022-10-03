@@ -5,31 +5,40 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Login.unity
     guid: d396f29ce87d8cf4db5d5fcd3e100bd8
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Lobby.unity
     guid: 1956cbd668f234941b1f1c473de05c64
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/PruebaRed.unity
     guid: 97acc2a90c1a653498fe4c5f350d7592
   - enabled: 0
-    path: Assets/Scenes/ChangeHero.unity
-    guid: b65b62b512ffbe148a8bd7e63c2bc11d
-  - enabled: 1
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 0
     path: Assets/Scenes/PruebasPersonajes.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/PlayerInfo.unity
     guid: 1a94c90be5746b14aa10058d875b2f67
   - enabled: 0
-    path: Assets/Scenes/addFriends.unity
-    guid: 7b06c360e5c205242ba98da5a780ae14
-  - enabled: 1
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 0
     path: Assets/Scenes/WinLose.unity
     guid: b8a3fdce5e9e2cb4597bfe95cb8d95f4
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Searching.unity
     guid: 2e92ac3c955373e43a6d045690708d83
+  - enabled: 1
+    path: Assets/Scenes/BOLTPrueba.unity
+    guid: a8a20e18c21ca9c419c8db0f22762823
+  - enabled: 1
+    path: Assets/Scenes/BOLTMapa.unity
+    guid: 890c4a37529836a43a200a12c7a78783
+  - enabled: 1
+    path: Assets/Scenes/Menu.unity
+    guid: 295e9b03882459a4ab1b3b7fe0c19462
   m_configObjects: {}
