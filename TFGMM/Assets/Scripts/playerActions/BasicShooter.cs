@@ -81,7 +81,7 @@ public class BasicShooter : MonoBehaviour
                 if (!shoot) shoot = true;
             }
             //JOYSTICK WAS RELEASED
-            else if (shoot && Input.GetMouseButtonUp(0) && numBullets > 0)
+            else if (shoot && Mathf.Abs(attackJoystick.Horizontal) <= 0.1f && Mathf.Abs(attackJoystick.Vertical) <= 0.1f/*Input.GetMouseButtonUp(0)*/ && numBullets > 0)
             {
                 Debug.Log("Shoot");
                 numBullets--;
