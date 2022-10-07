@@ -583,7 +583,6 @@ MonoBehaviour:
   movementLimit: 0.05
   speed: 2
   healtSystemBar: {fileID: 0}
-  testing: 0
 --- !u!54 &5993737126272158596
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -872,7 +871,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sceneGuid: 
   _serializerGuid: 65799a00-217e-4c4c-acba-08612b9077f1
-  _prefabId: 2
+  _prefabId: 1
   _updateRate: 1
   _autoFreezeProxyFrames: 0
   _clientPredicted: 1

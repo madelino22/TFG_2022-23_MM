@@ -21,8 +21,6 @@ public class PlayerMov : MonoBehaviour
 
     public GameObject healtSystemBar;
 
-    [SerializeField]
-    bool testing = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -48,21 +46,20 @@ public class PlayerMov : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log("Update");
         if (joystick != null)
         {
-        Debug.Log("Que ase");   
+            //Debug.Log("Que ase");   
             //Debug.Log("Moviendose...");
             //Mover bola inferior
-            if (PhotonNetwork.LocalPlayer.ActorNumber >= 2 && !testing || testing)
+            if (PhotonNetwork.LocalPlayer.ActorNumber >= 2)
             {
                 playerBall.position = new Vector3(-joystick.Horizontal + transform.position.x, transform.position.y, -joystick.Vertical + transform.position.z);
 
                 //Mirar hacia adelante
                 transform.LookAt(new Vector3(playerBall.position.x, 0, playerBall.position.z));
                 transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
-                Debug.Log("Mi posicion: " + playerBall.position);
-
-               
+                Debug.Log("Mi posicion: " + playerBall.position);               
             }
             else
             {
@@ -74,9 +71,12 @@ public class PlayerMov : MonoBehaviour
                 Debug.Log("Rotar");
             }
 
+
             //Mover jugador
             if (joystick.Horizontal > movementLimit || -movementLimit > joystick.Horizontal || joystick.Vertical > movementLimit || -movementLimit > joystick.Vertical)
             {
+                Debug.Log("Mover");
+
                 float value = 1; //En funcion de la distancia mas o menos velocidad
 
                 float movAux = transform.position.x;
@@ -87,9 +87,13 @@ public class PlayerMov : MonoBehaviour
                     transform.Translate(Vector3.forward * Time.deltaTime * speed * value);
 
                 movAux -= transform.position.x;
-                Debug.Log("Mover");
 
                 //healtSystemBar.transform.position = new Vector3(healtSystemBar.transform.position.x + movAux, healtSystemBar.transform.position.y, healtSystemBar.transform.position.z);
+            }
+            else
+            {
+                Debug.Log("MovementLimit " + movementLimit);
+                Debug.Log("Joystick " + joystick.Horizontal + " " + joystick.Vertical);
             }
         }
     }

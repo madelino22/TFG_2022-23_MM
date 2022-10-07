@@ -24,11 +24,7 @@ public class PlayerAttackTrail : MonoBehaviour
 
     private RaycastHit hit;
 
-    public void GetJoystick(Joystick a)
-    {
-        attackJoystick = a;
-    }
-
+    public void GetJoystick(Joystick a) { attackJoystick = a; }
     //GETS
     public float getTrailDistance() { return trailDistance; }
 
@@ -46,7 +42,8 @@ public class PlayerAttackTrail : MonoBehaviour
             if (Mathf.Abs(attackJoystick.Horizontal) > 0.1f || Mathf.Abs(attackJoystick.Vertical) > 0.1f)
             {
                 //Make Visible
-                lineRenderer.gameObject.SetActive(true);
+                if(!lineRenderer.gameObject.activeInHierarchy)
+                    lineRenderer.gameObject.SetActive(true);
 
                 //Update Position
                 transform.position = new Vector3(player.transform.position.x, 1.46f, player.transform.position.z);
@@ -59,18 +56,18 @@ public class PlayerAttackTrail : MonoBehaviour
                 lineRenderer.SetPosition(0, transform.position);
 
                 //Calculate Dir
-                Vector3 dir = new Vector3(attackJoystick.Horizontal, 0, attackJoystick.Vertical);
-                dir = dir.normalized;
+                //Vector3 dir = new Vector3(attackJoystick.Horizontal, 0, attackJoystick.Vertical);
+                //dir = dir.normalized;
 
                 //Raicast collision ==> Shorter Trail
-                if (Physics.Raycast(transform.position, dir, out hit, trailDistance))
+                if (Physics.Raycast(transform.position,transform.forward /*dir*/, out hit, trailDistance))
                 {
-                    Vector3 movBlocked = new Vector3(hit.point.x, 0, hit.point.z);
-                    lineRenderer.SetPosition(1, transform.position + movBlocked);
+                    //Vector3 movBlocked = new Vector3(hit.point.x, 0, hit.point.z);
+                    lineRenderer.SetPosition(1, hit.point/*transform.position + movBlocked*/);
                 }
                 else
                 {
-                    lineRenderer.SetPosition(1, transform.position + dir * trailDistance);
+                    lineRenderer.SetPosition(1, transform.position + transform.forward/* dir*/ * trailDistance);
                 }
             }
 

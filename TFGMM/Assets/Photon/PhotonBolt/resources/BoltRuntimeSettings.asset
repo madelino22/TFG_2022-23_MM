@@ -61,9 +61,9 @@ MonoBehaviour:
   scopeModeHideWarningInGui: 0
   showBoltEntityHints: 0
   serializeProjectAsText: 0
-  photonAppId: 
+  photonAppId: 9cd361fc-1d54-4a87-81eb-da9d235b9e6a
   photonUsePunch: 1
-  photonCloudRegionIndex: 0
+  photonCloudRegionIndex: 5
   instantiateMode: 0
   globalEntityBehaviourQueryOption: 3
   globalEntityPriorityCalculatorQueryOption: 3
