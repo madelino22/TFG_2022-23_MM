@@ -61,6 +61,7 @@ public class User : MonoBehaviour
         deaths = (int)snapshot.Child("deaths").Value;
 
         assists = (int)snapshot.Child("assists").Value;
+        Debug.Log("Me llegan :" + assists);//------------------------------------------
 
         averageDamagePerGame = (int)snapshot.Child("averageDamagePerGame").Value;
 
@@ -72,4 +73,6 @@ public class User : MonoBehaviour
 
         damageReceivedPerGame = (int)snapshot.Child("damageReceivedPerGame").Value;
     }
+
+    
 }

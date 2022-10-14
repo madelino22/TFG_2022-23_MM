@@ -54,7 +54,7 @@ public class SpecialShooter : MonoBehaviour
                 if (!shoot) shoot = true;
             }
             //JOYSTICK WAS RELEASED
-            else if (shoot && Mathf.Abs(attackJoystick.Horizontal) <= 0.1f && Mathf.Abs(attackJoystick.Vertical) <= 0.1f/*Input.GetMouseButtonUp(0)*/)
+            else if (shoot && Mathf.Abs(specialJoystick.Horizontal) <= 0.1f && Mathf.Abs(specialJoystick.Vertical) <= 0.1f/*Input.GetMouseButtonUp(0)*/)
             {
                 Debug.Log("Shoot");
                 //view.RPC("ShootBullet", RpcTarget.All, array);

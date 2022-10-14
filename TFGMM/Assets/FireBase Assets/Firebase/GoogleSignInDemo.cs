@@ -220,7 +220,8 @@ public class GoogleSignInDemo : MonoBehaviour
         {
             AddStatusText("Welcome: " + task.Result.DisplayName + "!");
             ComInfo.setPlayerName(task.Result.DisplayName);
-            ComInfo.setPlayerID(task.Result.IdToken); 
+            ComInfo.setPlayerID(task.Result.IdToken);
+            ComInfo.getPlayerData().email = task.Result.Email;
 
             SceneManager.LoadScene("Lobby");
         }

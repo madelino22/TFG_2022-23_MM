@@ -8,7 +8,6 @@ public class realtimeDatabase : MonoBehaviour
 {
     DatabaseReference reference;
 
-
     User user = ComInfo.getPlayerData();
     // Start is called before the first frame update
     void Start()
@@ -16,26 +15,6 @@ public class realtimeDatabase : MonoBehaviour
         reference = FirebaseDatabase.DefaultInstance.RootReference;
         
         readData();
-    }
-
-    public void saveData()
-    {
-        string json = JsonUtility.ToJson(user);
-
-        Debug.Log(json);
-
-        reference.Child("User").Child(user.userName).SetRawJsonValueAsync(json).ContinueWith(task =>
-        {
-            if(task.IsCompleted)
-            {
-                Debug.Log("saved Data");
-            }
-            else
-            {
-                Debug.Log("No se han enviado los datos");
-            }
-        }
-        );
     }
 
     public void readData()
@@ -47,7 +26,8 @@ public class realtimeDatabase : MonoBehaviour
             {
                 DataSnapshot snapshot = task.Result;
 
-                if(snapshot.HasChild(user.userName)) //Check if player already in database
+                //Check if player already in database
+                if (snapshot.HasChild(user.userName)) 
                 {
                     Debug.Log("Player already registered");
 
@@ -55,19 +35,16 @@ public class realtimeDatabase : MonoBehaviour
                     {
                         if (task.IsCompleted) //If player exist put existing data
                         {
-                            Debug.Log("Data read");
+                            Debug.Log("Reading Previous Data from Firebase");
 
                             DataSnapshot snapshot = task.Result;
 
-                            user.loadInfo(snapshot);
-
-
+                            user.loadInfo(snapshot); //NO SE LLAMA
                         }
                         else //Create a new player in the database
                         {
                             Debug.Log("Error reading data");
                         }
-
                     });
                 }
                 else //Player dont exist create it
@@ -75,19 +52,49 @@ public class realtimeDatabase : MonoBehaviour
                     Debug.Log("New player created");
                     saveData();
                 }
-
-
             }
-            else //Create a new player in the database
+            //Create a new player in the database
+            else
             {
                 Debug.Log("Error checking if player exist ");
             }
-
         });
     }
+
+    public void saveData() //if player doesn't exist in firebase
+    {
+        string json = JsonUtility.ToJson(user);
+
+        Debug.Log(json);
+
+        reference.Child("User").Child(user.userName).SetRawJsonValueAsync(json).ContinueWith(task =>
+        {
+            if (task.IsCompleted)
+            {
+                Debug.Log("saved Data Profile");
+            }
+            else
+            {
+                Debug.Log("No se han enviado los datos");
+            }
+        }
+        );
+    }
+
     // Update is called once per frame
     void Update()
     {
-        
+        //Debug.Log("ASIIIIIIIIS " + user.assists);
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            user.assists++;
+            Debug.Log("ASSIST");
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Debug.Log("Subir datos: " + user.assists);
+            saveData();
+        }
     }
 }
