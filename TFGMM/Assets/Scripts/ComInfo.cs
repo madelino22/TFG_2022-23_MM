@@ -96,12 +96,12 @@ public static class ComInfo
         return player.rankProgress;
     }
 
-    public static void addRankProgress(float progress)
+    public static void addRankProgress(int progress)
     {
         player.rankProgress += progress;
     }
 
-    public static void setRankProgress(float progress)
+    public static void setRankProgress(int progress)
     {
         player.rankProgress = progress;
     }

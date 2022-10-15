@@ -38,9 +38,8 @@ public class realtimeDatabase : MonoBehaviour
                             Debug.Log("Reading Previous Data from Firebase");
 
                             DataSnapshot snapshot = task.Result;
-                            user.assists = (int)snapshot.Child("assists").Value;
-                            Debug.Log("Me llegannnn :" + user.assists);//------------------------------------------
-                            user.loadInfo(snapshot); //NO SE LLAMA
+
+                            user.loadInfo(snapshot); 
                         }
                         else //Create a new player in the database
                         {

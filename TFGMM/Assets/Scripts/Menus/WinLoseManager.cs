@@ -69,7 +69,7 @@ public class WinLoseManager : MonoBehaviour
 
     private float sidesTimer = 0;
 
-    private float amountProgress = 0;
+    private int amountProgress = 0;
 
     private float multiplayer = 1;
 
@@ -91,7 +91,7 @@ public class WinLoseManager : MonoBehaviour
         progressBar.GetComponent<Slider>().value = ComInfo.getRankProgress();
 
         //Decide with the algorithm the progress
-        amountProgress = 20f;
+        amountProgress = 20;
 
 
         ComInfo.addRankProgress(amountProgress);

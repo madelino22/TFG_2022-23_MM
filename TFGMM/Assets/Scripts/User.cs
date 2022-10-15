@@ -9,7 +9,7 @@ public class User : MonoBehaviour
 
     public string email = "Este es mi correo";
 
-    public float rankProgress = 0;
+    public int rankProgress = 0;
 
     public ranks soloRank = ranks.silver3;
 
@@ -41,37 +41,36 @@ public class User : MonoBehaviour
     {
         userName = snapshot.Child("userName").Value.ToString();
 
-
         email = snapshot.Child("email").Value.ToString();
 
-        rankProgress = (float)snapshot.Child("rankProgress").Value;
+        rankProgress = int.Parse(snapshot.Child("rankProgress").Value.ToString());
 
-        soloRank = (ranks)snapshot.Child("rankProgress").Value;
+        soloRank = (ranks)int.Parse(snapshot.Child("soloRank").Value.ToString());
 
-        dps = (float)snapshot.Child("dps").Value;
+        dps = float.Parse(snapshot.Child("dps").Value.ToString());
 
-        gamesPlayed = (int)snapshot.Child("gamesPlayed").Value;
+        gamesPlayed = int.Parse(snapshot.Child("gamesPlayed").Value.ToString());
 
-        wins = (int)snapshot.Child("wins").Value;
+        wins = int.Parse(snapshot.Child("wins").Value.ToString());
 
-        loses = (int)snapshot.Child("loses").Value;
+        loses = int.Parse(snapshot.Child("loses").Value.ToString());
 
-        kills = (int)snapshot.Child("kills").Value;
+        kills = int.Parse(snapshot.Child("kills").Value.ToString());
 
-        deaths = (int)snapshot.Child("deaths").Value;
+        deaths = int.Parse(snapshot.Child("deaths").Value.ToString());
 
-        assists = (int)snapshot.Child("assists").Value;
+        assists = int.Parse(snapshot.Child("assists").Value.ToString());
         Debug.Log("Me llegan :" + assists);//------------------------------------------
 
-        averageDamagePerGame = (int)snapshot.Child("averageDamagePerGame").Value;
+        averageDamagePerGame = int.Parse(snapshot.Child("averageDamagePerGame").Value.ToString());
 
-        totalDamage = (int)snapshot.Child("totalDamage").Value;
+        totalDamage = int.Parse(snapshot.Child("totalDamage").Value.ToString());
 
-        killsDeathsAverage = (int)snapshot.Child("killsDeathsAverage").Value;
+        killsDeathsAverage = int.Parse(snapshot.Child("killsDeathsAverage").Value.ToString());
 
-        healedLifePerGame = (int)snapshot.Child("healedLifePerGame").Value;
+        healedLifePerGame = int.Parse(snapshot.Child("healedLifePerGame").Value.ToString());
 
-        damageReceivedPerGame = (int)snapshot.Child("damageReceivedPerGame").Value;
+        damageReceivedPerGame = int.Parse(snapshot.Child("damageReceivedPerGame").Value.ToString());
     }
 
     
