@@ -8,12 +8,15 @@ public class realtimeDatabase : MonoBehaviour
 {
     DatabaseReference reference;
 
-    User user = ComInfo.getPlayerData();
+    //Data stored in Firebase
+    UserHistory userHistory = ComInfo.getPlayerData();
+    //Data from Last Round
+    RoundData user = new RoundData();
+
     // Start is called before the first frame update
     void Start()
     {
         reference = FirebaseDatabase.DefaultInstance.RootReference;
-        
         readData();
     }
 
@@ -27,11 +30,11 @@ public class realtimeDatabase : MonoBehaviour
                 DataSnapshot snapshot = task.Result;
 
                 //Check if player already in database
-                if (snapshot.HasChild(user.userName)) 
+                if (snapshot.HasChild(userHistory.userName)) 
                 {
                     Debug.Log("Player already registered");
 
-                    reference.Child("User").Child(user.userName).GetValueAsync().ContinueWith(task =>
+                    reference.Child("User").Child(userHistory.userName).GetValueAsync().ContinueWith(task =>
                     {
                         if (task.IsCompleted) //If player exist put existing data
                         {
@@ -39,7 +42,8 @@ public class realtimeDatabase : MonoBehaviour
 
                             DataSnapshot snapshot = task.Result;
 
-                            user.loadInfo(snapshot); 
+                            userHistory.loadInfo(snapshot);
+                            user.ResetData(); //Initialize Data with 0
                         }
                         else //Create a new player in the database
                         {
@@ -63,11 +67,11 @@ public class realtimeDatabase : MonoBehaviour
 
     public void saveData() //if player doesn't exist in firebase
     {
-        string json = JsonUtility.ToJson(user);
+        string json = JsonUtility.ToJson(userHistory);
 
         Debug.Log(json);
 
-        reference.Child("User").Child(user.userName).SetRawJsonValueAsync(json).ContinueWith(task =>
+        reference.Child("User").Child(userHistory.userName).SetRawJsonValueAsync(json).ContinueWith(task =>
         {
             if (task.IsCompleted)
             {
@@ -84,16 +88,16 @@ public class realtimeDatabase : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log("ASIIIIIIIIS " + user.assists);
         if (Input.GetKeyDown(KeyCode.A))
         {
             user.assists++;
-            Debug.Log("ASSIST");
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        else if (Input.GetKeyDown(KeyCode.Space))
         {
-            Debug.Log("Subir datos: " + user.assists);
+            Debug.Log("ASSISTS IN HISTORY; " + userHistory.assists);
+            userHistory.UpdateUserHistory(user);
+            Debug.Log("ASSISTS IN HISTORY (Post Update); " + userHistory.assists);
             saveData();
         }
     }

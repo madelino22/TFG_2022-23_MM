@@ -51,9 +51,9 @@ public struct friendInfo
 
 public static class ComInfo 
 {
-    public static User player = new User();
+    public static UserHistory player = new UserHistory();
 
-    public static User getPlayerData()
+    public static UserHistory getPlayerData()
     {
         return player;
     }
