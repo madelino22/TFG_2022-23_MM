@@ -71,6 +71,7 @@ public class realtimeDatabase : MonoBehaviour
 
         Debug.Log(json);
 
+        //Save base data
         reference.Child("User").Child(userHistory.userName).SetRawJsonValueAsync(json).ContinueWith(task =>
         {
             if (task.IsCompleted)
@@ -83,6 +84,49 @@ public class realtimeDatabase : MonoBehaviour
             }
         }
         );
+
+
+        for (int i = 0; i < 5; i++)
+        {
+            json = userHistory.saveGames(i);
+            Debug.Log(i);
+            Debug.Log(json);
+
+            reference.Child("User").Child(userHistory.userName).Child("zzzLastGames").Child("Partida" + i).SetRawJsonValueAsync(json).ContinueWith(task =>
+            {
+                if (task.IsCompleted)
+                {
+                    Debug.Log("saved games");
+                }
+                else
+                {
+                    Debug.Log("No se ha guardado la partida");
+                }
+            }
+            );
+
+            for (int j = 0; j < 6; j++)
+            {
+                json = userHistory.saveGamePlayer(i, j);
+
+                Debug.Log(i);
+                Debug.Log(json);
+
+                reference.Child("User").Child(userHistory.userName).Child("zzzLastGames").Child("Partida" + i).Child(userHistory.lastMatches[i].players[j].name).SetRawJsonValueAsync(json).ContinueWith(task =>
+                {
+                    if (task.IsCompleted)
+                    {
+                        Debug.Log("saved players of game");
+                    }
+                    else
+                    {
+                        Debug.Log("No se ha guardado al jugador");
+                    }
+                }
+                );
+            }
+        }
+        
     }
 
     // Update is called once per frame

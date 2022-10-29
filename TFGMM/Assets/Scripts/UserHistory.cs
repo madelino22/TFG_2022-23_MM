@@ -37,6 +37,22 @@ public class UserHistory : MonoBehaviour
 
     public int healedLifePerGame = 0;
 
+    public int zzlastGameSaved = 1;
+
+    public Match[] lastMatches = new Match[5];
+
+    public string saveGames(int index)
+    {
+        lastMatches[index] = new Match();
+
+        return JsonUtility.ToJson(lastMatches[index]);
+    }
+
+    public string saveGamePlayer(int indexGame, int nPlayer)
+    {
+        return JsonUtility.ToJson(lastMatches[indexGame].players[nPlayer]);
+    }
+
     public void loadInfo(DataSnapshot snapshot)
     {
         userName = snapshot.Child("userName").Value.ToString();
@@ -70,6 +86,8 @@ public class UserHistory : MonoBehaviour
         healedLifePerGame = int.Parse(snapshot.Child("healedLifePerGame").Value.ToString());
 
         damageReceivedPerGame = int.Parse(snapshot.Child("damageReceivedPerGame").Value.ToString());
+
+        zzlastGameSaved = int.Parse(snapshot.Child("damageReceivedPerGame").Value.ToString());
     }
 
     public void UpdateUserHistory(RoundData lastRound)
