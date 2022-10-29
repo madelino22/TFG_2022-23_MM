@@ -4,16 +4,22 @@ using Photon.Bolt;
 public class PlayerSetupController : GlobalEventListener
 {
     [SerializeField]
+    private Camera _sceneCamera;
+
+    [SerializeField]
     private GameObject _setupPanel;
 
     [SerializeField]
     private GameObject spawn;
 
+    public Camera SceneCamera { get => _sceneCamera; }
+
     public override void SceneLoadLocalDone(string scene, IProtocolToken token)
     {
         if (!BoltNetwork.IsServer)
         {
-            _setupPanel.SetActive(true);
+            SpawnPlayerEvent evnt = SpawnPlayerEvent.Create(GlobalTargets.OnlyServer);
+            evnt.Send();
         }
     }
 

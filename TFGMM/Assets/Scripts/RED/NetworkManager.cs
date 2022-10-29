@@ -18,6 +18,7 @@ public class NetworkManager : GlobalEventListener
     {
         FeedbackUser("Connnecting ...");
         BoltLauncher.StartClient();
+        
     }
 
     public override void SessionListUpdated(Map<Guid, UdpSession> sessionList)
