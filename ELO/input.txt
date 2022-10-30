@@ -1,0 +1,10 @@
+Player0 1010 29.1
+Player1 1818 20.28
+Player2 2234 16.37
+Player3 2111 17.8
+Player4 395 36.78
+Player5 2807 10.05
+Player6 1813 20.66
+Player7 405 34.73
+Player8 1688 22.08
+Player9 2967 9.04
