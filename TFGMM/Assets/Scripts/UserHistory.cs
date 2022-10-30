@@ -88,6 +88,16 @@ public class UserHistory : MonoBehaviour
         damageReceivedPerGame = int.Parse(snapshot.Child("damageReceivedPerGame").Value.ToString());
 
         zzlastGameSaved = int.Parse(snapshot.Child("damageReceivedPerGame").Value.ToString());
+
+
+        //Load Games
+
+        for (int i = 0; i < 5; i++)
+        {
+            team aux = (team)int.Parse(snapshot.Child("zzzLastGames").Child("Partida" + i).Child("winner").Value.ToString());
+
+            lastMatches[i] = new Match(aux, snapshot.Child("zzzLastGames").Child("Partida" + i));
+        }
     }
 
     public void UpdateUserHistory(RoundData lastRound)

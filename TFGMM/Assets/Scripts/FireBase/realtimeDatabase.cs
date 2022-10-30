@@ -18,6 +18,59 @@ public class realtimeDatabase : MonoBehaviour
     {
         reference = FirebaseDatabase.DefaultInstance.RootReference;
         readData();
+        saveMatch();
+    }
+
+    public void saveMatch()
+    {
+        string json2 = JsonUtility.ToJson(new Match());
+
+        int nGames = 0;
+        reference.Child("Matches").GetValueAsync().ContinueWith(task =>
+        {
+            if (task.IsCompleted)
+            {
+                DataSnapshot snapshot = task.Result;
+
+                nGames = int.Parse(snapshot.Child("nMatches").Value.ToString());
+            }
+        });
+
+
+        reference.Child("Matches").Child("Partida " + nGames.ToString()).SetRawJsonValueAsync(json2).ContinueWith(task =>
+        {
+              if (task.IsCompleted)
+              {
+                  Debug.Log("saved the match");
+              }
+              else
+              {
+                  Debug.Log("No se han enviado los datos");
+              }
+        }
+       );
+
+        Match aux = new Match();
+
+        for (int j = 0; j < 6; j++)
+        {
+            json = aux.playerJSON(j);
+
+            Debug.Log(json);
+
+            reference.Child("Matches").Child("Partida " + nGames.ToString()).Child(aux.players[j].name).SetRawJsonValueAsync(json).ContinueWith(task =>
+            {
+                if (task.IsCompleted)
+                {
+                    Debug.Log("saved players of game");
+                }
+                else
+                {
+                    Debug.Log("No se ha guardado al jugador");
+                }
+            }
+            );
+        }
     }
 
     public void readData()
@@ -25,7 +78,7 @@ public class realtimeDatabase : MonoBehaviour
         //Check if player exist
         reference.Child("User").GetValueAsync().ContinueWith(task =>
         {
-            if (task.IsCompleted) //If player exist put existing data
+            if (task.IsCompleted) 
             {
                 DataSnapshot snapshot = task.Result;
 
@@ -57,7 +110,6 @@ public class realtimeDatabase : MonoBehaviour
                     saveData();
                 }
             }
-            //Create a new player in the database
             else
             {
                 Debug.Log("Error checking if player exist ");
