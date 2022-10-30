@@ -54,7 +54,7 @@ public class realtimeDatabase : MonoBehaviour
 
         for (int j = 0; j < 6; j++)
         {
-            json = aux.playerJSON(j);
+            string json = aux.playerJSON(j);
 
             Debug.Log(json);
 
