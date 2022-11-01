@@ -24,6 +24,7 @@ public class PlayerController : EntityBehaviour<IPhysicState>
         if (entity.HasControl)
         {
             _hasControl = true;
+            GUI_Controller.Current.Show(true);
         }
 
         BoltLog.Warn("isMine: " + entity.HasControl);

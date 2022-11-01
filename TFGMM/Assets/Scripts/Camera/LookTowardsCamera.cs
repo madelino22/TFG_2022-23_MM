@@ -5,10 +5,18 @@ using UnityEngine;
 public class LookTowardsCamera : MonoBehaviour
 {
     Camera cam;
+
+    [SerializeField]
+    Camera cam2;
+
+
     // Start is called before the first frame update
     void Start()
     {
-        cam = Camera.main;
+        if (cam2 == null)
+            cam = Camera.main;
+        else
+            cam = cam2;
     }
 
     // Update is called once per frame

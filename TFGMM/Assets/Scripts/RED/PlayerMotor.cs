@@ -19,6 +19,10 @@ public class PlayerMotor : MonoBehaviour
     private Vector3 _lastServerPos = Vector3.zero;
     private bool _firstState = true;
 
+    [SerializeField]
+    private int _totalLife = 2600;
+    public int TotalLife { get => _totalLife; }
+
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
