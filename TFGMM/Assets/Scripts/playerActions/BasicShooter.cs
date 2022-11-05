@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
-using Photon.Pun;
+using Photon.Bolt;
 
-public class BasicShooter : MonoBehaviour
+public class BasicShooter : EntityEventListener
 {
     [SerializeField]
     bool testingScene = false;
@@ -34,9 +34,6 @@ public class BasicShooter : MonoBehaviour
     float timeToReload = 2;
     float currentElapsedTime = 0f;
 
-
-    PhotonView view;
-
     [SerializeField]
     int bulletsNeededForSpecialAttack = 3;
     int numBullets = 0;
@@ -47,7 +44,6 @@ public class BasicShooter : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        view = GetComponent<PhotonView>();
         if (specialAttack == null) 
             Debug.Log("Player doesn't have a SpecialAttackModule.");
 
@@ -97,16 +93,13 @@ public class BasicShooter : MonoBehaviour
                     specialAttack.IncreaseAplha(bulletsNeededForSpecialAttack);
                 }
                 
-                //view.RPC("ShootBullet", RpcTarget.All, array);
                 //CALCULATE BULLET POS-------------------------------
                 Vector3 bulletPos = transform.position;
                 Vector3 desfase = attackLookPoint.position - transform.position;
                 desfase.Normalize();
                 bulletPos += desfase * spawnDistance;
                 object[] array = { bulletPos, transform.rotation};
-                if(testingScene)
-                    Instantiate(bulletPrefab, bulletPos/*transform.position*/, transform.rotation); //Test one player
-                else view.RPC("ShootBullet", RpcTarget.All, array);
+                ShootBullet(array);
                 shoot = false;
                 //PhotonNetwork.Instantiate(bulletPrefab.name, transform.position, transform.rotation);
             }
@@ -151,10 +144,17 @@ public class BasicShooter : MonoBehaviour
     //    }
     //}
 
-    [PunRPC]
     private void ShootBullet(object[] arr)
     {
-        Instantiate(bulletPrefab, (Vector3)arr[0], (Quaternion)arr[1]);
+        ShootEvent evnt = ShootEvent.Create(entity, EntityTargets.OnlySelf);
+        evnt.Position = (Vector3)arr[0];
+        evnt.Rotation = (Quaternion)arr[1];
+        evnt.Send();
+    }
+
+    public override void OnEvent(ShootEvent evnt)
+    {
+        BoltEntity entity = BoltNetwork.Instantiate(BoltPrefabs.Bullet, evnt.Position, evnt.Rotation);
     }
 
     //???????????????????????
