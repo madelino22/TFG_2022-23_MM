@@ -1,0 +1,13 @@
+Player8 2457 14.86
+Player0 339 35.55
+Player2 821 30.21
+Player7 902 30.53
+Player1 525 33.57
+Player5 919 29.27
+Player6 997 29.34
+Player3 1491 24.95
+Player4 1648 22.99
+Player10 2224 17.42
+Player11 1512 23.12
+Player12 1865 20.78
+Player9 2392 16.18
