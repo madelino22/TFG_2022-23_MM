@@ -247,7 +247,7 @@ def main():
     print("Hello World!")
     #LEER TXT----------------------------------
     archivo = 'input.txt'
-    numPlayers = 13
+    numPlayers = 15
     #jugadores = read(archivo)
     #GENERAR STATS----------------------------
     jugadores = generatePlayers(numPlayers)
