@@ -21,7 +21,16 @@ public class PlayerMotor : MonoBehaviour
 
     [SerializeField]
     private int _totalLife = 2600;
+
+    private int _blueScore = 0;
+    private int _redScore = 0;
+    private int _timeMatch = 90;
+
     public int TotalLife { get => _totalLife; }
+
+    public int BlueScore { get => _blueScore; set => _blueScore = value; }
+    public int RedScore { get => _redScore; set => _redScore = value; }
+    public int TimeMatch { get => _timeMatch; set => _timeMatch = value; }
 
     private void Awake()
     {

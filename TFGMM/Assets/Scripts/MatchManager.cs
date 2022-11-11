@@ -31,22 +31,37 @@ public class MatchManager : MonoBehaviour
     {
         redPointsText.text = redPoints.ToString();
         bluePointsText.text = bluePoints.ToString();
-        timeText.text = "2:00";
+        timeText.text = "1:30";
+    }
+
+
+    public void UpdateUI(int blueScore, int redScore, int time)
+    {
+        bluePointsText.text = blueScore.ToString();
+        redPointsText.text = redScore.ToString();
+
+        int coc = time / 60;
+        int rest = time % 60;
+
+        if (rest < 10)
+            timeText.text = coc.ToString() + ":0" + rest.ToString();
+        else
+            timeText.text = coc.ToString() + ":" + rest.ToString();
     }
 
     // Update is called once per frame
     void Update()
     {
-        updateTime();
+        //updateTime();
 
-        if(Input.GetKeyDown(KeyCode.B)) //Testing ScorePoints
-        {
-            playerKill(0, 5, 0);//0 blue 1 red por ejemplo
-        }
-        else if (Input.GetKeyDown(KeyCode.R)) //Testing ScorePoints
-        {
-            playerKill(5, 0, 1);//0 blue 1 red por ejemplo
-        }
+        //if(Input.GetKeyDown(KeyCode.B)) //Testing ScorePoints
+        //{
+        //    playerKill(0, 5, 0);//0 blue 1 red por ejemplo
+        //}
+        //else if (Input.GetKeyDown(KeyCode.R)) //Testing ScorePoints
+        //{
+        //    playerKill(5, 0, 1);//0 blue 1 red por ejemplo
+        //}
     }
 
     private void updateTime()
@@ -79,12 +94,12 @@ public class MatchManager : MonoBehaviour
         }
         else
         {
-            if(redPoints > bluePoints)
+            if (redPoints > bluePoints)
             {
-                if(myTeam == teams.red) ComInfo.setGameResult(result.win);
+                if (myTeam == teams.red) ComInfo.setGameResult(result.win);
                 else ComInfo.setGameResult(result.lose);
             }
-            else if( bluePoints > redPoints)
+            else if (bluePoints > redPoints)
             {
                 if (myTeam == teams.red) ComInfo.setGameResult(result.lose);
                 else ComInfo.setGameResult(result.win);
@@ -94,13 +109,13 @@ public class MatchManager : MonoBehaviour
                 ComInfo.setGameResult(result.draw);
             }
 
-           // SceneManager.LoadScene("WinLose", LoadSceneMode.Single);
+            // SceneManager.LoadScene("WinLose", LoadSceneMode.Single);
         }
     }
 
     public void playerKill(int playerThatKill, int playerKilled, int teamScored)//Cuando lo metais online cambiar los parametros para que se sepa quien hizo la kill...
     {
-        if(teamScored == 0)
+        if (teamScored == 0)
         {
             bluePoints++;
             bluePointsText.text = bluePoints.ToString();

@@ -15,7 +15,7 @@ public class AppManager : MonoBehaviour
     {
         if (!_headlessServerManager.IsServer)
         {
-            SceneManager.LoadScene("Menu");
+            SceneManager.LoadScene("Lobby");
         }
     }
 }
