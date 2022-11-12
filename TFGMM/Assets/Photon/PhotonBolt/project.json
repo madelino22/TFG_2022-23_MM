@@ -581,6 +581,15 @@
       "Name": "MatchInfoEvent",
       "Guid": "999524ee-a1fe-4a72-a1dd-58a470a92bcb",
       "Groups": []
+    },
+    {
+      "$type": "Photon.Bolt.Compiler.EventDefinition, bolt.compiler",
+      "Properties": [],
+      "EntitySenders": 3,
+      "GlobalSenders": 2,
+      "Name": "StartMatchEvent",
+      "Guid": "aabebde3-b0ae-4dd4-b3cf-7cf6c51d5e36",
+      "Groups": []
     }
   ],
   "ActiveGroup": "Everything"

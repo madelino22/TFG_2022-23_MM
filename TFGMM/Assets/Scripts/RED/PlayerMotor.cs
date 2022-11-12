@@ -9,6 +9,9 @@ public class PlayerMotor : MonoBehaviour
     private Rigidbody _rigidbody = null;
 
     [SerializeField]
+    private RectTransform ammoCanvas = null;
+
+    [SerializeField]
     float movementLimit = 0.05f;
 
     [SerializeField]
@@ -40,7 +43,10 @@ public class PlayerMotor : MonoBehaviour
     public void Init(bool isMine)
     {
         if (isMine)
+        {
             _cam.gameObject.SetActive(true);
+            ammoCanvas.gameObject.SetActive(true);
+        }
     }
 
     public State ExecuteCommand(float horizontal, float vertical)
