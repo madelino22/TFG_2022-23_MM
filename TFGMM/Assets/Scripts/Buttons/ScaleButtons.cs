@@ -60,15 +60,12 @@ public class ScaleButtons : MonoBehaviour, IPointerUpHandler, IPointerDownHandle
             this.gameObject.transform.localScale -= normalScale * Time.deltaTime * 1.5f;
 
             if (this.gameObject.transform.localScale.x < minorScale.x) this.gameObject.transform.localScale = minorScale;
-            Debug.Log("Escalar pequeño");
         }
         else if (!alreadyPressing && this.gameObject.transform.localScale != normalScale) //scale the button if not normal
         {
             this.gameObject.transform.localScale += normalScale * Time.deltaTime * 1.5f;
 
             if (this.gameObject.transform.localScale.x > normalScale.x) this.gameObject.transform.localScale = normalScale;
-
-            Debug.Log("Escalar normal");
         }
     }
 }
