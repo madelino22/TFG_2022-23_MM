@@ -1,0 +1,15 @@
+Player11 10 33
+Player3 10 38
+Player13 10 39
+Player8 10 10
+Player9 10 12
+Player2 10 15
+Player14 10 10
+Player6 10 15
+Player10 10 17
+Player4 10 19
+Player1 10 25
+Player12 10 27
+Player7 10 25
+Player5 10 26
+Player0 10 31
