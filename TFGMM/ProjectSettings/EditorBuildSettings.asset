@@ -5,28 +5,28 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Login.unity
     guid: d396f29ce87d8cf4db5d5fcd3e100bd8
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/PruebaRed.unity
     guid: 97acc2a90c1a653498fe4c5f350d7592
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/PruebasPersonajes.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/PlayerInfo.unity
     guid: 1a94c90be5746b14aa10058d875b2f67
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/WinLose.unity
     guid: b8a3fdce5e9e2cb4597bfe95cb8d95f4
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Searching.unity
     guid: 2e92ac3c955373e43a6d045690708d83
   - enabled: 1
