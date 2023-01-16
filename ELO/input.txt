@@ -1,0 +1,15 @@
+Player3,4,39.04
+Player7,136,38.28
+Player14,338,35.65
+Player1,521,34.7
+Player11,701,31.82
+Player5,884,30.2
+Player6,932,29.97
+Player12,1451,25.82
+Player8,1608,22.15
+Player13,1883,20.38
+Player0,2121,17.06
+Player9,2454,15.65
+Player2,2540,13.05
+Player4,2609,12.6
+Player10,2814,10.86

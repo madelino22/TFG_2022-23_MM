@@ -49,7 +49,7 @@ def generatePlayers(num):
 def write(name, jugadores):
     archivo = open(name, "w")
     for j in jugadores:
-        archivo.write("Player" + j[0] + " " + j[1] + " " + j[2] + "\n")
+        archivo.write("Player" + j[0] + "," + j[1] + "," + j[2] + "\n")
 
     archivo.close()
 
@@ -239,7 +239,7 @@ def compareResults(jugadoresBeforeMatch, jugadoresPostMatch, results):
         if jugadoresBeforeMatch[i][0] != jugadoresPostMatch[i][0]:
             print("error en compareResults. Los arrays no estan ordenados " + jugadoresBeforeMatch[i][0] + " " +jugadoresPostMatch[i][0])
             return
-        archivo.write("Player" + jugadoresBeforeMatch[i][0] + " " + str(int(jugadoresPostMatch[i][1]) - int(jugadoresBeforeMatch[i][1])) + " " + jugadoresBeforeMatch[i][2] + "\n")
+        archivo.write("Player" + jugadoresBeforeMatch[i][0] + "," + str(int(jugadoresPostMatch[i][1]) - int(jugadoresBeforeMatch[i][1])) + "," + jugadoresBeforeMatch[i][2] + "\n")
     archivo.close()
 
 
@@ -266,12 +266,12 @@ def main():
     for p in partidas:
         jugadoresPostMatch = determineWinner(p, jugadoresPostMatch)
 
-    write('output.txt', jugadoresPostMatch)
+    write('output.csv', jugadoresPostMatch)
 
     jugadoresPostMatch = mergeSortById(jugadoresPostMatch)
 #     print(jugadoresBeforeMatch)
 #     print()
 #     print(jugadoresPostMatch)
-    compareResults(jugadoresBeforeMatch, jugadoresPostMatch, 'result.txt')
+    compareResults(jugadoresBeforeMatch, jugadoresPostMatch, 'result.csv')
 
 main()
