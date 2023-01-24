@@ -10,12 +10,14 @@ public class PlayerSetupController : GlobalEventListener
     private GameObject _setupPanel;
 
     [SerializeField]
-    private GameObject spawn;
-
-    [SerializeField]
     private Canvas canvas;
 
+    [SerializeField]
+    private GameObject[] spawners;
+
     public Camera SceneCamera { get => _sceneCamera; }
+
+    private int contador = 3;
 
     public override void SceneLoadLocalDone(string scene, IProtocolToken token)
     {
@@ -31,8 +33,9 @@ public class PlayerSetupController : GlobalEventListener
 
     public override void OnEvent(SpawnPlayerEvent evnt)
     {
-        BoltEntity entity = BoltNetwork.Instantiate(BoltPrefabs.Player1, spawn.transform.position, Quaternion.identity);
+        BoltEntity entity = BoltNetwork.Instantiate(BoltPrefabs.Player1, spawners[contador].transform.position, Quaternion.identity);
         entity.AssignControl(evnt.RaisedBy);
+        contador++;
     }
 
     public override void OnEvent(StartMatchEvent evnt)
