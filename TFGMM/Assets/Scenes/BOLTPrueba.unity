@@ -199,7 +199,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _map: BOLTMapa
   _roomID: Test
-  _isServer: 1
+  _isServer: 0
 --- !u!4 &631379953
 Transform:
   m_ObjectHideFlags: 0
