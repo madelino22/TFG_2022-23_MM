@@ -20,7 +20,7 @@ public class AttackButton : MonoBehaviour, IPointerUpHandler, IPointerDownHandle
 
     private bool isAttacking = false; //For this player just
 
-    private float speedChange = 1f; //For this player just
+    private float speedChange = 40f; //For this player just
 
     private Vector3 normalScale;
 
@@ -85,7 +85,7 @@ public class AttackButton : MonoBehaviour, IPointerUpHandler, IPointerDownHandle
 
         if (useAttack) //Use the attack and start the cooldown of the button
         {
-            player.GetComponent<PlayerMov>().BuffSpeed(speedChange);
+            player.GetComponent<PlayerMotor>().BuffSpeed(speedChange);
             isAttacking = true;
 
             //Reset button
@@ -96,7 +96,7 @@ public class AttackButton : MonoBehaviour, IPointerUpHandler, IPointerDownHandle
         }
         else if (isAttacking && timer >= 5f)
         {
-            player.GetComponent<PlayerMov>().DeBuffSpeed(speedChange);
+            player.GetComponent<PlayerMotor>().DeBuffSpeed(speedChange);
 
             //Reset attack
             isAttacking = false;

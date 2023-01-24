@@ -35,6 +35,17 @@ public class PlayerMotor : MonoBehaviour
     public int RedScore { get => _redScore; set => _redScore = value; }
     public int TimeMatch { get => _timeMatch; set => _timeMatch = value; }
 
+    public void BuffSpeed(float buff)
+    {
+        Debug.Log("Speed buffed");
+        _speed += buff;
+    }
+    public void DeBuffSpeed(float buff)
+    {
+        Debug.Log("Speed Debuffed");
+        _speed -= buff;
+    }
+
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
