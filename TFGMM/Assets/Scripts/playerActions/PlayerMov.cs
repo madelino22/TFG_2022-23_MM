@@ -48,6 +48,11 @@ public class PlayerMov : MonoBehaviour
         speed -= buff;
     }
 
+
+    public void DisableJoysticks()
+    {
+        joystick.gameObject.SetActive(false);
+    }
     // Update is called once per frame
     void Update()
     {

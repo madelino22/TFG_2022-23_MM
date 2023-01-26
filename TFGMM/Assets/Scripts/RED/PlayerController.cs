@@ -48,8 +48,15 @@ public class PlayerController : EntityBehaviour<IPhysicState>
 
     private void PollKeys()
     {
+#if PLATFORM_ANDROID
         _horizontal = _playerMov.GetJoystickMov().Horizontal;
         _vertical = _playerMov.GetJoystickMov().Vertical;
+#else
+        _horizontal = Input.GetAxis("Horizontal");
+        _vertical = Input.GetAxis("Vertical");
+        _playerMov.DisableJoysticks();
+#endif
+
     }
 
     public override void SimulateController()
