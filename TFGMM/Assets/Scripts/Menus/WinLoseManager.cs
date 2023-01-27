@@ -82,6 +82,8 @@ public class WinLoseManager : MonoBehaviour
         else if(ComInfo.getGameResult() == result.lose)   winLoseText.GetComponent<TextMeshProUGUI>().text = "Defeat!";
         else winLoseText.GetComponent<TextMeshProUGUI>().text = "Draw";
 
+        Debug.Log(ComInfo.getGameResult());
+
         leftPlayer.GetComponent<TextMeshProUGUI>().text = "Izquierdo";
         rightPlayer.GetComponent<TextMeshProUGUI>().text = "Derecho";
         midPlayer.GetComponent<TextMeshProUGUI>().text = ComInfo.getPlayerName();

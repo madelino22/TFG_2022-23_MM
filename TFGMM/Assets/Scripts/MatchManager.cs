@@ -34,6 +34,26 @@ public class MatchManager : MonoBehaviour
         timeText.text = "1:30";
     }
 
+    public void endGameScene()
+    {
+        if (redPoints > bluePoints)
+        {
+            if (myTeam == teams.red) ComInfo.setGameResult(result.win);
+            else ComInfo.setGameResult(result.lose);
+        }
+        else if (bluePoints > redPoints)
+        {
+            if (myTeam == teams.red) ComInfo.setGameResult(result.lose);
+            else ComInfo.setGameResult(result.win);
+        }
+        else
+        {
+            Debug.Log("EMpate");
+            ComInfo.setGameResult(result.draw);
+        }
+
+        SceneManager.LoadScene("WinLose", LoadSceneMode.Single);
+    }
 
     public void UpdateUI(int blueScore, int redScore, int time)
     {

@@ -24,7 +24,15 @@ public class UI_Callback : GlobalEventListener
 
     public override void OnEvent(MatchInfoEvent evnt)
     {
-        _matchManager.UpdateUI(evnt.BlueScore, evnt.RedScore, evnt.Time);
+        if(evnt.Time <= 0)
+        {
+            foreach (var connection in BoltNetwork.Connections)
+            {
+                connection.Disconnect();
+                _matchManager.endGameScene();
+            }
+        }
+        else _matchManager.UpdateUI(evnt.BlueScore, evnt.RedScore, evnt.Time);
     }
 
     // Update is called once per frame
