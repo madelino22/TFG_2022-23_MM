@@ -433,7 +433,7 @@ MonoBehaviour:
   attackJoystick: {fileID: 9097383367399568972}
   attackLookPoint: {fileID: 1907604791989165588}
   trailDistance: 30
-  player: {fileID: 0}
+  player: {fileID: 8516248633039342717}
 --- !u!114 &1907604792558079823
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2741,7 +2741,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2929252283123773938, guid: 18dc645b6ec05204686965add6ccb380, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -233
+      value: -233.00003
       objectReference: {fileID: 0}
     - target: {fileID: 2929252283123773938, guid: 18dc645b6ec05204686965add6ccb380, type: 3}
       propertyPath: m_AnchoredPosition.y
