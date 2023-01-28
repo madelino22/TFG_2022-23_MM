@@ -51,7 +51,7 @@ public class PlayersManager : MonoBehaviour
         {
             Debug.Log("Jugador contrario");
             Camera.main.transform.Rotate(new Vector3(140, 180, Camera.main.transform.rotation.z));
-            Camera.main.GetComponent<CameraFollow>().offset.z = 5;
+            //Camera.main.GetComponent<CameraFollow>().offset.z = 5;
             player = PhotonNetwork.Instantiate("Character1", new Vector3(spawns[1].transform.position.x,
            spawns[1].transform.position.y + 1, spawns[1].transform.position.z),
            new Quaternion(transform.rotation.x, transform.rotation.y, transform.rotation.z,1));
