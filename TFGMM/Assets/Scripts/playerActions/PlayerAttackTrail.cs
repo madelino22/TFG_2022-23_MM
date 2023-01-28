@@ -48,8 +48,10 @@ public class PlayerAttackTrail : MonoBehaviour
                 //Update Position
                 transform.position = new Vector3(player.transform.position.x, 1.46f, player.transform.position.z);
 
-                //Rotate Trail
-                attackLookPoint.position = new Vector3(attackJoystick.Horizontal + player.position.x, 1.46f, attackJoystick.Vertical + player.position.z);
+                //Rotate Trail, we have too check which team is
+                attackLookPoint.position = new Vector3(/*(Camera.main.transform.rotation.y > 180) ? attackJoystick.Horizontal :*/ -attackJoystick.Horizontal + player.position.x, 
+                                                        1.46f,
+                                                        /*(Camera.main.transform.rotation.y > 180) ? attackJoystick.Vertical :*/ -attackJoystick.Vertical + player.position.z);
                 transform.LookAt(new Vector3(attackLookPoint.position.x, 0, attackLookPoint.position.z));
                 transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
 
