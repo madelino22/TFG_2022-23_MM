@@ -26,6 +26,16 @@ public class UI_Callback : GlobalEventListener
     {
         if(evnt.Time <= 0)
         {
+            Debug.Log("BORRAR SERVER");
+            deletePlayersEvent del = deletePlayersEvent.Create(GlobalTargets.OnlyServer);
+            Debug.Log("ENVIAR SERVER");
+            del.Send();
+            blue = 0;
+            red = 0;
+            time = 90;
+            Debug.Log("RESET SERVER");
+
+            Debug.Log("SAlir Juego");
             foreach (var connection in BoltNetwork.Connections)
             {
                 connection.Disconnect();

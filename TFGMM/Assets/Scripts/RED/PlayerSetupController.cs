@@ -19,6 +19,8 @@ public class PlayerSetupController : GlobalEventListener
 
     private int contador = 3;
 
+    private BoltEntity[] entity = new BoltEntity[6];
+
     public override void SceneLoadLocalDone(string scene, IProtocolToken token)
     {
         if (!BoltNetwork.IsServer)
@@ -33,14 +35,25 @@ public class PlayerSetupController : GlobalEventListener
 
     public override void OnEvent(SpawnPlayerEvent evnt)
     {
-        BoltEntity entity = BoltNetwork.Instantiate(BoltPrefabs.Player1, spawners[contador].transform.position, Quaternion.identity);
-        entity.AssignControl(evnt.RaisedBy);
+        entity[contador] = BoltNetwork.Instantiate(BoltPrefabs.Player1, spawners[contador].transform.position, Quaternion.identity);
+        entity[contador].AssignControl(evnt.RaisedBy);
+
         contador++;
     }
 
     public override void OnEvent(StartMatchEvent evnt)
     {
         BoltEntity entity = BoltNetwork.Instantiate(BoltPrefabs.Canvas, new Vector3(0,0,0), Quaternion.identity);
+    }
+
+    public override void OnEvent(deletePlayersEvent evnt)
+    {
+        Debug.Log("EN EVENTO");
+        for (int i = 0; i < 6; i++)
+        {
+            Destroy(entity[i].gameObject);
+        }
+        contador = 3;
     }
 
     public void SpawnPlayer()
