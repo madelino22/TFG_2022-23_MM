@@ -70,12 +70,12 @@ public class PlayerMotor : MonoBehaviour
         //Mirar hacia adelante
         transform.LookAt(new Vector3(playerBall.position.x, 0, playerBall.position.z));
         transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
-        Debug.Log("Rotar");
+        //Debug.Log("Rotar");
 
         //Mover jugador
         if (horizontal > movementLimit || -movementLimit > horizontal || vertical > movementLimit || -movementLimit > vertical)
         {
-            Debug.Log("Mover");
+            //Debug.Log("Mover");
 
             float value = 1; //En funcion de la distancia mas o menos velocidad
             movingDir += new Vector3(horizontal, 0, vertical);

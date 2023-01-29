@@ -12,7 +12,7 @@ public class UI_Callback : GlobalEventListener
 
     private int blue = 0;
     private int red = 0;
-    private int time = 90;
+    private int time = 10;
 
     // Start is called before the first frame update
     private void Awake()
@@ -26,15 +26,6 @@ public class UI_Callback : GlobalEventListener
     {
         if(evnt.Time <= 0)
         {
-            Debug.Log("BORRAR SERVER");
-            deletePlayersEvent del = deletePlayersEvent.Create(GlobalTargets.OnlyServer);
-            Debug.Log("ENVIAR SERVER");
-            del.Send();
-            blue = 0;
-            red = 0;
-            time = 90;
-            Debug.Log("RESET SERVER");
-
             Debug.Log("SAlir Juego");
             foreach (var connection in BoltNetwork.Connections)
             {
@@ -80,13 +71,27 @@ public class UI_Callback : GlobalEventListener
             {
                 time--;
 
-                MatchInfoEvent evnt = MatchInfoEvent.Create(GlobalTargets.AllClients);
-                evnt.BlueScore = blue;
-                evnt.RedScore = red;
-                evnt.Time = time;
-                evnt.Send();
+                if (time > 0)
+                {
+                    MatchInfoEvent evnt = MatchInfoEvent.Create(GlobalTargets.AllClients);
+                    evnt.BlueScore = blue;
+                    evnt.RedScore = red;
+                    evnt.Time = time;
+                    evnt.Send();
 
-                _matchManager.UpdateUI(blue, red, time);
+                    _matchManager.UpdateUI(blue, red, time);
+                }
+                else
+                {
+                    Debug.Log("BORRAR SERVER");
+                    deletePlayersEvent del = deletePlayersEvent.Create(GlobalTargets.OnlyServer);
+                    Debug.Log("ENVIAR SERVER");
+                    del.Send();
+                    blue = 0;
+                    red = 0;
+                    time = -10;
+                    Debug.Log("RESET SERVER");
+                }
 
                 seg++;
             }
