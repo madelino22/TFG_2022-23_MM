@@ -17,7 +17,7 @@ public class PlayerSetupController : GlobalEventListener
 
     public Camera SceneCamera { get => _sceneCamera; }
 
-    private int contador = 3;
+    private int contador = 0;
 
     private BoltEntity[] entity = new BoltEntity[6];
 
@@ -37,6 +37,10 @@ public class PlayerSetupController : GlobalEventListener
     {
         entity[contador] = BoltNetwork.Instantiate(BoltPrefabs.Player1, spawners[contador].transform.position, Quaternion.identity);
         entity[contador].AssignControl(evnt.RaisedBy);
+        int team = 0;
+        if (contador >= 3)
+            team = 1;
+        entity[contador].GetComponentInChildren<PlayerAttackTrail>().SetTeam(team);
 
         contador++;
     }

@@ -23,6 +23,7 @@ public class PlayerAttackTrail : MonoBehaviour
     Transform player;
 
     private RaycastHit hit;
+    private int team = 0;
 
     public void GetJoystick(Joystick a) { attackJoystick = a; }
     //GETS
@@ -49,9 +50,12 @@ public class PlayerAttackTrail : MonoBehaviour
                 transform.position = new Vector3(player.transform.position.x, 1.46f, player.transform.position.z);
 
                 //Rotate Trail, we have too check which team is
-                attackLookPoint.position = new Vector3(/*(Camera.main.transform.rotation.y > 180) ? attackJoystick.Horizontal :*/ -attackJoystick.Horizontal + player.position.x, 
+                int sign = -1;
+                if (team == 1)
+                    sign = 1;
+                attackLookPoint.position = new Vector3(sign * attackJoystick.Horizontal + player.position.x,
                                                         1.46f,
-                                                        /*(Camera.main.transform.rotation.y > 180) ? attackJoystick.Vertical :*/ -attackJoystick.Vertical + player.position.z);
+                                                        sign * attackJoystick.Vertical + player.position.z);
                 transform.LookAt(new Vector3(attackLookPoint.position.x, 0, attackLookPoint.position.z));
                 transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
 
@@ -81,5 +85,11 @@ public class PlayerAttackTrail : MonoBehaviour
                 lineRenderer.gameObject.SetActive(false);
             }
         }
+    }
+
+
+    public void SetTeam(int t)
+    {
+        team = t;
     }
 }
