@@ -12,7 +12,7 @@ public class UI_Callback : GlobalEventListener
 
     private int blue = 0;
     private int red = 0;
-    private int time = 10;
+    private int time = 30; //seconds
 
     // Start is called before the first frame update
     private void Awake()

@@ -18,7 +18,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3954437546044715149
 Transform:
   m_ObjectHideFlags: 0
@@ -241,7 +241,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 085185b08a40a924985bc0e4176edea6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0.17519331, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -396,7 +396,7 @@ GameObject:
   - component: {fileID: 5904548054999594631}
   m_Layer: 6
   m_Name: AttackModule
-  m_TagString: Untagged
+  m_TagString: Blue
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -550,7 +550,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 010a6e5305fa7004f89c5d317b7b47d4, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0.26675177, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -778,7 +778,7 @@ GameObject:
   - component: {fileID: 8509033731932606599}
   m_Layer: 0
   m_Name: Player1
-  m_TagString: Untagged
+  m_TagString: Blue
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -972,7 +972,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2079369241790560355
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2195,6 +2195,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9077082639543174056, guid: 96e44255d011f5c4a961e18f28e7cb82, type: 3}
+      propertyPath: m_TagString
+      value: Blue
+      objectReference: {fileID: 0}
     - target: {fileID: 9130217464153534764, guid: 96e44255d011f5c4a961e18f28e7cb82, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -2244,41 +2248,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 2.012638, z: 1}
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &983721064572067616
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9035377187179927239}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd14b4a049f7e984ab850443c76eb4b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  joystick: {fileID: 1239860219036229927}
-  playerBall: {fileID: 1907604793349567335}
-  movementLimit: 0.05
-  speed: 4
-  healtSystemBar: {fileID: 0}
---- !u!114 &3685127466981156380
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9035377187179927239}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7552f031495678b4780a4496d2b30a88, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerTop: {fileID: 0}
-  healthAmountMax: 100
-  healthBar: {fileID: 4834588577216510681}
-  startingHealthAmount: 100
-  recoverLifeTime: 2
-  lifeText: {fileID: 0}
 --- !u!114 &4497512892582935260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2292,6 +2261,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cam: {fileID: 926328198334480679}
+  _can: {fileID: 6955264552707247610}
   ammoCanvas: {fileID: 2937754027903153481}
   movementLimit: 0.05
   playerBall: {fileID: 1907604793349567335}
@@ -2780,17 +2750,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 18dc645b6ec05204686965add6ccb380, type: 3}
---- !u!114 &1239860219036229927 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2929252283123773951, guid: 18dc645b6ec05204686965add6ccb380, type: 3}
-  m_PrefabInstance: {fileID: 4148401444008153304}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45977bbae16431c46a013576a1aea384, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &1239860219036229930 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2929252283123773938, guid: 18dc645b6ec05204686965add6ccb380, type: 3}

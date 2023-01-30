@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
+//Este ya no se usa
+
 public class PlayerMov : MonoBehaviour
 {
     [SerializeField]

@@ -6,6 +6,8 @@ public class PlayerMotor : MonoBehaviour
 {
     [SerializeField]
     private Camera _cam = null;
+    [SerializeField]
+    private Canvas _can = null;
     private Rigidbody _rigidbody = null;
 
     [SerializeField]
@@ -28,6 +30,8 @@ public class PlayerMotor : MonoBehaviour
     private int _blueScore = 0;
     private int _redScore = 0;
     private int _timeMatch = 90;
+
+    private int team = -1;
 
     public int TotalLife { get => _totalLife; }
 
@@ -56,7 +60,13 @@ public class PlayerMotor : MonoBehaviour
         if (isMine)
         {
             _cam.gameObject.SetActive(true);
+            _can.gameObject.SetActive(true);
             ammoCanvas.gameObject.SetActive(true);
+            //if (gameObject.tag.Equals("Blue"))
+            //{
+            //    Debug.Log("Motor TAG BLUE");
+            //    team = 1;
+            //}
         }
     }
 
@@ -80,7 +90,10 @@ public class PlayerMotor : MonoBehaviour
             float value = 1; //En funcion de la distancia mas o menos velocidad
             movingDir += new Vector3(horizontal, 0, vertical);
 
-            movingDir = movingDir * Time.deltaTime * _speed * value;
+            //int sign = 1;
+            //if (team == 0)
+            //    sign = -1;
+            movingDir = movingDir * Time.deltaTime * _speed * value * team;
             //transform.Translate(Vector3.forward * Time.deltaTime * _speed * value);
         }
         else
@@ -136,5 +149,12 @@ public class PlayerMotor : MonoBehaviour
     {
         public Vector3 position;
         public float rotation;
+    }
+
+    public void SetTeam(int t)
+    {
+        Debug.Log("SOY TEAM ANTES MOTOR: " + team);
+        team = t;
+        Debug.Log("SOY TEAM DESPUES MOTOR: " + team);
     }
 }

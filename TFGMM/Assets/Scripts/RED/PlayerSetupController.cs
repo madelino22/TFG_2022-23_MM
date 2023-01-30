@@ -17,7 +17,7 @@ public class PlayerSetupController : GlobalEventListener
 
     public Camera SceneCamera { get => _sceneCamera; }
 
-    private int contador = 0;
+    private int contador = 2; // Team lejos (0,2) || Team cerca (3,5)
 
     private BoltEntity[] entity = new BoltEntity[6];
 
@@ -35,12 +35,26 @@ public class PlayerSetupController : GlobalEventListener
 
     public override void OnEvent(SpawnPlayerEvent evnt)
     {
-        entity[contador] = BoltNetwork.Instantiate(BoltPrefabs.Player1, spawners[contador].transform.position, Quaternion.identity);
-        entity[contador].AssignControl(evnt.RaisedBy);
-        int team = 0;
-        if (contador >= 3)
-            team = 1;
-        entity[contador].GetComponentInChildren<PlayerAttackTrail>().SetTeam(team);
+        if(contador<=2) //RED
+        {
+            entity[contador] = BoltNetwork.Instantiate(BoltPrefabs.Player2, spawners[contador].transform.position, Quaternion.identity);
+            entity[contador].AssignControl(evnt.RaisedBy);
+            entity[contador].transform.Rotate(new Vector3(0, 180, 0));
+        }
+        else //BLUE
+        {
+            entity[contador] = BoltNetwork.Instantiate(BoltPrefabs.Player1, spawners[contador].transform.position, Quaternion.identity);
+            entity[contador].AssignControl(evnt.RaisedBy);
+        }
+        //int team = 0;
+        //if (contador >= 3)
+        //    team = 1;
+        //else
+        //{
+        //    entity[contador].transform.Rotate(new Vector3(0, 180, 0));
+        //}
+        //entity[contador].GetComponentInChildren<PlayerAttackTrail>().SetTeam(team);
+        //entity[contador].GetComponentInChildren<PlayerMotor>().SetTeam(team);
 
         contador++;
     }
