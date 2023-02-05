@@ -160,7 +160,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1907604791989165595}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.06719589, y: -12.986021, z: 16.26488}
+  m_LocalPosition: {x: -0.06719589, y: -0.35, z: 16.26488}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -276,7 +276,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1907604792436588744}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.56, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -409,7 +409,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1907604792558079794}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.06719589, y: -12.986021, z: 16.26488}
+  m_LocalPosition: {x: -0.06719589, y: 10.86, z: 20.49}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -449,7 +449,7 @@ MonoBehaviour:
   attackJoystick: {fileID: 9097383367399568972}
   bulletPrefab: {fileID: 2586110811864843864, guid: c34f0699b59b03b4f956eaf891ca61e6, type: 3}
   attackLookPoint: {fileID: 1907604791989165588}
-  spawnDistance: 1.5
+  spawnDistance: 4
   specialAttack: {fileID: 0}
   ammoBar: {fileID: 2112576144950930725}
   timeToReload: 2

@@ -154,7 +154,8 @@ public class BasicShooter : EntityEventListener
 
     public override void OnEvent(ShootEvent evnt)
     {
-        BoltEntity entity = BoltNetwork.Instantiate(BoltPrefabs.Bullet, evnt.Position, evnt.Rotation);
+        Vector3 e = new Vector3(0, 1.7f, 0);
+        BoltEntity entity = BoltNetwork.Instantiate(BoltPrefabs.Bullet, evnt.Position+ e, evnt.Rotation);
     }
 
     //???????????????????????

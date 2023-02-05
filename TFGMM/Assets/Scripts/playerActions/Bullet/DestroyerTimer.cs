@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Bolt;
 
 public class DestroyerTimer : MonoBehaviour
 {
@@ -20,7 +21,7 @@ public class DestroyerTimer : MonoBehaviour
     {
         startTime += Time.deltaTime;
 
-        if (startTime >= time) Destroy(this.gameObject);
+        if (startTime >= time) BoltNetwork.Destroy(this.gameObject);
 
     }
 }

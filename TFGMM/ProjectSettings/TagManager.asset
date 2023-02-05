@@ -9,6 +9,7 @@ TagManager:
   - Bullet
   - Blue
   - Red
+  - Muro
   layers:
   - Default
   - TransparentFX

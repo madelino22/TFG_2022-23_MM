@@ -54,7 +54,7 @@ public class PlayerController : EntityBehaviour<IPhysicState>
 #else
         _horizontal = Input.GetAxis("Horizontal");
         _vertical = Input.GetAxis("Vertical");
-        _playerMov.DisableJoysticks();
+        //_playerMov.DisableJoysticks();
 #endif
 
     }
