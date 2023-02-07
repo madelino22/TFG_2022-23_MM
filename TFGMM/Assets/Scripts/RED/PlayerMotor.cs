@@ -75,7 +75,7 @@ public class PlayerMotor : MonoBehaviour
         Vector3 movingDir = Vector3.zero;
 
         //Mover bola inferior
-        playerBall.position = new Vector3(horizontal + transform.position.x, transform.position.y, vertical + transform.position.z);
+        playerBall.position = new Vector3(horizontal + transform.position.x, playerBall.position.y, vertical + transform.position.z);
 
         //Mirar hacia adelante
         transform.LookAt(new Vector3(playerBall.position.x, 0, playerBall.position.z));
