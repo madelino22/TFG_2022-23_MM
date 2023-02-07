@@ -74,33 +74,39 @@ public class PlayerMotor : MonoBehaviour
     {
         Vector3 movingDir = Vector3.zero;
 
-        //Mover bola inferior
-        playerBall.position = new Vector3(horizontal + transform.position.x, playerBall.position.y, vertical + transform.position.z);
-
-        //Mirar hacia adelante
-        transform.LookAt(new Vector3(playerBall.position.x, 0, playerBall.position.z));
-        transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
-        //Debug.Log("Rotar");
-
         //Mover jugador
         if (horizontal > movementLimit || -movementLimit > horizontal || vertical > movementLimit || -movementLimit > vertical)
         {
             //Debug.Log("Mover");
 
             float value = 1; //En funcion de la distancia mas o menos velocidad
-            movingDir += new Vector3(horizontal, 0, vertical);
+            Vector3 forward = _cam.transform.forward * vertical;
+            Vector3 right = _cam.transform.right * horizontal;
+            movingDir += forward + right;
+            movingDir = new Vector3(movingDir.x, 0, movingDir.z);
 
-            //int sign = 1;
-            //if (team == 0)
-            //    sign = -1;
-            movingDir = movingDir * Time.deltaTime * _speed * value * team;
-            //transform.Translate(Vector3.forward * Time.deltaTime * _speed * value);
+
+            movingDir = movingDir * Time.deltaTime * _speed * value /** team*/;
         }
         else
         {
             Debug.Log("MovementLimit " + movementLimit);
             Debug.Log("Joystick " + horizontal + " " + vertical);
         }
+
+
+        //Mover bola inferior
+        //playerBall.position = new Vector3(horizontal + transform.position.x, playerBall.position.y, vertical + transform.position.z);
+        playerBall.position = (Vector3.Distance(playerBall.localPosition, Vector3.zero) < 0.1f && horizontal == 0 && vertical == 0 ) ?
+            new Vector3(transform.position.x ,playerBall.position.y, transform.position.z) : 
+            Vector3.Lerp(playerBall.position, new Vector3(movingDir.normalized.x + transform.position.x, playerBall.position.y, movingDir.normalized.z + transform.position.z), 0.3f);
+
+        //Mirar hacia adelante
+        transform.LookAt(new Vector3(playerBall.position.x, 0, playerBall.position.z));
+        transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
+
+
+
         //if (forward ^ backward)
         //{
         //    movingDir += forward ? transform.forward : -transform.forward;
