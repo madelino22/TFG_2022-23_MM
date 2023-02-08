@@ -17,7 +17,7 @@ public class PlayerSetupController : GlobalEventListener
 
     public Camera SceneCamera { get => _sceneCamera; }
 
-    private int contador = 2; // Team lejos (0,2) || Team cerca (3,5)
+    private int contador = 0; // Team lejos (0,2) || Team cerca (3,5)
 
     private BoltEntity[] entity = new BoltEntity[6];
 
@@ -46,15 +46,12 @@ public class PlayerSetupController : GlobalEventListener
             entity[contador] = BoltNetwork.Instantiate(BoltPrefabs.Player1, spawners[contador].transform.position, Quaternion.identity);
             entity[contador].AssignControl(evnt.RaisedBy);
         }
-        //int team = 0;
-        //if (contador >= 3)
-        //    team = 1;
-        //else
-        //{
-        //    entity[contador].transform.Rotate(new Vector3(0, 180, 0));
-        //}
-        //entity[contador].GetComponentInChildren<PlayerAttackTrail>().SetTeam(team);
-        //entity[contador].GetComponentInChildren<PlayerMotor>().SetTeam(team);
+
+        //Establecemos el numero del jugador en la sala
+        setPlayerEvent evnts = setPlayerEvent.Create(GlobalTargets.OnlySelf);
+        evnts.nPlayer = contador;
+        evnts.Send();
+        Debug.Log("ENVIADO NUMERO JUGADOR");
 
         contador++;
     }
@@ -66,12 +63,27 @@ public class PlayerSetupController : GlobalEventListener
 
     public override void OnEvent(deletePlayersEvent evnt)
     {
-        Debug.Log("EN EVENTO");
-        for (int i = 0; i < 6; i++)
+        Debug.Log("Destruyendo player: " + evnt.numPlayer);
+        Debug.Log("Destruyendo player: " + evnt.numPlayer);
+        Debug.Log("Destruyendo player: " + evnt.numPlayer);
+        Debug.Log("Destruyendo player: " + evnt.numPlayer);
+        Debug.Log("Destruyendo player: " + evnt.numPlayer);
+        Debug.Log("Destruyendo player: " + evnt.numPlayer);
+        Debug.Log("Destruyendo player: " + evnt.numPlayer);
+        Debug.Log("Destruyendo player: " + evnt.numPlayer);
+        Debug.Log("Destruyendo player: " + evnt.numPlayer);
+        Debug.Log("Destruyendo player: " + evnt.numPlayer);
+        Debug.Log("Destruyendo player: " + evnt.numPlayer);
+        Destroy(entity[(int)evnt.numPlayer].gameObject);
+        contador--;
+
+        if(contador == 0)
         {
-            Destroy(entity[i].gameObject);
+            foreach (var connection in BoltNetwork.Connections)
+            {
+                connection.Disconnect(); //ESTO HAYQ UE BORRAR CADA ENTIDAD Y NO UN IF CUANDO LLEGUE A 0
+            }
         }
-        contador = 3;
     }
 
     public void SpawnPlayer()

@@ -27,11 +27,16 @@ public class UI_Callback : GlobalEventListener
         if(evnt.Time <= 0)
         {
             Debug.Log("SAlir Juego");
-            foreach (var connection in BoltNetwork.Connections)
-            {
-                connection.Disconnect();
-                _matchManager.endGameScene();
-            }
+            Debug.Log("SAlir Juego");
+            Debug.Log("SAlir Juego");
+            Debug.Log("SAlir Juego");
+            Debug.Log("SAlir Juego");
+            Debug.Log("SAlir Juego");
+            Debug.Log("SAlir Juego");
+            Debug.Log("SAlir Juego");
+
+            _matchManager.endGameScene();
+             
         }
         else _matchManager.UpdateUI(evnt.BlueScore, evnt.RedScore, evnt.Time);
     }
@@ -83,14 +88,14 @@ public class UI_Callback : GlobalEventListener
                 }
                 else
                 {
-                    Debug.Log("BORRAR SERVER");
-                    deletePlayersEvent del = deletePlayersEvent.Create(GlobalTargets.OnlyServer);
-                    Debug.Log("ENVIAR SERVER");
-                    del.Send();
-                    blue = 0;
-                    red = 0;
-                    time = -10;
-                    Debug.Log("RESET SERVER");
+                    Debug.Log("-------------SE ACABO EL TIEMPO-----------------");
+
+                    MatchInfoEvent evnt = MatchInfoEvent.Create(GlobalTargets.AllClients);
+                    evnt.BlueScore = blue;
+                    evnt.RedScore = red;
+                    evnt.Time = time;
+                    evnt.Send();
+                    Debug.Log("-------------EVENTO CREADO Y ENVIADO-----------------");
                 }
 
                 seg++;

@@ -90,8 +90,8 @@ public class PlayerMotor : MonoBehaviour
         }
         else
         {
-            Debug.Log("MovementLimit " + movementLimit);
-            Debug.Log("Joystick " + horizontal + " " + vertical);
+            //Debug.Log("MovementLimit " + movementLimit);
+            //Debug.Log("Joystick " + horizontal + " " + vertical);
         }
 
 

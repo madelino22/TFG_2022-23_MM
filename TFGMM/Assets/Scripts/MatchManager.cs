@@ -1,10 +1,11 @@
+using Photon.Bolt;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class MatchManager : MonoBehaviour
+public class MatchManager : GlobalEventListener
 {
     private enum teams
     {
@@ -27,12 +28,34 @@ public class MatchManager : MonoBehaviour
 
     teams myTeam = teams.blue;
 
+    private int nPlayerRoom = -1;
+
     void Start()
     {
         redPointsText.text = redPoints.ToString();
         bluePointsText.text = bluePoints.ToString();
         timeText.text = "1:30";
     }
+
+    public override void OnEvent(setPlayerEvent evnt)
+    {
+        nPlayerRoom = (int)evnt.nPlayer;
+        Debug.Log("Soy el jugador" + nPlayerRoom);
+        Debug.Log("Soy el jugador" + nPlayerRoom);
+        Debug.Log("Soy el jugador" + nPlayerRoom);
+        Debug.Log("Soy el jugador" + nPlayerRoom);
+        Debug.Log("Soy el jugador" + nPlayerRoom);
+        Debug.Log("Soy el jugador" + nPlayerRoom);
+        Debug.Log("Soy el jugador" + nPlayerRoom);
+        Debug.Log("Soy el jugador" + nPlayerRoom);
+        Debug.Log("Soy el jugador" + nPlayerRoom);
+        Debug.Log("Soy el jugador" + nPlayerRoom);
+        Debug.Log("Soy el jugador" + nPlayerRoom);
+        Debug.Log("Soy el jugador" + nPlayerRoom);
+        Debug.Log("Soy el jugador" + nPlayerRoom);
+        Debug.Log("Soy el jugador" + nPlayerRoom);
+    }
+
 
     public void endGameScene()
     {
@@ -52,7 +75,13 @@ public class MatchManager : MonoBehaviour
             ComInfo.setGameResult(result.draw);
         }
 
+        Debug.Log("CAMBIO ESCENA Player");
         SceneManager.LoadScene("WinLose", LoadSceneMode.Single);
+
+        Debug.Log("BORRAR Player");
+        deletePlayersEvent del = deletePlayersEvent.Create(GlobalTargets.OnlyServer);
+        del.numPlayer = nPlayerRoom;
+        del.Send();
     }
 
     public void UpdateUI(int blueScore, int redScore, int time)

@@ -645,6 +645,37 @@
       "Name": "CollisionEvent",
       "Guid": "288475a8-4afd-4a0c-bdfc-9acab4f577b8",
       "Groups": []
+    },
+    {
+      "$type": "Photon.Bolt.Compiler.EventDefinition, bolt.compiler",
+      "Properties": [
+        {
+          "Name": "nPlayer",
+          "Enabled": true,
+          "Expanded": true,
+          "ReplicationMode": 1,
+          "Priority": 1,
+          "PropertyType": {
+            "$type": "Photon.Bolt.Compiler.PropertyTypeFloat, bolt.compiler",
+            "Compression": {
+              "MinValue": -2048,
+              "MaxValue": 2048,
+              "Accuracy": 0.01,
+              "Pack": 100.0,
+              "Read": 0.01,
+              "Shift": 2048.0,
+              "BitsRequired": 19
+            }
+          },
+          "AssetSettings": {
+            "$type": "Photon.Bolt.Compiler.PropertyEventSettings, bolt.compiler"
+          }
+        }
+      ],
+      "GlobalSenders": 2,
+      "Name": "setPlayerEvent",
+      "Guid": "a1ec2c58-4ad2-4911-a456-3f25b5540d47",
+      "Groups": []
     }
   ],
   "ActiveGroup": "Everything"
