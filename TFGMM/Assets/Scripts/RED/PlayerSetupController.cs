@@ -28,6 +28,12 @@ public class PlayerSetupController : GlobalEventListener
             SpawnPlayerEvent evnt = SpawnPlayerEvent.Create(GlobalTargets.OnlyServer);
             evnt.Send();
 
+            //Establecemos el numero del jugador en la sala
+            setPlayerEvent evnts = setPlayerEvent.Create(GlobalTargets.OnlySelf);
+            evnts.nPlayer = contador;
+            evnts.Send();
+            Debug.Log("ENVIADO NUMERO JUGADOR");
+
             StartMatchEvent evnt2 = StartMatchEvent.Create(GlobalTargets.OnlyServer);
             evnt2.Send();
         }
@@ -46,13 +52,6 @@ public class PlayerSetupController : GlobalEventListener
             entity[contador] = BoltNetwork.Instantiate(BoltPrefabs.Player1, spawners[contador].transform.position, Quaternion.identity);
             entity[contador].AssignControl(evnt.RaisedBy);
         }
-
-        //Establecemos el numero del jugador en la sala
-        setPlayerEvent evnts = setPlayerEvent.Create(GlobalTargets.OnlySelf);
-        evnts.nPlayer = contador;
-        evnts.Send();
-        Debug.Log("ENVIADO NUMERO JUGADOR");
-
         contador++;
     }
 
