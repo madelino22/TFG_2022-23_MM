@@ -22,7 +22,7 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
         _matchManager = GetComponentInChildren<MatchManager>();
         _matchManager.UpdateUI(1, 1, 1);
         timer = 0;
-        BoltLog.Warn("A");
+        //BoltLog.Warn("A");
     }
 
     public override void Attached()

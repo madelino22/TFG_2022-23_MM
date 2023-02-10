@@ -12,12 +12,14 @@ public class UI_Callback : GlobalEventListener
 
     private int blue = 0;
     private int red = 0;
-    private int time = 30; //seconds
+
+    const int START_TIME = 30; //Segundos de una partida
+    private int time = START_TIME; //seconds
 
     // Start is called before the first frame update
     private void Awake()
     {
-        BoltLog.Warn("A");
+        //BoltLog.Warn("A");
         _matchManager.UpdateUI(1, 1, 1);
         timer = 0;
     }
@@ -26,17 +28,7 @@ public class UI_Callback : GlobalEventListener
     {
         if(evnt.Time <= 0)
         {
-            Debug.Log("SAlir Juego");
-            Debug.Log("SAlir Juego");
-            Debug.Log("SAlir Juego");
-            Debug.Log("SAlir Juego");
-            Debug.Log("SAlir Juego");
-            Debug.Log("SAlir Juego");
-            Debug.Log("SAlir Juego");
-            Debug.Log("SAlir Juego");
-
             _matchManager.endGameScene();
-             
         }
         else _matchManager.UpdateUI(evnt.BlueScore, evnt.RedScore, evnt.Time);
     }
@@ -88,14 +80,15 @@ public class UI_Callback : GlobalEventListener
                 }
                 else
                 {
-                    Debug.Log("-------------SE ACABO EL TIEMPO-----------------");
-
                     MatchInfoEvent evnt = MatchInfoEvent.Create(GlobalTargets.AllClients);
                     evnt.BlueScore = blue;
                     evnt.RedScore = red;
                     evnt.Time = time;
                     evnt.Send();
-                    Debug.Log("-------------EVENTO CREADO Y ENVIADO-----------------");
+
+                    blue = 0;
+                    red = 0;
+                    time = START_TIME;
                 }
 
                 seg++;

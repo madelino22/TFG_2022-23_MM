@@ -617,8 +617,6 @@
           }
         }
       ],
-      "EntitySenders": 3,
-      "GlobalSenders": 1,
       "Name": "deletePlayersEvent",
       "Guid": "346b72dd-f5ea-4520-94ba-1f3541157e84",
       "Groups": []
@@ -672,7 +670,7 @@
           }
         }
       ],
-      "GlobalSenders": 2,
+      "GlobalSenders": 1,
       "Name": "setPlayerEvent",
       "Guid": "a1ec2c58-4ad2-4911-a456-3f25b5540d47",
       "Groups": []

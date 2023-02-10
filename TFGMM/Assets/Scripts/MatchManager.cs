@@ -1,4 +1,5 @@
 using Photon.Bolt;
+using Photon.Bolt.Utils;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -40,20 +41,7 @@ public class MatchManager : GlobalEventListener
     public override void OnEvent(setPlayerEvent evnt)
     {
         nPlayerRoom = (int)evnt.nPlayer;
-        Debug.Log("Soy el jugador" + nPlayerRoom);
-        Debug.Log("Soy el jugador" + nPlayerRoom);
-        Debug.Log("Soy el jugador" + nPlayerRoom);
-        Debug.Log("Soy el jugador" + nPlayerRoom);
-        Debug.Log("Soy el jugador" + nPlayerRoom);
-        Debug.Log("Soy el jugador" + nPlayerRoom);
-        Debug.Log("Soy el jugador" + nPlayerRoom);
-        Debug.Log("Soy el jugador" + nPlayerRoom);
-        Debug.Log("Soy el jugador" + nPlayerRoom);
-        Debug.Log("Soy el jugador" + nPlayerRoom);
-        Debug.Log("Soy el jugador" + nPlayerRoom);
-        Debug.Log("Soy el jugador" + nPlayerRoom);
-        Debug.Log("Soy el jugador" + nPlayerRoom);
-        Debug.Log("Soy el jugador" + nPlayerRoom);
+        BoltLog.Warn("Soy el jugador" + nPlayerRoom);
     }
 
 
@@ -74,14 +62,15 @@ public class MatchManager : GlobalEventListener
             Debug.Log("EMpate");
             ComInfo.setGameResult(result.draw);
         }
-
-        Debug.Log("CAMBIO ESCENA Player");
+;
         SceneManager.LoadScene("WinLose", LoadSceneMode.Single);
 
-        Debug.Log("BORRAR Player");
         deletePlayersEvent del = deletePlayersEvent.Create(GlobalTargets.OnlyServer);
         del.numPlayer = nPlayerRoom;
         del.Send();
+
+
+        //AQUI ESCRIBIR LA INFO PARA ENVIARLA A FIREBASE
     }
 
     public void UpdateUI(int blueScore, int redScore, int time)
