@@ -2374,7 +2374,7 @@ MonoBehaviour:
   ammoCanvas: {fileID: 2937754027903153481}
   movementLimit: 0.05
   playerBall: {fileID: 1907604793349567335}
-  _totalLife: 250
+  _totalLife: 2600
 --- !u!114 &7673348512708478631
 MonoBehaviour:
   m_ObjectHideFlags: 0

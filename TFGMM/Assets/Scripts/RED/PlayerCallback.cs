@@ -20,7 +20,7 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
         _playerMotor = GetComponent<PlayerMotor>();
         _guiController = GetComponentInChildren<GUI_Controller>();
         _matchManager = GetComponentInChildren<MatchManager>();
-        _matchManager.UpdateUI(1, 1, 1);
+        //_matchManager.UpdateUI(1, 1, 1);
         timer = 0;
         //BoltLog.Warn("A");
     }
@@ -37,24 +37,32 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (BoltNetwork.IsClient)
         {
-            state.LifePoints += 10;
-
-            HealthEvent evnt = HealthEvent.Create(entity, EntityTargets.EveryoneExceptOwnerAndController);
-            evnt.ActualLife = state.LifePoints;
-            evnt.TotalLife = _playerMotor.TotalLife;
-            evnt.Send();
+            /*if (Input.GetKeyDown(KeyCode.F))
+            {
+                _playerMotor.ActualLife += 200;
+                Debug.Log(state.LifePoints);
+                HealthEvent evnt = HealthEvent.Create(entity, EntityTargets.OnlySelf);
+                evnt.ActualLife = _playerMotor.ActualLife;
+                evnt.TotalLife = _playerMotor.TotalLife;
+                evnt.Send();
+            }
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                _playerMotor.ActualLife -= 200;
+                Debug.Log(state.LifePoints);
+                HealthEvent evnt = HealthEvent.Create(entity, EntityTargets.OnlySelf);
+                evnt.ActualLife = _playerMotor.ActualLife;
+                evnt.TotalLife = _playerMotor.TotalLife;
+                evnt.Send();
+            }*/
         }
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            state.LifePoints -= 10;
+        //HealthEvent evnt = HealthEvent.Create(entity, EntityTargets.EveryoneExceptOwnerAndController);
+        //evnt.ActualLife = _playerMotor.ActualLife;
+        //evnt.TotalLife = _playerMotor.TotalLife;
+        //evnt.Send();
 
-            HealthEvent evnt = HealthEvent.Create(entity, EntityTargets.EveryoneExceptOwnerAndController);
-            evnt.ActualLife = state.LifePoints;
-            evnt.TotalLife = _playerMotor.TotalLife;
-            evnt.Send();
-        }
 
         //if (Input.GetKeyDown(KeyCode.LeftArrow))
         //{
@@ -139,7 +147,14 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
         //}
 
     }
-
+    public void loseLife()
+    {
+        _playerMotor.ActualLife -= 500;
+        HealthEvent evnt = HealthEvent.Create(entity, EntityTargets.OnlySelf);
+        evnt.ActualLife = _playerMotor.ActualLife;
+        evnt.TotalLife = _playerMotor.TotalLife;
+        evnt.Send();
+    }
     public override void OnEvent(HealthEvent evnt)
     {
         if (_guiController != null)
@@ -147,6 +162,7 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
             _guiController.UpdateLife(evnt.ActualLife, evnt.TotalLife);
 
             BoltLog.Warn("Menos Vida");
+            Debug.Log("Menos Vida");
         }
     }
 
