@@ -583,7 +583,7 @@
       "$type": "Photon.Bolt.Compiler.EventDefinition, bolt.compiler",
       "Properties": [],
       "EntitySenders": 3,
-      "GlobalSenders": 2,
+      "GlobalSenders": 1,
       "Name": "StartMatchEvent",
       "Guid": "aabebde3-b0ae-4dd4-b3cf-7cf6c51d5e36",
       "Groups": []

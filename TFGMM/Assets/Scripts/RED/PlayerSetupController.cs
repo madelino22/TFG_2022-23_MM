@@ -4,6 +4,8 @@ using Photon.Bolt.Utils;
 
 public class PlayerSetupController : GlobalEventListener
 {
+    const int PLAYEROOM = 2;
+
     [SerializeField]
     private Camera _sceneCamera;
 
@@ -22,6 +24,8 @@ public class PlayerSetupController : GlobalEventListener
 
     private BoltEntity[] entity = new BoltEntity[6];
 
+    private BoltEntity entityCanvas;
+
     private BoltConnection[] entityConnection = new BoltConnection[6];
 
     public override void SceneLoadLocalDone(string scene, IProtocolToken token)
@@ -31,24 +35,17 @@ public class PlayerSetupController : GlobalEventListener
             SpawnPlayerEvent evnt = SpawnPlayerEvent.Create(GlobalTargets.OnlyServer);
             evnt.Send();
 
-            StartMatchEvent evnt2 = StartMatchEvent.Create(GlobalTargets.OnlyServer);
-            evnt2.Send();
         }
     }
      
     public override void OnEvent(SpawnPlayerEvent evnt)
     {
-
-        BoltLog.Warn("En evento crear jugador");
         if (contador<=2) //RED
         {
             entity[contador] = BoltNetwork.Instantiate(BoltPrefabs.Player2, spawners[contador].transform.position, Quaternion.identity);
-            BoltLog.Warn("Creado objeto");
             entity[contador].AssignControl(evnt.RaisedBy);
-            BoltLog.Warn("Creado asignar control");
             entity[contador].transform.Rotate(new Vector3(0, 180, 0));
-            BoltLog.Warn("rotacion");
-            entity[contador].GetComponent<PlayerCallback>().enabled = true;
+            //entity[contador].GetComponent<PlayerCallback>().enabled = true;
         }
         else //BLUE
         {
@@ -61,23 +58,35 @@ public class PlayerSetupController : GlobalEventListener
         setPlayerEvent evnts = setPlayerEvent.Create(evnt.RaisedBy, ReliabilityModes.ReliableOrdered);
         evnts.nPlayer = contador;
         evnts.Send();
-
         contador++;
+
+        BoltLog.Warn("CHECK EMPEZAR PARTIDA");
+        if (contador == PLAYEROOM)
+        {
+            BoltLog.Warn("EMPEZAR PARTIDA");
+            StartMatchEvent evnt2 = StartMatchEvent.Create(GlobalTargets.OnlyServer);
+            evnt2.Send();
+        }
+        else BoltLog.Warn("HAN ENTRADO " + contador + "/" + PLAYEROOM);
     }
 
     public override void OnEvent(StartMatchEvent evnt)
     {
-        BoltEntity entity = BoltNetwork.Instantiate(BoltPrefabs.Canvas, new Vector3(0,0,0), Quaternion.identity);
+        entityCanvas = BoltNetwork.Instantiate(BoltPrefabs.Canvas, new Vector3(0,0,0), Quaternion.identity);
     }
 
     public override void OnEvent(deletePlayersEvent evnt)
     {
+        BoltLog.Warn("SE destruye el jugador " + (int)evnt.numPlayer);
+
         Destroy(entity[(int)evnt.numPlayer].gameObject);
 
         entityConnection[(int)evnt.numPlayer].Disconnect();
 
 
         contador--;
+
+        if (contador == 0) Destroy(entityCanvas);
     }
 
     public void SpawnPlayer()
