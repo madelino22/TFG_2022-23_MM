@@ -48,6 +48,7 @@ public class PlayerSetupController : GlobalEventListener
             BoltLog.Warn("Creado asignar control");
             entity[contador].transform.Rotate(new Vector3(0, 180, 0));
             BoltLog.Warn("rotacion");
+            entity[contador].GetComponent<PlayerCallback>().enabled = true;
         }
         else //BLUE
         {

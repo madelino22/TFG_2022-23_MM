@@ -39,7 +39,10 @@ public class Bullet : MonoBehaviour
 
             Debug.Log("Bullet Collision");
             if (collision.gameObject.CompareTag("Muro")) BoltNetwork.Destroy(this.gameObject);
-
+            else if (collision.gameObject.CompareTag("Red"))
+            {
+                collision.gameObject.GetComponent<PlayerCallback>().loseLife();
+            }
 
 
 
