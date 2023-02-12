@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: -8753005812405454564}
   - component: {fileID: 6770397285221586638}
   m_Layer: 8
-  m_Name: Bullet
+  m_Name: BlueBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -66,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0b8a4b2781643a64697fc2605c8ba8df, type: 2}
+  - {fileID: 2100000, guid: 7bf87a0cc399d07458c09b0caf9d100d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -115,7 +115,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   damage: 50
-  wasFiredByRed: 1
+  wasFiredByRed: 0
 --- !u!54 &-6474917607457945542
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -12,8 +12,8 @@ public class BasicShooter : EntityEventListener
     [SerializeField]
     Joystick attackJoystick;
 
-    [SerializeField]
-    GameObject bulletPrefab;
+    //[SerializeField]
+    //GameObject bulletPrefab;
 
     [SerializeField]
     Transform attackLookPoint;
@@ -148,7 +148,7 @@ public class BasicShooter : EntityEventListener
     {
         ShootEvent evnt = ShootEvent.Create(entity, EntityTargets.OnlySelf);
         evnt.Position = (Vector3)arr[0];
-        evnt.Rotation = (Quaternion)arr[1];
+        evnt.Rotation = (Quaternion)arr[1]; 
         evnt.Send();
     }
 

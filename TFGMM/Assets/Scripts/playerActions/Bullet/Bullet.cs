@@ -15,6 +15,9 @@ public class Bullet : MonoBehaviour
     public int damage = 300;
     Vector3 bulletEndDist;
 
+    [SerializeField]
+    bool wasFiredByRed = true;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,19 +32,21 @@ public class Bullet : MonoBehaviour
         transform.Translate(Vector3.forward * speed * Time.fixedDeltaTime);
     }
 
-
     private void OnTriggerEnter(Collider collision)
     { 
-
-
         if (BoltNetwork.IsClient)
         {
-
             Debug.Log("Bullet Collision");
-            if (collision.gameObject.CompareTag("Muro")) BoltNetwork.Destroy(this.gameObject);
-            else if (collision.gameObject.CompareTag("Red"))
+            GameObject target = collision.gameObject;
+
+            //COMPROBAR COLISION
+            if (target.CompareTag("Muro")) 
+                BoltNetwork.Destroy(this.gameObject);
+
+            else if (wasFiredByRed && target.CompareTag("Blue") //Rojo le da a azul
+                || !wasFiredByRed && target.CompareTag("Red")) // Azul le da a rojo
             {
-                collision.gameObject.GetComponent<PlayerCallback>().loseLife();
+                target.GetComponent<PlayerCallback>().loseLife();
             }
 
 
