@@ -32,8 +32,6 @@ public class PlayerSetupController : GlobalEventListener
     {
         if (!BoltNetwork.IsServer)
         {
-            SpawnPlayerEvent evnt = SpawnPlayerEvent.Create(GlobalTargets.OnlyServer);
-            evnt.Send();
 
         }
     }
@@ -58,6 +56,7 @@ public class PlayerSetupController : GlobalEventListener
         setPlayerEvent evnts = setPlayerEvent.Create(evnt.RaisedBy, ReliabilityModes.ReliableOrdered);
         evnts.nPlayer = contador;
         evnts.Send();
+        BoltLog.Warn("ENVIO EVENT PLAYER: " + contador);
         contador++;
 
         BoltLog.Warn("CHECK EMPEZAR PARTIDA");
@@ -79,14 +78,14 @@ public class PlayerSetupController : GlobalEventListener
     {
         BoltLog.Warn("SE destruye el jugador " + (int)evnt.numPlayer);
 
-        Destroy(entity[(int)evnt.numPlayer].gameObject);
+        BoltNetwork.Destroy(entity[(int)evnt.numPlayer].gameObject);
 
         entityConnection[(int)evnt.numPlayer].Disconnect();
 
 
         contador--;
-
-        if (contador == 0) Destroy(entityCanvas);
+        BoltLog.Warn("Contador: " + contador);
+        if (contador == 0) BoltNetwork.Destroy(entityCanvas);
     }
 
     public void SpawnPlayer()

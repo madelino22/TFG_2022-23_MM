@@ -29,7 +29,7 @@ public class MatchManager : GlobalEventListener
 
     teams myTeam = teams.blue;
 
-    private int nPlayerRoom = -1;
+    private int nPlayerRoom = 0;
 
     void Start()
     {

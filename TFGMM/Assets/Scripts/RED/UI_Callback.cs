@@ -13,7 +13,7 @@ public class UI_Callback : GlobalEventListener
     private int blue = 0;
     private int red = 0;
 
-    const int START_TIME = 2000; //Segundos de una partida
+    const int START_TIME = 10; //Segundos de una partida
     private int time = START_TIME; //seconds
 
     // Start is called before the first frame update
@@ -85,10 +85,6 @@ public class UI_Callback : GlobalEventListener
                     evnt.RedScore = red;
                     evnt.Time = time;
                     evnt.Send();
-
-                    blue = 0;
-                    red = 0;
-                    time = START_TIME;
                 }
 
                 seg++;
