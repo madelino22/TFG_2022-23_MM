@@ -506,7 +506,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sceneGuid: 
   _serializerGuid: 1a14dbc5-3693-49e3-86e0-71d39b442751
-  _prefabId: 3
+  _prefabId: 4
   _updateRate: 1
   _autoFreezeProxyFrames: 0
   _clientPredicted: 1
@@ -1050,7 +1050,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   testingScene: 0
   attackJoystick: {fileID: 2663373111562773227}
-  bulletPrefab: {fileID: 2586110811864843864, guid: c34f0699b59b03b4f956eaf891ca61e6, type: 3}
   attackLookPoint: {fileID: 3089766732585637999}
   spawnDistance: 1.5
   specialAttack: {fileID: 0}
