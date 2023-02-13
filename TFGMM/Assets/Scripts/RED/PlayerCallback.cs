@@ -150,7 +150,7 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
     public void loseLife()
     {
         _playerMotor.ActualLife -= 500;
-        HealthEvent evnt = HealthEvent.Create(entity, EntityTargets.OnlySelf);
+        HealthEvent evnt = HealthEvent.Create(entity, EntityTargets.Everyone);
         evnt.ActualLife = _playerMotor.ActualLife;
         evnt.TotalLife = _playerMotor.TotalLife;
         evnt.Send();

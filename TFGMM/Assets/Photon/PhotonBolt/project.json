@@ -302,7 +302,7 @@
           "Priority": 1,
           "PropertyType": {
             "$type": "Photon.Bolt.Compiler.PropertyTypeInteger, bolt.compiler",
-            "MaxValue": 1023,
+            "MaxValue": 5000,
             "CompressionEnabled": true
           },
           "AssetSettings": {
@@ -399,7 +399,8 @@
           "Priority": 1,
           "PropertyType": {
             "$type": "Photon.Bolt.Compiler.PropertyTypeInteger, bolt.compiler",
-            "MaxValue": 1023
+            "MaxValue": 5000,
+            "CompressionEnabled": true
           },
           "AssetSettings": {
             "$type": "Photon.Bolt.Compiler.PropertyEventSettings, bolt.compiler"
@@ -413,7 +414,8 @@
           "Priority": 1,
           "PropertyType": {
             "$type": "Photon.Bolt.Compiler.PropertyTypeInteger, bolt.compiler",
-            "MaxValue": 1023
+            "MaxValue": 5000,
+            "CompressionEnabled": true
           },
           "AssetSettings": {
             "$type": "Photon.Bolt.Compiler.PropertyEventSettings, bolt.compiler"
