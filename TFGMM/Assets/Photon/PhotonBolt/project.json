@@ -712,6 +712,20 @@
       "Name": "GoGameEvent",
       "Guid": "d81a9395-a364-4f38-9c02-07eb52c2d42e",
       "Groups": []
+    },
+    {
+      "$type": "Photon.Bolt.Compiler.EventDefinition, bolt.compiler",
+      "Properties": [],
+      "Name": "NoGameFoundEvent",
+      "Guid": "d816407a-dc6f-4b68-b07e-ab9d1f9b105c",
+      "Groups": []
+    },
+    {
+      "$type": "Photon.Bolt.Compiler.EventDefinition, bolt.compiler",
+      "Properties": [],
+      "Name": "DisconectPlayerEvent",
+      "Guid": "ceecac6c-5df7-4e2f-a21d-892cd884f9cf",
+      "Groups": []
     }
   ],
   "ActiveGroup": "Everything"

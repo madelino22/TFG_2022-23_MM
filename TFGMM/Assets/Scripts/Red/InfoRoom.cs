@@ -6,15 +6,23 @@ using Photon.Bolt.Utils;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System;
+using Photon.Bolt.Matchmaking;
 
 public class InfoRoom : GlobalEventListener
 {
+    const int PLAYEROOM = 2;
+
     [SerializeField]
     TextMesh textoTotal;
 
     private int connections = 0;
 
     private List<BoltConnection> playersConnections = new List<BoltConnection>();
+
+    void Awake()
+    {
+        DontDestroyOnLoad(transform.gameObject);
+    }
 
     public override void SceneLoadLocalDone(string scene, IProtocolToken token)
     {
@@ -36,19 +44,25 @@ public class InfoRoom : GlobalEventListener
 
     public void Matchmaking()
     {
-        BoltLog.Warn("BUSCAMOS MATCHMAKING");
-        //Enviar mensaje GoGame
-        GoGameEvent evnt = GoGameEvent.Create(playersConnections[0]);
-        playersConnections.RemoveAt(0);
-        evnt.Send();
-        
-        GoGameEvent evnt2 = GoGameEvent.Create(playersConnections[0]);
-        playersConnections.RemoveAt(0);
-        evnt2.Send();
+        //Crear partida si hay jugadores
+        while(playersConnections.Count >= PLAYEROOM)
+        {
+            GoGameEvent evnt = GoGameEvent.Create(playersConnections[0]);
+            playersConnections.RemoveAt(0);
+            evnt.Send();
+        }
+
+        //Devolver al menu a lo sjugadores que no hacen falta
+        foreach(BoltConnection conection in playersConnections)
+        {
+            NoGameFoundEvent evnt = NoGameFoundEvent.Create(conection);
+            evnt.Send();
+            BoltLog.Warn("BORRAMOS UN JUGADOR");
+
+        }
+        playersConnections.Clear();
 
         SceneManager.LoadScene("BOLTMapa");
-
-
     }
 
     // ----------------------------------  EVENTOS SERVER  --------------------------------------------
@@ -56,16 +70,21 @@ public class InfoRoom : GlobalEventListener
     public override void OnEvent(JoinPlayerEvent evnt)
     {
         //Guardamos conexion del player
-        BoltLog.Warn("SE conecta 1");
         playersConnections.Add(evnt.RaisedBy);
 
         connections++;
 
-        BoltLog.Warn("SE conecta 2");
         //Mandamos evento a clientes para mostrar el numero de players conectados
         NumberPlayersEvent evnt2 = NumberPlayersEvent.Create(GlobalTargets.AllClients);
         evnt2.numPlayersConnected = connections;
         evnt2.Send();
+    }
+
+    public override void OnEvent(DisconectPlayerEvent evnt)
+    {
+        BoltLog.Warn("JUGADOR ANTES DE DESCONECTADO");
+        evnt.RaisedBy.Disconnect();
+        BoltLog.Warn("JUGADOR DESCONECTADO");
     }
 
     // ----------------------------------  EVENTOS CLIENTES  --------------------------------------------
@@ -76,6 +95,15 @@ public class InfoRoom : GlobalEventListener
 
         SpawnPlayerEvent evnt2 = SpawnPlayerEvent.Create(GlobalTargets.OnlyServer);
         evnt2.Send();
+    }
+    public override void OnEvent(NoGameFoundEvent evnt)
+    {
+        SceneManager.LoadScene("Lobby");
+        //Le decimos al server que desconecte al jugador
+        DisconectPlayerEvent evnt2 = DisconectPlayerEvent.Create(GlobalTargets.OnlyServer);
+        evnt2.Send();
+
+        BoltLog.Warn("Enviado mensaje borrar al jugador");
     }
 
     public override void OnEvent(NumberPlayersEvent evnt)
