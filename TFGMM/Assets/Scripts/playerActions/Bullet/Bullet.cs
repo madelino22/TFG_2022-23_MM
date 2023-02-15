@@ -47,6 +47,7 @@ public class Bullet : MonoBehaviour
                 || !wasFiredByRed && target.CompareTag("Red")) // Azul le da a rojo
             {
                 target.GetComponent<PlayerCallback>().loseLife();
+                BoltNetwork.Destroy(this.gameObject);
             }
 
 
