@@ -19,7 +19,8 @@ public class PlayerMotor : MonoBehaviour
     [SerializeField]
     Transform playerBall;
 
-    private float _speed = 7f;
+    //[SerializeField] //VA RAPIDISIMO NO SE PORQUE. VALOR CABLEADO EN LA LINEA 125 (APROX)
+    //private float _speed = 1.1f; 
 
     private Vector3 _lastServerPos = Vector3.zero;
     private bool _firstState = true;
@@ -45,12 +46,12 @@ public class PlayerMotor : MonoBehaviour
     public void BuffSpeed(float buff)
     {
         Debug.Log("Speed buffed");
-        _speed += buff;
+        //_speed += buff;
     }
     public void DeBuffSpeed(float buff)
     {
         Debug.Log("Speed Debuffed");
-        _speed -= buff;
+        //_speed -= buff;
     }
 
     private void Awake()
@@ -89,7 +90,7 @@ public class PlayerMotor : MonoBehaviour
             movingDir = new Vector3(movingDir.x, 0, movingDir.z);
 
 
-            movingDir = movingDir * Time.deltaTime * _speed * value /** team*/;
+            movingDir = movingDir * Time.deltaTime * value /** team*/;
         }
         else
         {
@@ -121,7 +122,7 @@ public class PlayerMotor : MonoBehaviour
 
         movingDir.Normalize();
         //movingDir *= _speed;
-        _rigidbody.velocity = movingDir;
+        _rigidbody.velocity = movingDir * 3.0f;
 
         State stateMotor = new State();
         stateMotor.position = transform.position;

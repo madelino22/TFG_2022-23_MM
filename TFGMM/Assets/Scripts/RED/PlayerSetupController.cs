@@ -4,7 +4,7 @@ using Photon.Bolt.Utils;
 
 public class PlayerSetupController : GlobalEventListener
 {
-    const int PLAYEROOM = 2;
+    const int PLAYEROOM = 2; //NUM MAX JUGADORES?
 
     [SerializeField]
     private Camera _sceneCamera;
@@ -38,14 +38,14 @@ public class PlayerSetupController : GlobalEventListener
      
     public override void OnEvent(SpawnPlayerEvent evnt)
     {
-        if (contador<=2) //RED
+        if (contador<3) //RED 0,1,2
         {
             entity[contador] = BoltNetwork.Instantiate(BoltPrefabs.Player2, spawners[contador].transform.position, Quaternion.identity);
             entity[contador].AssignControl(evnt.RaisedBy);
             entity[contador].transform.Rotate(new Vector3(0, 180, 0));
             //entity[contador].GetComponent<PlayerCallback>().enabled = true;
         }
-        else //BLUE
+        else //BLUE 3,4,5
         {
             entity[contador] = BoltNetwork.Instantiate(BoltPrefabs.Player1, spawners[contador].transform.position, Quaternion.identity);
             entity[contador].AssignControl(evnt.RaisedBy);

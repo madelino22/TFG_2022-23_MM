@@ -9,7 +9,7 @@ public class Bullet : MonoBehaviour
     PlayerAttackTrail playerAttacking;
 
     [SerializeField]
-    public float speed = 1;
+    public float speed = 10f;
 
     [SerializeField]
     public int damage = 300;
