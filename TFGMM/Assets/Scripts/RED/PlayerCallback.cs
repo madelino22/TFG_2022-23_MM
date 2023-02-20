@@ -11,7 +11,7 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
     private int seg = 1;
     private float timer;
 
-    private int blue=0;
+    private int blue = 0;
     private int red = 0;
     private int time = 90;
 
@@ -147,13 +147,32 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
         //}
 
     }
+
+
+    public void Respawn()
+    {
+        _playerMotor.Respawn();
+        HealthEvent evnt = HealthEvent.Create(entity, EntityTargets.Everyone);
+        evnt.ActualLife = _playerMotor.TotalLife;
+        evnt.TotalLife = _playerMotor.TotalLife;
+        evnt.Send();
+
+        PlayerCommand plCommnad = new PlayerCommand();
+    }
     public void loseLife()
     {
         _playerMotor.ActualLife -= 500;
-        HealthEvent evnt = HealthEvent.Create(entity, EntityTargets.Everyone);
-        evnt.ActualLife = _playerMotor.ActualLife;
-        evnt.TotalLife = _playerMotor.TotalLife;
-        evnt.Send();
+        if (_playerMotor.ActualLife <= 0)
+        {
+            Respawn();
+        }
+        else
+        {
+            HealthEvent evnt = HealthEvent.Create(entity, EntityTargets.Everyone);
+            evnt.ActualLife = _playerMotor.ActualLife;
+            evnt.TotalLife = _playerMotor.TotalLife;
+            evnt.Send();
+        }
     }
     public override void OnEvent(HealthEvent evnt)
     {

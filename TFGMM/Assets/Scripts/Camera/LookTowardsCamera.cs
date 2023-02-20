@@ -13,12 +13,19 @@ public class LookTowardsCamera : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (cam2 == null)
-            cam = Camera.main;
-        else
-            cam = cam2;
+        //if (cam2 == null)
+        //    cam = Camera.main;
+        //else
+        //    cam = cam2;
+
+        Invoke("GetCurrentCamera", 0.5f);
+
     }
 
+    private void GetCurrentCamera()
+    {
+        cam = Camera.current;
+    }
     // Update is called once per frame
     void Update()
     {

@@ -38,14 +38,14 @@ public class PlayerSetupController : GlobalEventListener
      
     public override void OnEvent(SpawnPlayerEvent evnt)
     {
-        if (contador<3) //RED 0,1,2
+        if (contador % 2 == 0) //RED 0,2,4
         {
             entity[contador] = BoltNetwork.Instantiate(BoltPrefabs.Player2, spawners[contador].transform.position, Quaternion.identity);
             entity[contador].AssignControl(evnt.RaisedBy);
             entity[contador].transform.Rotate(new Vector3(0, 180, 0));
             //entity[contador].GetComponent<PlayerCallback>().enabled = true;
         }
-        else //BLUE 3,4,5
+        else //BLUE 1,3,5
         {
             entity[contador] = BoltNetwork.Instantiate(BoltPrefabs.Player1, spawners[contador].transform.position, Quaternion.identity);
             entity[contador].AssignControl(evnt.RaisedBy);

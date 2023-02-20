@@ -28,6 +28,8 @@ public class PlayerMotor : MonoBehaviour
     [SerializeField]
     private int _totalLife = 2600;
     private int _actualLife = 2600;
+    private Vector3 _spawnPos;
+    public Vector3 SpawnPos { get => _spawnPos; set => _spawnPos = value; }
 
     private int _blueScore = 0;
     private int _redScore = 0;
@@ -66,6 +68,7 @@ public class PlayerMotor : MonoBehaviour
             _cam.gameObject.SetActive(true);
             _can.gameObject.SetActive(true);
             ammoCanvas.gameObject.SetActive(true);
+            _spawnPos = transform.position;
             //if (gameObject.tag.Equals("Blue"))
             //{
             //    Debug.Log("Motor TAG BLUE");
@@ -74,6 +77,11 @@ public class PlayerMotor : MonoBehaviour
         }
     }
 
+    public void Respawn()
+    {
+        _actualLife = _totalLife;
+        SetState(_spawnPos, 0f);
+    }
     public State ExecuteCommand(float horizontal, float vertical)
     {
         Vector3 movingDir = Vector3.zero;
