@@ -575,8 +575,6 @@
           }
         }
       ],
-      "EntitySenders": 3,
-      "GlobalSenders": 1,
       "Name": "MatchInfoEvent",
       "Guid": "999524ee-a1fe-4a72-a1dd-58a470a92bcb",
       "Groups": []

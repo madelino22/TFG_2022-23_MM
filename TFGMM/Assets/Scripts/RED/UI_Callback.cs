@@ -26,11 +26,17 @@ public class UI_Callback : GlobalEventListener
 
     public override void OnEvent(MatchInfoEvent evnt)
     {
-        if(evnt.Time <= 0)
+        if (evnt.Time <= 0)
         {
             _matchManager.endGameScene();
         }
-        else _matchManager.UpdateUI(evnt.BlueScore, evnt.RedScore, evnt.Time);
+        else
+        {
+            blue = evnt.BlueScore;
+            red = evnt.RedScore;
+            _matchManager.UpdateUI(evnt.BlueScore, evnt.RedScore, evnt.Time);
+           
+        }
     }
 
     // Update is called once per frame

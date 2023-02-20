@@ -157,7 +157,20 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
         evnt.TotalLife = _playerMotor.TotalLife;
         evnt.Send();
 
-        PlayerCommand plCommnad = new PlayerCommand();
+        if (_playerMotor.GetTeam() == 1)
+            blue++;
+        else if (_playerMotor.GetTeam() == 2)
+            red++;
+
+        MatchInfoEvent mIEvnt = MatchInfoEvent.Create(GlobalTargets.OnlyServer);
+        mIEvnt.BlueScore = blue;
+        mIEvnt.RedScore = red;
+
+
+        Debug.Log("Respawn");
+        mIEvnt.Time = time;
+        mIEvnt.Send();
+
     }
     public void loseLife()
     {

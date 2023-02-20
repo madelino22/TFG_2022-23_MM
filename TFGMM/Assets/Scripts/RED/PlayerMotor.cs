@@ -175,4 +175,9 @@ public class PlayerMotor : MonoBehaviour
         team = t;
         Debug.Log("SOY TEAM DESPUES MOTOR: " + team);
     }
+
+    public int GetTeam()
+    {
+        return team;
+    }
 }
