@@ -24,6 +24,8 @@ public class UI_Callback : GlobalEventListener
         timer = 0;
     }
 
+
+   
     public override void OnEvent(MatchInfoEvent evnt)
     {
         if (evnt.Time <= 0)
@@ -39,11 +41,40 @@ public class UI_Callback : GlobalEventListener
         }
     }
 
+    public override void OnEvent(PlayerDiedEvent evnt)
+    {
+        if (evnt.isRed) //el que ha muerto es rojo
+        {
+            blue++;
+
+            MatchInfoEvent event2 = MatchInfoEvent.Create(GlobalTargets.AllClients);
+            event2.BlueScore = blue;
+            event2.RedScore = red;
+            event2.Time = time;
+            event2.Send();
+
+            _matchManager.UpdateUI(blue, red, time);
+        }
+        else// if (!evnt.isRed)
+        {
+            red++;
+
+            MatchInfoEvent event2 = MatchInfoEvent.Create(GlobalTargets.AllClients);
+            event2.BlueScore = blue;
+            event2.RedScore = red;
+            event2.Time = time;
+            event2.Send();
+
+            _matchManager.UpdateUI(blue, red, time);
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
         if (BoltNetwork.IsServer)
         {
+            // PUNTUACION CON TECLAS
             if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
                 blue++;

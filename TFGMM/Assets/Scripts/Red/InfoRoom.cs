@@ -44,12 +44,14 @@ public class InfoRoom : GlobalEventListener
 
     public void Matchmaking()
     {
+        int n_jugadores = 0;
         //Crear partida si hay jugadores
-        while(playersConnections.Count >= PLAYEROOM)
+        while(n_jugadores < PLAYEROOM)
         {
             GoGameEvent evnt = GoGameEvent.Create(playersConnections[0]);
             playersConnections.RemoveAt(0);
             evnt.Send();
+            n_jugadores++;
         }
 
         //Devolver al menu a lo sjugadores que no hacen falta

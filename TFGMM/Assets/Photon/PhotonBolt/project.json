@@ -724,6 +724,27 @@
       "Name": "DisconectPlayerEvent",
       "Guid": "ceecac6c-5df7-4e2f-a21d-892cd884f9cf",
       "Groups": []
+    },
+    {
+      "$type": "Photon.Bolt.Compiler.EventDefinition, bolt.compiler",
+      "Properties": [
+        {
+          "Name": "isRed",
+          "Enabled": true,
+          "Expanded": true,
+          "ReplicationMode": 1,
+          "Priority": 1,
+          "PropertyType": {
+            "$type": "Photon.Bolt.Compiler.PropertyTypeBool, bolt.compiler"
+          },
+          "AssetSettings": {
+            "$type": "Photon.Bolt.Compiler.PropertyEventSettings, bolt.compiler"
+          }
+        }
+      ],
+      "Name": "PlayerDiedEvent",
+      "Guid": "28b1904f-183a-495f-bd92-476e0635df50",
+      "Groups": []
     }
   ],
   "ActiveGroup": "Everything"

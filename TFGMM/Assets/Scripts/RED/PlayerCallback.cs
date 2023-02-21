@@ -148,7 +148,7 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
 
     }
 
-
+    //NO SE USA
     public void Respawn()
     {
         _playerMotor.Respawn();
@@ -172,12 +172,16 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
         mIEvnt.Send();
 
     }
-    public void loseLife()
+
+    public void loseLife(bool redWasHit)
     {
         _playerMotor.ActualLife -= 500;
         if (_playerMotor.ActualLife <= 0)
         {
-            Respawn();
+            //Respawn();
+            PlayerDiedEvent evnt = PlayerDiedEvent.Create(GlobalTargets.OnlyServer);
+            evnt.isRed = redWasHit;
+            evnt.Send();
         }
         else
         {
