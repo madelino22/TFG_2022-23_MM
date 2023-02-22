@@ -26,14 +26,15 @@ public class PlayerMotor : MonoBehaviour
     private bool _firstState = true;
 
     [SerializeField]
-    private int _totalLife = 2600;
-    private int _actualLife = 2600;
+    private int _totalLife = 2500;
+    private int _actualLife = 2500;
     private Vector3 _spawnPos;
     public Vector3 SpawnPos { get => _spawnPos; set => _spawnPos = value; }
 
     private int _blueScore = 0;
     private int _redScore = 0;
     private int _timeMatch = 90;
+    private bool isd = false;
 
     private int team = -1;
 
@@ -79,8 +80,10 @@ public class PlayerMotor : MonoBehaviour
 
     public void Respawn()
     {
-        _actualLife = _totalLife;
+        isd = true;
+
         SetState(_spawnPos, 0f);
+        _firstState = true;
     }
     public State ExecuteCommand(float horizontal, float vertical)
     {
@@ -134,6 +137,12 @@ public class PlayerMotor : MonoBehaviour
 
         State stateMotor = new State();
         stateMotor.position = transform.position;
+        if (isd)
+        {
+            stateMotor.position = _spawnPos;
+            _rigidbody.position = _spawnPos;
+            isd = false;
+        }
 
         return stateMotor;
     }

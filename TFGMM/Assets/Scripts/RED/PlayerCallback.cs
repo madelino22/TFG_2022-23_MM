@@ -13,7 +13,8 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
 
     private int blue = 0;
     private int red = 0;
-    private int time = 90;
+    private int time = 2000;
+    bool isDead = false;
 
     private void Awake()
     {
@@ -152,44 +153,29 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
     public void Respawn()
     {
         _playerMotor.Respawn();
-        HealthEvent evnt = HealthEvent.Create(entity, EntityTargets.Everyone);
-        evnt.ActualLife = _playerMotor.TotalLife;
-        evnt.TotalLife = _playerMotor.TotalLife;
-        evnt.Send();
-
-        if (_playerMotor.GetTeam() == 1)
-            blue++;
-        else if (_playerMotor.GetTeam() == 2)
-            red++;
-
-        MatchInfoEvent mIEvnt = MatchInfoEvent.Create(GlobalTargets.OnlyServer);
-        mIEvnt.BlueScore = blue;
-        mIEvnt.RedScore = red;
-
-
-        Debug.Log("Respawn");
-        mIEvnt.Time = time;
-        mIEvnt.Send();
 
     }
 
     public void loseLife(bool redWasHit)
     {
-        _playerMotor.ActualLife -= 500;
-        if (_playerMotor.ActualLife <= 0)
+        this._playerMotor.ActualLife -= 500;
+        if (this._playerMotor.ActualLife <= 0)
         {
-            //Respawn();
-            PlayerDiedEvent evnt = PlayerDiedEvent.Create(GlobalTargets.OnlyServer);
-            evnt.isRed = redWasHit;
-            evnt.Send();
+            if (entity.IsControllerOrOwner)
+            {
+                Respawn();
+                PlayerDiedEvent evnt1 = PlayerDiedEvent.Create(GlobalTargets.OnlyServer);
+                evnt1.isRed = redWasHit;
+                evnt1.Send();
+            }
+            this._playerMotor.ActualLife = this._playerMotor.TotalLife;
         }
-        else
-        {
+
+        
             HealthEvent evnt = HealthEvent.Create(entity, EntityTargets.Everyone);
             evnt.ActualLife = _playerMotor.ActualLife;
             evnt.TotalLife = _playerMotor.TotalLife;
             evnt.Send();
-        }
     }
     public override void OnEvent(HealthEvent evnt)
     {

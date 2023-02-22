@@ -43,9 +43,10 @@ public class UI_Callback : GlobalEventListener
 
     public override void OnEvent(PlayerDiedEvent evnt)
     {
+
         if (evnt.isRed) //el que ha muerto es rojo
         {
-            blue++;
+            blue+=1;
 
             MatchInfoEvent event2 = MatchInfoEvent.Create(GlobalTargets.AllClients);
             event2.BlueScore = blue;
@@ -57,7 +58,7 @@ public class UI_Callback : GlobalEventListener
         }
         else// if (!evnt.isRed)
         {
-            red++;
+            red+=1;
 
             MatchInfoEvent event2 = MatchInfoEvent.Create(GlobalTargets.AllClients);
             event2.BlueScore = blue;
@@ -75,30 +76,30 @@ public class UI_Callback : GlobalEventListener
         if (BoltNetwork.IsServer)
         {
             // PUNTUACION CON TECLAS
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                blue++;
+            //if (Input.GetKeyDown(KeyCode.LeftArrow))
+            //{
+            //    blue++;
 
-                MatchInfoEvent evnt = MatchInfoEvent.Create(GlobalTargets.AllClients);
-                evnt.BlueScore = blue;
-                evnt.RedScore = red;
-                evnt.Time = time;
-                evnt.Send();
+            //    MatchInfoEvent evnt = MatchInfoEvent.Create(GlobalTargets.AllClients);
+            //    evnt.BlueScore = blue;
+            //    evnt.RedScore = red;
+            //    evnt.Time = time;
+            //    evnt.Send();
 
-                _matchManager.UpdateUI(blue, red, time);
-            }
-            if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                red++;
+            //    _matchManager.UpdateUI(blue, red, time);
+            //}
+            //if (Input.GetKeyDown(KeyCode.RightArrow))
+            //{
+            //    red++;
 
-                MatchInfoEvent evnt = MatchInfoEvent.Create(GlobalTargets.AllClients);
-                evnt.BlueScore = blue;
-                evnt.RedScore = red;
-                evnt.Time = time;
-                evnt.Send();
+            //    MatchInfoEvent evnt = MatchInfoEvent.Create(GlobalTargets.AllClients);
+            //    evnt.BlueScore = blue;
+            //    evnt.RedScore = red;
+            //    evnt.Time = time;
+            //    evnt.Send();
 
-                _matchManager.UpdateUI(blue, red, time);
-            }
+            //    _matchManager.UpdateUI(blue, red, time);
+            //}
 
             timer += Time.deltaTime;
             if (seg < timer)
@@ -115,14 +116,14 @@ public class UI_Callback : GlobalEventListener
 
                     _matchManager.UpdateUI(blue, red, time);
                 }
-                else
-                {
-                    MatchInfoEvent evnt = MatchInfoEvent.Create(GlobalTargets.AllClients);
-                    evnt.BlueScore = blue;
-                    evnt.RedScore = red;
-                    evnt.Time = time;
-                    evnt.Send();
-                }
+                //else
+                //{
+                //    MatchInfoEvent evnt = MatchInfoEvent.Create(GlobalTargets.AllClients);
+                //    evnt.BlueScore = blue;
+                //    evnt.RedScore = red;
+                //    evnt.Time = time;
+                //    evnt.Send();
+                //}
 
                 seg++;
             }

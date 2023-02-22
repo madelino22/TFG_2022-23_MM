@@ -3012,7 +3012,7 @@ MonoBehaviour:
   ammoCanvas: {fileID: 7064378639867840162}
   movementLimit: 0.05
   playerBall: {fileID: 3350997221010102679}
-  _totalLife: 2600
+  _totalLife: 2500
 --- !u!114 &5589480993132292906
 MonoBehaviour:
   m_ObjectHideFlags: 0
