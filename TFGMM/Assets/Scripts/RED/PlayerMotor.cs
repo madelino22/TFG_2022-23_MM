@@ -20,7 +20,7 @@ public class PlayerMotor : MonoBehaviour
     Transform playerBall;
 
     //[SerializeField] //VA RAPIDISIMO NO SE PORQUE. VALOR CABLEADO EN LA LINEA 125 (APROX)
-    //private float _speed = 1.1f; 
+    private float _speed = 3.0f; 
 
     private Vector3 _lastServerPos = Vector3.zero;
     private bool _firstState = true;
@@ -34,7 +34,7 @@ public class PlayerMotor : MonoBehaviour
     private int _blueScore = 0;
     private int _redScore = 0;
     private int _timeMatch = 90;
-    private bool isd = false;
+    //private bool isd = false;
 
     private int team = -1;
 
@@ -80,10 +80,11 @@ public class PlayerMotor : MonoBehaviour
 
     public void Respawn()
     {
-        isd = true;
+        //isd = true;
+        _firstState = true;
 
         SetState(_spawnPos, 0f);
-        _firstState = true;
+        
     }
     public State ExecuteCommand(float horizontal, float vertical)
     {
@@ -133,16 +134,18 @@ public class PlayerMotor : MonoBehaviour
 
         movingDir.Normalize();
         //movingDir *= _speed;
-        _rigidbody.velocity = movingDir * 3.0f;
+        _rigidbody.velocity = movingDir * _speed;
 
         State stateMotor = new State();
         stateMotor.position = transform.position;
-        if (isd)
-        {
-            stateMotor.position = _spawnPos;
-            _rigidbody.position = _spawnPos;
-            isd = false;
-        }
+        //NO HACE NADA (Y ADEMAS SOLO FUNCIONARIA EN EL CONTROLLER)
+        //if (isd)
+        //{
+        //    stateMotor.position = _spawnPos;
+        //    _rigidbody.position = _spawnPos;
+        //    isd = false;
+        //    _firstState = false;
+        //}
 
         return stateMotor;
     }
@@ -158,7 +161,7 @@ public class PlayerMotor : MonoBehaviour
             {
                 transform.position = position;
                 _firstState = false;
-                _lastServerPos = Vector3.zero;
+                _lastServerPos = Vector3.zero; //0 si estas actualizado?
             }
         }
         else
@@ -168,7 +171,8 @@ public class PlayerMotor : MonoBehaviour
                 _lastServerPos = position;
             }
 
-            transform.position += (_lastServerPos - transform.position) * 0.5f;
+            //HEMOS COMENTADO ESTA LINEA DE GRATIS
+            //transform.position += (_lastServerPos - transform.position) * 0.5f;
         }
     }
 

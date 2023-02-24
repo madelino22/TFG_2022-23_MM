@@ -40,119 +40,13 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
     {
         if (BoltNetwork.IsClient)
         {
-            /*if (Input.GetKeyDown(KeyCode.F))
-            {
-                _playerMotor.ActualLife += 200;
-                Debug.Log(state.LifePoints);
-                HealthEvent evnt = HealthEvent.Create(entity, EntityTargets.OnlySelf);
-                evnt.ActualLife = _playerMotor.ActualLife;
-                evnt.TotalLife = _playerMotor.TotalLife;
-                evnt.Send();
-            }
-            if (Input.GetKeyDown(KeyCode.P))
-            {
-                _playerMotor.ActualLife -= 200;
-                Debug.Log(state.LifePoints);
-                HealthEvent evnt = HealthEvent.Create(entity, EntityTargets.OnlySelf);
-                evnt.ActualLife = _playerMotor.ActualLife;
-                evnt.TotalLife = _playerMotor.TotalLife;
-                evnt.Send();
-            }*/
         }
-        //HealthEvent evnt = HealthEvent.Create(entity, EntityTargets.EveryoneExceptOwnerAndController);
-        //evnt.ActualLife = _playerMotor.ActualLife;
-        //evnt.TotalLife = _playerMotor.TotalLife;
-        //evnt.Send();
-
-
-        //if (Input.GetKeyDown(KeyCode.LeftArrow))
-        //{
-        //    _playerMotor.BlueScore = _playerMotor.BlueScore + 1;
-        //    MatchInfoEvent evnts = MatchInfoEvent.Create(entity, EntityTargets.EveryoneExceptOwner);
-        //    evnts.BlueScore = _playerMotor.BlueScore;
-        //    evnts.RedScore = _playerMotor.RedScore;
-        //    evnts.Time = _playerMotor.TimeMatch;
-        //    evnts.Send();
-        //}
-        //if (Input.GetKeyDown(KeyCode.RightArrow))
-        //{
-        //    _playerMotor.RedScore = _playerMotor.RedScore + 1;
-        //    MatchInfoEvent evnts = MatchInfoEvent.Create(entity, EntityTargets.EveryoneExceptOwner);
-        //    evnts.BlueScore = _playerMotor.BlueScore;
-        //    evnts.RedScore = _playerMotor.RedScore;
-        //    evnts.Time = _playerMotor.TimeMatch;
-        //    evnts.Send();
-        //}
-        //timer += Time.deltaTime;
-        //if (seg < timer)
-        //{
-        //    _playerMotor.TimeMatch = _playerMotor.TimeMatch - 1;
-        //    MatchInfoEvent evnts = MatchInfoEvent.Create(entity, EntityTargets.EveryoneExceptOwner);
-        //    evnts.BlueScore = _playerMotor.BlueScore;
-        //    evnts.RedScore = _playerMotor.RedScore;
-        //    evnts.Time = _playerMotor.TimeMatch;
-        //    evnts.Send();
-        //    seg++;
-        //}
-        //timer += Time.deltaTime;
-        //if (seg < timer)
-        //{
-        //    time--;
-
-        //    MatchInfoEvent evnts = MatchInfoEvent.Create(entity, EntityTargets.Everyone);
-        //    evnts.BlueScore = blue;
-        //    evnts.RedScore = red;
-        //    evnts.Time = time;
-        //    evnts.Send();
-        //    _matchManager.UpdateUI(evnts.BlueScore, evnts.RedScore, evnts.Time);
-        //    seg++;
-        //}
-
-        //if (entity.IsOwner)
-        //{
-        //    if (Input.GetKeyDown(KeyCode.LeftArrow))
-        //    {
-        //        blue++;
-        //        //MatchInfoEvent evnts = MatchInfoEvent.Create(entity, EntityTargets.Everyone);
-        //        //evnts.BlueScore = blue;
-        //        //evnts.RedScore = red;
-        //        //evnts.Time = time;
-        //        //evnts.Send();
-        //        _matchManager.UpdateUI(evnts.BlueScore, evnts.RedScore, evnts.Time);
-        //    }
-        //    if (Input.GetKeyDown(KeyCode.RightArrow))
-        //    {
-        //        red++;
-        //        //MatchInfoEvent evnts = MatchInfoEvent.Create(entity, EntityTargets.Everyone);
-        //        //evnts.BlueScore = blue;
-        //        //evnts.RedScore = red;
-        //        //evnts.Time = time;
-        //        //evnts.Send();
-        //        _matchManager.UpdateUI(evnts.BlueScore, evnts.RedScore, evnts.Time);
-        //    }
-
-        //    timer += Time.deltaTime;
-        //    if (seg < timer)
-        //    {
-        //        time--;
-
-        //        MatchInfoEvent evnts = MatchInfoEvent.Create(entity, EntityTargets.Everyone);
-        //        evnts.BlueScore = blue;
-        //        evnts.RedScore = red;
-        //        evnts.Time = time;
-        //        evnts.Send();
-        //        _matchManager.UpdateUI(evnts.BlueScore, evnts.RedScore, evnts.Time);
-
-        //        seg++;
-        //    }
-        //}
 
     }
 
-    //NO SE USA
     public void Respawn()
     {
-        _playerMotor.Respawn();
+        
 
     }
 
@@ -161,21 +55,30 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
         this._playerMotor.ActualLife -= 500;
         if (this._playerMotor.ActualLife <= 0)
         {
-            if (entity.IsControllerOrOwner)
+            
+
+            if (entity.IsControllerOrOwner) //si soy yo el que se ha muerto
             {
-                Respawn();
+                //RESPAWN
+                //VA IGUAL SI ESTA DENTRO DEL IF O NO
+                _playerMotor.Respawn(); //SOLO SE ESTA LLAMANDO EN EL IsControllerOrOwner
+
+                //ACTUALIZAR PUNTUACION
                 PlayerDiedEvent evnt1 = PlayerDiedEvent.Create(GlobalTargets.OnlyServer);
                 evnt1.isRed = redWasHit;
                 evnt1.Send();
             }
+
             this._playerMotor.ActualLife = this._playerMotor.TotalLife;
+
+            //VA IGUAL SI ESTA COMENTADO O NO
+            this._playerMotor.gameObject.transform.position = this._playerMotor.SpawnPos;
         }
 
-        
-            HealthEvent evnt = HealthEvent.Create(entity, EntityTargets.Everyone);
-            evnt.ActualLife = _playerMotor.ActualLife;
-            evnt.TotalLife = _playerMotor.TotalLife;
-            evnt.Send();
+        HealthEvent evnt = HealthEvent.Create(entity, EntityTargets.Everyone);
+        evnt.ActualLife = _playerMotor.ActualLife;
+        evnt.TotalLife = _playerMotor.TotalLife;
+        evnt.Send();
     }
     public override void OnEvent(HealthEvent evnt)
     {
