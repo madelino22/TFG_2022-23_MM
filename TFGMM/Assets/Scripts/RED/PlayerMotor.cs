@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Bolt;
 
-public class PlayerMotor : MonoBehaviour
+public class PlayerMotor : EntityEventListener<IPlayerState>
 {
     [SerializeField]
     private Camera _cam = null;
@@ -34,7 +35,7 @@ public class PlayerMotor : MonoBehaviour
     private int _blueScore = 0;
     private int _redScore = 0;
     private int _timeMatch = 90;
-    //private bool isd = false;
+    private bool isd = false;
 
     private int team = -1;
 
@@ -76,13 +77,16 @@ public class PlayerMotor : MonoBehaviour
             //    team = 1;
             //}
         }
+        else
+        {
+            _spawnPos = transform.position;
+        }
     }
 
     public void Respawn()
     {
-        //isd = true;
+        isd = true;
         _firstState = true;
-
         SetState(_spawnPos, 0f);
         
     }
@@ -139,13 +143,13 @@ public class PlayerMotor : MonoBehaviour
         State stateMotor = new State();
         stateMotor.position = transform.position;
         //NO HACE NADA (Y ADEMAS SOLO FUNCIONARIA EN EL CONTROLLER)
-        //if (isd)
-        //{
-        //    stateMotor.position = _spawnPos;
-        //    _rigidbody.position = _spawnPos;
-        //    isd = false;
-        //    _firstState = false;
-        //}
+        if (isd)
+        {
+            stateMotor.position = _spawnPos;
+            //_rigidbody.position = _spawnPos;
+            isd = false;
+            _firstState = false;
+        }
 
         return stateMotor;
     }

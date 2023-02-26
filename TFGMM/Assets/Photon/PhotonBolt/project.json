@@ -745,6 +745,29 @@
       "Name": "PlayerDiedEvent",
       "Guid": "28b1904f-183a-495f-bd92-476e0635df50",
       "Groups": []
+    },
+    {
+      "$type": "Photon.Bolt.Compiler.EventDefinition, bolt.compiler",
+      "Properties": [
+        {
+          "Name": "id",
+          "Enabled": true,
+          "Expanded": true,
+          "ReplicationMode": 1,
+          "Priority": 1,
+          "PropertyType": {
+            "$type": "Photon.Bolt.Compiler.PropertyTypeInteger, bolt.compiler",
+            "MaxValue": 255
+          },
+          "AssetSettings": {
+            "$type": "Photon.Bolt.Compiler.PropertyEventSettings, bolt.compiler"
+          }
+        }
+      ],
+      "GlobalSenders": 1,
+      "Name": "RespawnEvent",
+      "Guid": "8a7b6a87-5bf5-49bd-a961-7fd014efe96a",
+      "Groups": []
     }
   ],
   "ActiveGroup": "Everything"

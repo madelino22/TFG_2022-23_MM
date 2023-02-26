@@ -53,7 +53,6 @@ public class UI_Callback : GlobalEventListener
             event2.RedScore = red;
             event2.Time = time;
             event2.Send();
-
             _matchManager.UpdateUI(blue, red, time);
         }
         else// if (!evnt.isRed)

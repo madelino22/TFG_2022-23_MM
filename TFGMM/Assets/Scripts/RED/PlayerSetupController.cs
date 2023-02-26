@@ -28,6 +28,13 @@ public class PlayerSetupController : GlobalEventListener
 
     private BoltConnection[] entityConnection = new BoltConnection[6];
 
+    private int id=0;
+
+    public int getId()
+    {
+        return id;
+    }
+
     public override void SceneLoadLocalDone(string scene, IProtocolToken token)
     {
         if (!BoltNetwork.IsServer)
@@ -35,7 +42,23 @@ public class PlayerSetupController : GlobalEventListener
 
         }
     }
-     
+    public override void OnEvent(RespawnEvent evnt)
+    {
+        if (BoltNetwork.IsServer)
+        {
+            if (id % 2 == 0)
+            {
+                entity[id] = BoltNetwork.Instantiate(BoltPrefabs.Player2, spawners[id].transform.position, Quaternion.identity);
+                entity[id].AssignControl(evnt.RaisedBy);
+                entity[id].transform.Rotate(new Vector3(0, 180, 0));
+            }
+            else
+            {
+                entity[id] = BoltNetwork.Instantiate(BoltPrefabs.Player1, spawners[id].transform.position, Quaternion.identity);
+                entity[id].AssignControl(evnt.RaisedBy);
+            }
+        }
+    }
     public override void OnEvent(SpawnPlayerEvent evnt)
     {
         if (contador % 2 == 0) //RED 0,2,4
@@ -51,7 +74,7 @@ public class PlayerSetupController : GlobalEventListener
             entity[contador].AssignControl(evnt.RaisedBy);
         }
         entityConnection[contador] = evnt.RaisedBy;
-
+        id = contador;
         //Establecemos el numero del jugador en la sala
         setPlayerEvent evnts = setPlayerEvent.Create(evnt.RaisedBy, ReliabilityModes.ReliableOrdered);
         evnts.nPlayer = contador;

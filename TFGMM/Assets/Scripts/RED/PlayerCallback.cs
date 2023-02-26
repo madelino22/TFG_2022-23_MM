@@ -55,19 +55,23 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
         this._playerMotor.ActualLife -= 500;
         if (this._playerMotor.ActualLife <= 0)
         {
-            
+
+            _playerMotor.Respawn();
 
             if (entity.IsControllerOrOwner) //si soy yo el que se ha muerto
             {
                 //RESPAWN
                 //VA IGUAL SI ESTA DENTRO DEL IF O NO
-                _playerMotor.Respawn(); //SOLO SE ESTA LLAMANDO EN EL IsControllerOrOwner
+ //SOLO SE ESTA LLAMANDO EN EL IsControllerOrOwner
 
                 //ACTUALIZAR PUNTUACION
                 PlayerDiedEvent evnt1 = PlayerDiedEvent.Create(GlobalTargets.OnlyServer);
                 evnt1.isRed = redWasHit;
                 evnt1.Send();
             }
+            //RespawnEvent evento = RespawnEvent.Create(GlobalTargets.OnlyServer);
+            //evento.id = gameObject.GetComponent<PlayerSetupController>().getId();
+            //evento.Send();
 
             this._playerMotor.ActualLife = this._playerMotor.TotalLife;
 
