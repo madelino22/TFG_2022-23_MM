@@ -76,7 +76,7 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
             this._playerMotor.ActualLife = this._playerMotor.TotalLife;
 
             //VA IGUAL SI ESTA COMENTADO O NO
-            this._playerMotor.gameObject.transform.position = this._playerMotor.SpawnPos;
+            //this._playerMotor.gameObject.transform.position = this._playerMotor.SpawnPos;
         }
 
         HealthEvent evnt = HealthEvent.Create(entity, EntityTargets.Everyone);

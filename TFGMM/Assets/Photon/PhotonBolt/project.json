@@ -9,11 +9,13 @@
           "Name": "Transform",
           "Enabled": true,
           "Expanded": true,
+          "ReplicationMode": 1,
           "Priority": 1,
           "PropertyType": {
             "$type": "Photon.Bolt.Compiler.PropertyTypeTransform, bolt.compiler",
             "PositionSelection": 14,
             "RotationSelection": 4,
+            "Space": 1,
             "PositionCompression": [
               {
                 "MinValue": -163,
@@ -764,7 +766,6 @@
           }
         }
       ],
-      "GlobalSenders": 1,
       "Name": "RespawnEvent",
       "Guid": "8a7b6a87-5bf5-49bd-a961-7fd014efe96a",
       "Groups": []

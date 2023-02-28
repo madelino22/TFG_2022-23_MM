@@ -88,7 +88,11 @@ public class PlayerMotor : EntityEventListener<IPlayerState>
         isd = true;
         _firstState = true;
         SetState(_spawnPos, 0f);
-        
+        _lastServerPos = _spawnPos;
+        RespawnEvent evnt1 = RespawnEvent.Create(GlobalTargets.OnlyServer);
+        evnt1.id = 1;
+        evnt1.Send();
+
     }
     public State ExecuteCommand(float horizontal, float vertical)
     {

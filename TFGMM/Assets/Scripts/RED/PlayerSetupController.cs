@@ -22,7 +22,7 @@ public class PlayerSetupController : GlobalEventListener
 
     private int contador = 0; // Team lejos (0,2) || Team cerca (3,5)
 
-    private BoltEntity[] entity = new BoltEntity[6];
+    private BoltEntity[] entities = new BoltEntity[6];
 
     private BoltEntity entityCanvas;
 
@@ -44,34 +44,35 @@ public class PlayerSetupController : GlobalEventListener
     }
     public override void OnEvent(RespawnEvent evnt)
     {
-        if (BoltNetwork.IsServer)
-        {
-            if (id % 2 == 0)
-            {
-                entity[id] = BoltNetwork.Instantiate(BoltPrefabs.Player2, spawners[id].transform.position, Quaternion.identity);
-                entity[id].AssignControl(evnt.RaisedBy);
-                entity[id].transform.Rotate(new Vector3(0, 180, 0));
-            }
-            else
-            {
-                entity[id] = BoltNetwork.Instantiate(BoltPrefabs.Player1, spawners[id].transform.position, Quaternion.identity);
-                entity[id].AssignControl(evnt.RaisedBy);
-            }
-        }
+        if (entities[0].GetComponentInChildren<PlayerMotor>())
+
+            entities[0].GetComponentInChildren<PlayerMotor>().gameObject.transform.position= spawners[0].transform.position;
+            //if (id % 2 == 0)
+            //{
+            //    entity[id] = BoltNetwork.Instantiate(BoltPrefabs.Player2, spawners[id].transform.position, Quaternion.identity);
+            //    entity[id].AssignControl(evnt.RaisedBy);
+            //    entity[id].transform.Rotate(new Vector3(0, 180, 0));
+            //}
+            //else
+            //{
+            //    entity[id] = BoltNetwork.Instantiate(BoltPrefabs.Player1, spawners[id].transform.position, Quaternion.identity);
+            //    entity[id].AssignControl(evnt.RaisedBy);
+            //}
+        
     }
     public override void OnEvent(SpawnPlayerEvent evnt)
     {
         if (contador % 2 == 0) //RED 0,2,4
         {
-            entity[contador] = BoltNetwork.Instantiate(BoltPrefabs.Player2, spawners[contador].transform.position, Quaternion.identity);
-            entity[contador].AssignControl(evnt.RaisedBy);
-            entity[contador].transform.Rotate(new Vector3(0, 180, 0));
+            entities[contador] = BoltNetwork.Instantiate(BoltPrefabs.Player2, spawners[contador].transform.position, Quaternion.identity);
+            entities[contador].AssignControl(evnt.RaisedBy);
+            entities[contador].transform.Rotate(new Vector3(0, 180, 0));
             //entity[contador].GetComponent<PlayerCallback>().enabled = true;
         }
         else //BLUE 1,3,5
         {
-            entity[contador] = BoltNetwork.Instantiate(BoltPrefabs.Player1, spawners[contador].transform.position, Quaternion.identity);
-            entity[contador].AssignControl(evnt.RaisedBy);
+            entities[contador] = BoltNetwork.Instantiate(BoltPrefabs.Player1, spawners[contador].transform.position, Quaternion.identity);
+            entities[contador].AssignControl(evnt.RaisedBy);
         }
         entityConnection[contador] = evnt.RaisedBy;
         id = contador;
@@ -101,7 +102,7 @@ public class PlayerSetupController : GlobalEventListener
     {
         BoltLog.Warn("SE destruye el jugador " + (int)evnt.numPlayer);
 
-        BoltNetwork.Destroy(entity[(int)evnt.numPlayer].gameObject);
+        BoltNetwork.Destroy(entities[(int)evnt.numPlayer].gameObject);
 
         entityConnection[(int)evnt.numPlayer].Disconnect();
 
