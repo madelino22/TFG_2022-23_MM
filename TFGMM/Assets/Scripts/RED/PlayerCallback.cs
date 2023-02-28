@@ -55,7 +55,6 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
         this._playerMotor.ActualLife -= 500;
         if (this._playerMotor.ActualLife <= 0)
         {
-
             _playerMotor.Respawn();
 
             if (entity.IsControllerOrOwner) //si soy yo el que se ha muerto

@@ -28,12 +28,12 @@ public class PlayerSetupController : GlobalEventListener
 
     private BoltConnection[] entityConnection = new BoltConnection[6];
 
-    private int id=0;
+    //private int id=0;
 
-    public int getId()
-    {
-        return id;
-    }
+    //public int getId()
+    //{
+    //    return id;
+    //}
 
     public override void SceneLoadLocalDone(string scene, IProtocolToken token)
     {
@@ -44,9 +44,9 @@ public class PlayerSetupController : GlobalEventListener
     }
     public override void OnEvent(RespawnEvent evnt)
     {
-        if (entities[0].GetComponentInChildren<PlayerMotor>())
-
-            entities[0].GetComponentInChildren<PlayerMotor>().gameObject.transform.position= spawners[0].transform.position;
+        int id = evnt.id;
+        if (entities[id].GetComponentInChildren<PlayerMotor>())
+            entities[id].GetComponentInChildren<PlayerMotor>().gameObject.transform.position= spawners[id].transform.position;
             //if (id % 2 == 0)
             //{
             //    entity[id] = BoltNetwork.Instantiate(BoltPrefabs.Player2, spawners[id].transform.position, Quaternion.identity);
@@ -74,8 +74,9 @@ public class PlayerSetupController : GlobalEventListener
             entities[contador] = BoltNetwork.Instantiate(BoltPrefabs.Player1, spawners[contador].transform.position, Quaternion.identity);
             entities[contador].AssignControl(evnt.RaisedBy);
         }
+        entities[contador].GetComponentInChildren<PlayerMotor>().setID(contador);
         entityConnection[contador] = evnt.RaisedBy;
-        id = contador;
+        //id = contador;
         //Establecemos el numero del jugador en la sala
         setPlayerEvent evnts = setPlayerEvent.Create(evnt.RaisedBy, ReliabilityModes.ReliableOrdered);
         evnts.nPlayer = contador;
