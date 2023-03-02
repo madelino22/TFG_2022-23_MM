@@ -39,7 +39,8 @@ public class PlayerSetupController : GlobalEventListener
     {
         if (!BoltNetwork.IsServer)
         {
-
+            SpawnPlayerEvent evnt2 = SpawnPlayerEvent.Create(GlobalTargets.OnlyServer);
+            evnt2.Send();
         }
     }
     public override void OnEvent(RespawnEvent evnt)

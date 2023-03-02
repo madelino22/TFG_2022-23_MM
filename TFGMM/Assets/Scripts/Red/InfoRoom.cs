@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System;
 using Photon.Bolt.Matchmaking;
+using UdpKit;
 
 public class InfoRoom : GlobalEventListener
 {
@@ -15,14 +16,14 @@ public class InfoRoom : GlobalEventListener
     [SerializeField]
     TextMesh textoTotal;
 
+    private string sessionID = "NoRoom";
+
+    private float timer = 0;
+    private bool startTimer = false;
+
     private int connections = 0;
 
     private List<BoltConnection> playersConnections = new List<BoltConnection>();
-
-    void Awake()
-    {
-        DontDestroyOnLoad(transform.gameObject);
-    }
 
     public override void SceneLoadLocalDone(string scene, IProtocolToken token)
     {
@@ -37,35 +38,112 @@ public class InfoRoom : GlobalEventListener
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            BoltLog.Warn("EMPEZAMOS MATCHMAKING");
             Matchmaking();
+        }
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            PhotonRoomProperties roomProperties = new PhotonRoomProperties();
+
+            roomProperties.AddRoomProperty("m", "BOLTMapa"); // ex: map id
+
+            roomProperties.IsOpen = true;
+            roomProperties.IsVisible = true;
+
+            BoltMatchmaking.CreateSession(
+                    sessionID: "0",
+                    token: roomProperties,
+                    sceneToLoad: "BOLTMapa"
+                );
+
+            BoltLog.Warn("Otra room");
+        }
+        //if (startTimer)
+        //    timer += Time.deltaTime;
+        //if(timer >= 5000)
+        //{
+
+        //}
+        if (startTimer)
+        {
+            BoltLauncher.StartClient();
+
+            BoltMatchmaking.JoinSession(sessionID);
+            BoltLog.Warn("AAAAA");
+
+            if (BoltMatchmaking.CurrentSession.HostName != "Test")
+            {
+                SceneManager.LoadScene("BOLTMapa");
+                BoltLog.Warn("BBBB");
+
+                SpawnPlayerEvent evnt2 = SpawnPlayerEvent.Create(GlobalTargets.OnlyServer);
+                evnt2.Send();
+            }
+
+            // PROBAR SI ESTO FUNCIONA ----------------------------------------------------
+
+            //else
+            //{
+            //    BoltLauncher.Shutdown();
+            //}
         }
     }
 
     public void Matchmaking()
     {
-        int n_jugadores = 0;
+        int contador = 0;
+        int numPlayers = playersConnections.Count;
         //Crear partida si hay jugadores
-        while(n_jugadores < PLAYEROOM)
+        while (numPlayers >= PLAYEROOM)
         {
             GoGameEvent evnt = GoGameEvent.Create(playersConnections[0]);
-            playersConnections.RemoveAt(0);
+            if (contador < PLAYEROOM)
+                evnt.ID = "0";
+            else
+                evnt.ID = "1";
             evnt.Send();
-            n_jugadores++;
+
+            playersConnections.RemoveAt(0);
+            contador++;
+            numPlayers--;
         }
 
-        //Devolver al menu a lo sjugadores que no hacen falta
-        foreach(BoltConnection conection in playersConnections)
+        //Devolver al menu a los jugadores que no hacen falta
+        foreach (BoltConnection conection in playersConnections)
         {
             NoGameFoundEvent evnt = NoGameFoundEvent.Create(conection);
             evnt.Send();
-            BoltLog.Warn("BORRAMOS UN JUGADOR");
-
         }
         playersConnections.Clear();
 
-        SceneManager.LoadScene("BOLTMapa");
+        //SceneManager.LoadScene("BOLTMapa");
     }
+
+    public override void Disconnected(BoltConnection connection)
+    {
+        //BoltLauncher.Shutdown();
+        //BoltNetwork.Shutdown();
+        //BoltLog.Warn("Me desconecte");
+        //if (sessionID == "0")
+        //{
+        //    var session = BoltMatchmaking.CurrentSession;
+        //    BoltLog.Warn(session.HostName);
+
+        //    BoltLauncher.StartClient();      
+        //}
+        //else if (sessionID == "1")
+        //{
+        //    BoltLog.Warn("Esperando sala 1");
+        //    BoltLauncher.StartClient();
+
+        //}
+        BoltLauncher.StartClient();
+
+        BoltMatchmaking.JoinSession(sessionID);
+        BoltLog.Warn("Session joined");
+
+        base.Disconnected(connection);
+    }
+
 
     // ----------------------------------  EVENTOS SERVER  --------------------------------------------
 
@@ -86,17 +164,24 @@ public class InfoRoom : GlobalEventListener
     {
         BoltLog.Warn("JUGADOR ANTES DE DESCONECTADO");
         evnt.RaisedBy.Disconnect();
+        connections--;
         BoltLog.Warn("JUGADOR DESCONECTADO");
     }
-
     // ----------------------------------  EVENTOS CLIENTES  --------------------------------------------
 
     public override void OnEvent(GoGameEvent evnt)
     {
-        SceneManager.LoadScene("BOLTMapa");
+        //SceneManager.LoadScene("BOLTMapa");
+        sessionID = evnt.ID;
+        BoltLog.Warn("Guardo ID: " + sessionID);
 
-        SpawnPlayerEvent evnt2 = SpawnPlayerEvent.Create(GlobalTargets.OnlyServer);
+        startTimer = true;
+
+        DisconectPlayerEvent evnt2 = DisconectPlayerEvent.Create(GlobalTargets.OnlyServer);
         evnt2.Send();
+        BoltLog.Warn("Cambiar jugador servidor/sala " + sessionID);
+        //SpawnPlayerEvent evnt2 = SpawnPlayerEvent.Create(GlobalTargets.OnlyServer);
+        //evnt2.Send();
     }
     public override void OnEvent(NoGameFoundEvent evnt)
     {
@@ -112,6 +197,7 @@ public class InfoRoom : GlobalEventListener
     {
         textoTotal.text = evnt.numPlayersConnected.ToString();
     }
+
 
 
 }
