@@ -34,7 +34,7 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider collision)
     { 
-        if (BoltNetwork.IsClient)
+        if (BoltNetwork.IsServer)
         {
             Debug.Log("Bullet Collision");
             GameObject target = collision.gameObject;
