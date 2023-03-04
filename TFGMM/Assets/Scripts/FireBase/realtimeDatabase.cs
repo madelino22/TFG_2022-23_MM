@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Firebase.Database;
 using UnityEngine.UI;
+using Photon.Bolt;
 
-public class realtimeDatabase : MonoBehaviour
+public class realtimeDatabase : GlobalEventListener
 {
     DatabaseReference reference;
 
@@ -18,26 +19,36 @@ public class realtimeDatabase : MonoBehaviour
     {
         reference = FirebaseDatabase.DefaultInstance.RootReference;
         readData();
+    }
+
+    public override void OnEvent(saveGameEvent evnt)
+    {
         saveMatch();
     }
 
     public void saveMatch()
     {
-        string json2 = JsonUtility.ToJson(new Match());
+        string json2 = JsonUtility.ToJson(new Match()); //Cambiar el new Match por los datos reales de la partida
 
-        int nGames = 0;
+
+        //Saber que numero de partida es la siguiente
+        int nMatches = 0;
         reference.Child("Matches").GetValueAsync().ContinueWith(task =>
         {
             if (task.IsCompleted)
             {
                 DataSnapshot snapshot = task.Result;
 
-                nGames = int.Parse(snapshot.Child("nMatches").Value.ToString());
+                nMatches = int.Parse(snapshot.Child("nMatches").Value.ToString());
+            }
+            else
+            {
+                Debug.Log("No se han encontrado el numero de partidas totales");
             }
         });
 
-
-        reference.Child("Matches").Child("Partida " + nGames.ToString()).SetRawJsonValueAsync(json2).ContinueWith(task =>
+        //Crear la partida en la base de datos
+        reference.Child("Matches").Child("Partida " + nMatches.ToString()).SetRawJsonValueAsync(json2).ContinueWith(task =>
         {
               if (task.IsCompleted)
               {
@@ -50,7 +61,9 @@ public class realtimeDatabase : MonoBehaviour
         }
        );
 
-        Match aux = new Match();
+        Match aux = new Match(); //Cambiar por los datos reales de la partida
+
+        //Guardar que ha hecho cada jugador en la partida
 
         for (int j = 0; j < 6; j++)
         {
@@ -58,7 +71,7 @@ public class realtimeDatabase : MonoBehaviour
 
             Debug.Log(json);
 
-            reference.Child("Matches").Child("Partida " + nGames.ToString()).Child(aux.players[j].name).SetRawJsonValueAsync(json).ContinueWith(task =>
+            reference.Child("Matches").Child("Partida " + nMatches.ToString()).Child(aux.players[j].name).SetRawJsonValueAsync(json).ContinueWith(task =>
             {
                 if (task.IsCompleted)
                 {
@@ -71,6 +84,35 @@ public class realtimeDatabase : MonoBehaviour
             }
             );
         }
+
+        //Guardar que se ha jugado una partida mas
+
+        nMatches++;
+
+        string json3 = JsonUtility.ToJson(nMatches);
+
+        reference.Child("Matches").GetValueAsync().ContinueWith(task =>
+        {
+            if (task.IsCompleted)
+            {
+                reference.Child("nMatches").SetRawJsonValueAsync(json3).ContinueWith(task =>
+                {
+                    if (task.IsCompleted)
+                    {
+                        //Debug.Log("saved the match");
+                    }
+                    else
+                    {
+                        //Debug.Log("No se han enviado los datos");
+                    }
+                });
+            }
+            else
+            {
+                Debug.Log("No se han encontrado el numero de partidas totales");
+            }
+        });
+
     }
 
     public void readData()
@@ -115,6 +157,10 @@ public class realtimeDatabase : MonoBehaviour
               //  Debug.Log("Error checking if player exist ");
             }
         });
+    }
+    public override void OnEvent(savePlayerStatsEvent evnt)
+    {
+        saveData();
     }
 
     public void saveData() //if player doesn't exist in firebase

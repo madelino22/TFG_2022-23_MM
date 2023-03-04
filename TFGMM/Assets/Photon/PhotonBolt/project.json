@@ -784,6 +784,27 @@
       "Name": "RespawnEvent",
       "Guid": "8a7b6a87-5bf5-49bd-a961-7fd014efe96a",
       "Groups": []
+    },
+    {
+      "$type": "Photon.Bolt.Compiler.EventDefinition, bolt.compiler",
+      "Properties": [],
+      "Name": "NewEvent",
+      "Guid": "2dd10ec1-bfd1-4087-bbe0-acab8e560b11",
+      "Groups": []
+    },
+    {
+      "$type": "Photon.Bolt.Compiler.EventDefinition, bolt.compiler",
+      "Properties": [],
+      "Name": "saveGameEvent",
+      "Guid": "1608751e-a043-4248-9260-79f9ccefc960",
+      "Groups": []
+    },
+    {
+      "$type": "Photon.Bolt.Compiler.EventDefinition, bolt.compiler",
+      "Properties": [],
+      "Name": "savePlayerStatsEvent",
+      "Guid": "cf6d2d02-5e5e-44ca-a77a-9fe8028c8b64",
+      "Groups": []
     }
   ],
   "ActiveGroup": "Everything"

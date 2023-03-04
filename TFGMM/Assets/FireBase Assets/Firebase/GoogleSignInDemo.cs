@@ -216,7 +216,7 @@ public class GoogleSignInDemo : MonoBehaviour
         {
             AddStatusText("Canceled");
         }
-        else
+        else //Envia al jugador a la escena del menu
         {
             AddStatusText("Welcome: " + task.Result.DisplayName + "!");
             ComInfo.setPlayerName(task.Result.DisplayName);

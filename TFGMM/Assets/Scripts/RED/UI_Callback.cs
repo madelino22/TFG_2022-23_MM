@@ -115,15 +115,13 @@ public class UI_Callback : GlobalEventListener
 
                     _matchManager.UpdateUI(blue, red, time);
                 }
-                //else
-                //{
-                //    MatchInfoEvent evnt = MatchInfoEvent.Create(GlobalTargets.AllClients);
-                //    evnt.BlueScore = blue;
-                //    evnt.RedScore = red;
-                //    evnt.Time = time;
-                //    evnt.Send();
-                //}
 
+                //Si el tiempo se ha acabao el server manda mensaje de guardar estado de partida
+                if (time <= 0)
+                {
+                    saveGameEvent evnt = saveGameEvent.Create(GlobalTargets.OnlyServer);
+                    evnt.Send();
+                }
                 seg++;
             }
         }

@@ -62,15 +62,17 @@ public class MatchManager : GlobalEventListener
             Debug.Log("EMpate");
             ComInfo.setGameResult(result.draw);
         }
-;
+
         SceneManager.LoadScene("WinLose", LoadSceneMode.Single);
 
         deletePlayersEvent del = deletePlayersEvent.Create(GlobalTargets.OnlyServer);
         del.numPlayer = nPlayerRoom;
         del.Send();
 
+        //AQUI ESCRIBIR LA INFO PARA ENVIARLA A FIREBASE DEL JUGADOR
 
-        //AQUI ESCRIBIR LA INFO PARA ENVIARLA A FIREBASE
+        savePlayerStatsEvent msg = savePlayerStatsEvent.Create(GlobalTargets.OnlySelf);
+        msg.Send();
     }
 
     public void UpdateUI(int blueScore, int redScore, int time)
