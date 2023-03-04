@@ -33,23 +33,25 @@ public class Bullet : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider collision)
-    { 
+    {
+        Debug.Log("Bullet Collision");
+        GameObject target = collision.gameObject;
+
+        //COMPROBAR COLISION
+        if (target.CompareTag("Muro"))
+            BoltNetwork.Destroy(this.gameObject);
+
+        else if (wasFiredByRed && target.CompareTag("Blue") //Rojo le da a azul
+            || !wasFiredByRed && target.CompareTag("Red")) // Azul le da a rojo
+        {
+            bool redWasHit = !wasFiredByRed; //rojo es golpeado si la bala la disparo azul
+            if (BoltNetwork.IsServer)
+                target.GetComponent<PlayerCallback>().loseLife(redWasHit);
+            BoltNetwork.Destroy(this.gameObject);
+        }
         if (BoltNetwork.IsServer)
         {
-            Debug.Log("Bullet Collision");
-            GameObject target = collision.gameObject;
-
-            //COMPROBAR COLISION
-            if (target.CompareTag("Muro")) 
-                BoltNetwork.Destroy(this.gameObject);
-
-            else if (wasFiredByRed && target.CompareTag("Blue") //Rojo le da a azul
-                || !wasFiredByRed && target.CompareTag("Red")) // Azul le da a rojo
-            {
-                bool redWasHit = !wasFiredByRed; //rojo es golpeado si la bala la disparo azul
-                target.GetComponent<PlayerCallback>().loseLife(redWasHit);
-                BoltNetwork.Destroy(this.gameObject);
-            }
+            
 
 
 
