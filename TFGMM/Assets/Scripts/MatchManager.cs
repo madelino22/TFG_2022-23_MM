@@ -1,3 +1,4 @@
+using Firebase.Database;
 using Photon.Bolt;
 using Photon.Bolt.Utils;
 using System.Collections;
@@ -31,8 +32,14 @@ public class MatchManager : GlobalEventListener
 
     private int nPlayerRoom = 0;
 
+    DatabaseReference reference;
+
+    //Info de lo que ha hecho el jugador en esta partida
+    RoundData actualGame = new RoundData();
+
     void Start()
     {
+        reference = FirebaseDatabase.DefaultInstance.RootReference;
         redPointsText.text = redPoints.ToString();
         bluePointsText.text = bluePoints.ToString();
         timeText.text = "1:30";
@@ -59,7 +66,7 @@ public class MatchManager : GlobalEventListener
         }
         else
         {
-            Debug.Log("EMpate");
+            Debug.Log("Empate");
             ComInfo.setGameResult(result.draw);
         }
 
@@ -69,10 +76,82 @@ public class MatchManager : GlobalEventListener
         del.numPlayer = nPlayerRoom;
         del.Send();
 
-        //AQUI ESCRIBIR LA INFO PARA ENVIARLA A FIREBASE DEL JUGADOR
+        //ENVIAR INFO FIREBASE DEL JUGADOR
 
-        savePlayerStatsEvent msg = savePlayerStatsEvent.Create(GlobalTargets.OnlySelf);
-        msg.Send();
+        //Cogemos la info del jugador
+        UserHistory userHistory = ComInfo.getPlayerData();
+
+        //Actualizamos con lo hecho en la partida
+        userHistory.UpdateUserHistory(actualGame);
+
+        //Guardamos la info con la partida actualizada
+        ComInfo.setPlayerData(userHistory);
+
+        saveData(userHistory);
+    }
+
+    private void saveData(UserHistory userHistory) //if player doesn't exist in firebase
+    {
+        string json = JsonUtility.ToJson(userHistory);
+
+        Debug.Log(json);
+
+        //Save base data
+        reference.Child("User").Child(userHistory.userName).SetRawJsonValueAsync(json).ContinueWith(task =>
+        {
+            if (task.IsCompleted)
+            {
+                //  Debug.Log("saved Data Profile");
+            }
+            else
+            {
+                //   Debug.Log("No se han enviado los datos");
+            }
+        }
+        );
+
+
+        for (int i = 0; i < 5; i++)
+        {
+            json = userHistory.saveGames(i);
+            Debug.Log(i);
+            Debug.Log(json);
+
+            reference.Child("User").Child(userHistory.userName).Child("zzzLastGames").Child("Partida" + i).SetRawJsonValueAsync(json).ContinueWith(task =>
+            {
+                if (task.IsCompleted)
+                {
+                    //   Debug.Log("saved games");
+                }
+                else
+                {
+                    //     Debug.Log("No se ha guardado la partida");
+                }
+            }
+            );
+
+            for (int j = 0; j < 6; j++)
+            {
+                json = userHistory.saveGamePlayer(i, j);
+
+                //  Debug.Log(i);
+                //  Debug.Log(json);
+
+                reference.Child("User").Child(userHistory.userName).Child("zzzLastGames").Child("Partida" + i).Child(userHistory.lastMatches[i].players[j].name).SetRawJsonValueAsync(json).ContinueWith(task =>
+                {
+                    if (task.IsCompleted)
+                    {
+                        //       Debug.Log("saved players of game");
+                    }
+                    else
+                    {
+                        //      Debug.Log("No se ha guardado al jugador");
+                    }
+                }
+                );
+            }
+        }
+
     }
 
     public void UpdateUI(int blueScore, int redScore, int time)
@@ -102,55 +181,6 @@ public class MatchManager : GlobalEventListener
         //{
         //    playerKill(5, 0, 1);//0 blue 1 red por ejemplo
         //}
-    }
-
-    private void updateTime()
-    {
-        time -= Time.deltaTime;
-
-        int mins = (int)(time / 60);
-        int secs = (int)(time % 60);
-
-
-        if (mins > 0)
-        {
-            string aux;
-
-            aux = mins.ToString() + ":";
-            if (secs > 9)
-            {
-                aux = aux + secs.ToString();
-            }
-            else
-            {
-                aux = aux + "0" + secs.ToString();
-            }
-
-            timeText.text = aux;
-        }
-        else if (secs > 0)
-        {
-            timeText.text = secs.ToString();
-        }
-        else
-        {
-            if (redPoints > bluePoints)
-            {
-                if (myTeam == teams.red) ComInfo.setGameResult(result.win);
-                else ComInfo.setGameResult(result.lose);
-            }
-            else if (bluePoints > redPoints)
-            {
-                if (myTeam == teams.red) ComInfo.setGameResult(result.lose);
-                else ComInfo.setGameResult(result.win);
-            }
-            else
-            {
-                ComInfo.setGameResult(result.draw);
-            }
-
-            // SceneManager.LoadScene("WinLose", LoadSceneMode.Single);
-        }
     }
 
     public void playerKill(int playerThatKill, int playerKilled, int teamScored)//Cuando lo metais online cambiar los parametros para que se sepa quien hizo la kill...

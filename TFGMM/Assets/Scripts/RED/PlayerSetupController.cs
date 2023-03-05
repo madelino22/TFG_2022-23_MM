@@ -1,6 +1,7 @@
 using UnityEngine;
 using Photon.Bolt;
 using Photon.Bolt.Utils;
+using Firebase.Database;
 
 public class PlayerSetupController : GlobalEventListener
 {
@@ -28,6 +29,15 @@ public class PlayerSetupController : GlobalEventListener
 
     private BoltConnection[] entityConnection = new BoltConnection[6];
 
+    //Referencia a Firebase
+    DatabaseReference reference;
+
+    Match partida;
+
+    public void Awake()
+    {
+        reference = FirebaseDatabase.DefaultInstance.RootReference;
+    }
     public override void SceneLoadLocalDone(string scene, IProtocolToken token)
     {
         if (!BoltNetwork.IsServer)
@@ -80,6 +90,7 @@ public class PlayerSetupController : GlobalEventListener
 
     public override void OnEvent(StartMatchEvent evnt)
     {
+        partida = new Match(); //Creamos donde se va a guardar toda la info
         entityCanvas = BoltNetwork.Instantiate(BoltPrefabs.Canvas, new Vector3(0,0,0), Quaternion.identity);
     }
 
@@ -101,5 +112,99 @@ public class PlayerSetupController : GlobalEventListener
     {
         SpawnPlayerEvent evnt = SpawnPlayerEvent.Create(GlobalTargets.OnlyServer);
         evnt.Send();
+    }
+
+    //------------------------------------SEND MATCH INFO-------------------------------------------------------
+
+    public override void OnEvent(saveGameEvent evnt)
+    {
+        saveMatch();
+    }
+
+    public void saveMatch()
+    {
+        string json2 = JsonUtility.ToJson(partida); //Cambiar el new Match por los datos reales de la partida
+
+
+        //Saber que numero de partida es la siguiente
+        int nMatches = 0;
+        reference.Child("Matches").GetValueAsync().ContinueWith(task =>
+        {
+            if (task.IsCompleted)
+            {
+                DataSnapshot snapshot = task.Result;
+
+                nMatches = int.Parse(snapshot.Child("nMatches").Value.ToString());
+            }
+            else
+            {
+                Debug.Log("No se han encontrado el numero de partidas totales");
+            }
+        });
+
+        //Crear la partida en la base de datos
+        reference.Child("Matches").Child("Partida " + nMatches.ToString()).SetRawJsonValueAsync(json2).ContinueWith(task =>
+        {
+            if (task.IsCompleted)
+            {
+                //Debug.Log("saved the match");
+            }
+            else
+            {
+                //Debug.Log("No se han enviado los datos");
+            }
+        }
+       );
+
+        //Guardar que ha hecho cada jugador en la partida
+
+        for (int j = 0; j < 6; j++)
+        {
+            string json = partida.playerJSON(j);
+
+            Debug.Log(json);
+
+            reference.Child("Matches").Child("Partida " + nMatches.ToString()).Child(partida.players[j].name).SetRawJsonValueAsync(json).ContinueWith(task =>
+            {
+                if (task.IsCompleted)
+                {
+                    //Debug.Log("saved players of game");
+                }
+                else
+                {
+                    //Debug.Log("No se ha guardado al jugador");
+                }
+            }
+            );
+        }
+
+        //Guardar que se ha jugado una partida mas
+
+        nMatches++;
+
+        string json3 = JsonUtility.ToJson(nMatches);
+
+        reference.Child("Matches").GetValueAsync().ContinueWith(task =>
+        {
+            if (task.IsCompleted)
+            {
+                reference.Child("nMatches").SetRawJsonValueAsync(json3).ContinueWith(task =>
+                {
+                    if (task.IsCompleted)
+                    {
+                        //Debug.Log("saved the match");
+                    }
+                    else
+                    {
+                        //Debug.Log("No se han enviado los datos");
+                    }
+                });
+            }
+            else
+            {
+                Debug.Log("No se ha encontrado matches");
+            }
+        });
+
     }
 }

@@ -57,6 +57,12 @@ public static class ComInfo
     {
         return player;
     }
+
+    public static void setPlayerData(UserHistory newPlayer)
+    {
+        player = newPlayer;
+    }
+
     public static string getPlayerName()
     {
         return player.userName;
