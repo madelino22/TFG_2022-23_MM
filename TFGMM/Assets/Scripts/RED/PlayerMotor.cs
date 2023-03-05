@@ -141,19 +141,10 @@ public class PlayerMotor : EntityEventListener<IPlayerState>
         //}
 
         movingDir.Normalize();
-        //movingDir *= _speed;
         _rigidbody.velocity = movingDir * _speed;
 
         State stateMotor = new State();
         stateMotor.position = transform.position;
-        //NO HACE NADA (Y ADEMAS SOLO FUNCIONARIA EN EL CONTROLLER)
-        //if (isd)
-        //{
-        //    stateMotor.position = _spawnPos;
-        //    //_rigidbody.position = _spawnPos;
-        //    isd = false;
-        //    _firstState = false;
-        //}
 
         return stateMotor;
     }
