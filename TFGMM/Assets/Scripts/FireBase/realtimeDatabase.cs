@@ -243,4 +243,14 @@ public class realtimeDatabase : GlobalEventListener
             saveData();
         }
     }
+
+    public override void OnEvent(RespawnEvent evnt)
+    {
+        //como se que jugador soy?
+        //int id = evnt.id;
+        //if (id == ???)
+        //    user.deaths++;
+    }
+
+
 }
