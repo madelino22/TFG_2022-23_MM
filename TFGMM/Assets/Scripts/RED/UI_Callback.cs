@@ -74,32 +74,6 @@ public class UI_Callback : GlobalEventListener
     {
         if (BoltNetwork.IsServer)
         {
-            // PUNTUACION CON TECLAS
-            //if (Input.GetKeyDown(KeyCode.LeftArrow))
-            //{
-            //    blue++;
-
-            //    MatchInfoEvent evnt = MatchInfoEvent.Create(GlobalTargets.AllClients);
-            //    evnt.BlueScore = blue;
-            //    evnt.RedScore = red;
-            //    evnt.Time = time;
-            //    evnt.Send();
-
-            //    _matchManager.UpdateUI(blue, red, time);
-            //}
-            //if (Input.GetKeyDown(KeyCode.RightArrow))
-            //{
-            //    red++;
-
-            //    MatchInfoEvent evnt = MatchInfoEvent.Create(GlobalTargets.AllClients);
-            //    evnt.BlueScore = blue;
-            //    evnt.RedScore = red;
-            //    evnt.Time = time;
-            //    evnt.Send();
-
-            //    _matchManager.UpdateUI(blue, red, time);
-            //}
-
             timer += Time.deltaTime;
             if (seg < timer)
             {

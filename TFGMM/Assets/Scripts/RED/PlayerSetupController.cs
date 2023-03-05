@@ -28,13 +28,6 @@ public class PlayerSetupController : GlobalEventListener
 
     private BoltConnection[] entityConnection = new BoltConnection[6];
 
-    //private int id=0;
-
-    //public int getId()
-    //{
-    //    return id;
-    //}
-
     public override void SceneLoadLocalDone(string scene, IProtocolToken token)
     {
         if (!BoltNetwork.IsServer)
@@ -46,21 +39,11 @@ public class PlayerSetupController : GlobalEventListener
     public override void OnEvent(RespawnEvent evnt)
     {
         int id = evnt.id;
-        if (entities[id].GetComponentInChildren<PlayerMotor>())
-            entities[id].GetComponentInChildren<PlayerMotor>().gameObject.transform.position= spawners[id].transform.position;
-            //if (id % 2 == 0)
-            //{
-            //    entity[id] = BoltNetwork.Instantiate(BoltPrefabs.Player2, spawners[id].transform.position, Quaternion.identity);
-            //    entity[id].AssignControl(evnt.RaisedBy);
-            //    entity[id].transform.Rotate(new Vector3(0, 180, 0));
-            //}
-            //else
-            //{
-            //    entity[id] = BoltNetwork.Instantiate(BoltPrefabs.Player1, spawners[id].transform.position, Quaternion.identity);
-            //    entity[id].AssignControl(evnt.RaisedBy);
-            //}
-        
+        PlayerMotor playerMotor = entities[id].GetComponentInChildren<PlayerMotor>();
+        if (playerMotor)
+            playerMotor.gameObject.transform.position= spawners[id].transform.position;        
     }
+
     public override void OnEvent(SpawnPlayerEvent evnt)
     {
         if (contador % 2 == 0) //RED 0,2,4

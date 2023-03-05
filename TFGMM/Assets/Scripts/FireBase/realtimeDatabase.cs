@@ -197,4 +197,17 @@ public class realtimeDatabase : MonoBehaviour
             saveData();
         }
     }
+
+
+    //public override void OnEvent(HealthEvent evnt)
+    //{
+    //    //como se que jugador soy?
+    //    // user.damageReceived++;
+    //}
+
+    //public override void OnEvent(ShootEvent evnt)
+    //{
+    //    // ESTE PARAMETRO NO EXISTE EN RoundData. Estaria bien tenerlo
+    //    user.bulletsShot++;
+    //}
 }

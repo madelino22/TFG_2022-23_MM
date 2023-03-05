@@ -50,34 +50,25 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
 
     }
 
+    // SOLO SE EJECUTA EN EL SERVER (OnlyServer)
     public void loseLife(bool redWasHit)
     {
         this._playerMotor.ActualLife -= 500;
         if (this._playerMotor.ActualLife <= 0)
         {
+            //RESPAWN ==> MOVER JUGADOR
             _playerMotor.Respawn();
 
-            if (entity.IsControllerOrOwner) //si soy yo el que se ha muerto
-            {
-                //RESPAWN
-                //VA IGUAL SI ESTA DENTRO DEL IF O NO
- //SOLO SE ESTA LLAMANDO EN EL IsControllerOrOwner
+            //ACTUALIZAR PUNTUACION
+            PlayerDiedEvent evnt1 = PlayerDiedEvent.Create(GlobalTargets.OnlyServer);
+            evnt1.isRed = redWasHit;
+            evnt1.Send();
 
-                //ACTUALIZAR PUNTUACION
-                PlayerDiedEvent evnt1 = PlayerDiedEvent.Create(GlobalTargets.OnlyServer);
-                evnt1.isRed = redWasHit;
-                evnt1.Send();
-            }
-            //RespawnEvent evento = RespawnEvent.Create(GlobalTargets.OnlyServer);
-            //evento.id = gameObject.GetComponent<PlayerSetupController>().getId();
-            //evento.Send();
-
+            //RESET VIDA
             this._playerMotor.ActualLife = this._playerMotor.TotalLife;
-
-            //VA IGUAL SI ESTA COMENTADO O NO
-            //this._playerMotor.gameObject.transform.position = this._playerMotor.SpawnPos;
         }
 
+        // ACTUALIZAR BARRA VIDA
         HealthEvent evnt = HealthEvent.Create(entity, EntityTargets.Everyone);
         evnt.ActualLife = _playerMotor.ActualLife;
         evnt.TotalLife = _playerMotor.TotalLife;
