@@ -35,7 +35,6 @@ public class PlayerMotor : EntityEventListener<IPlayerState>
     private int _blueScore = 0;
     private int _redScore = 0;
     private int _timeMatch = 90;
-    private bool isd = false;
 
     private int team = -1;
     private int id = 0;
@@ -87,15 +86,14 @@ public class PlayerMotor : EntityEventListener<IPlayerState>
 
     public void Respawn()
     {
-        isd = true;
         _firstState = true;
         SetState(_spawnPos, 0f);
         _lastServerPos = _spawnPos;
         RespawnEvent evnt1 = RespawnEvent.Create(GlobalTargets.OnlyServer);
         evnt1.id = id;
         evnt1.Send();
-
     }
+
     public State ExecuteCommand(float horizontal, float vertical)
     {
         Vector3 movingDir = Vector3.zero;
@@ -149,13 +147,13 @@ public class PlayerMotor : EntityEventListener<IPlayerState>
         State stateMotor = new State();
         stateMotor.position = transform.position;
         //NO HACE NADA (Y ADEMAS SOLO FUNCIONARIA EN EL CONTROLLER)
-        if (isd)
-        {
-            stateMotor.position = _spawnPos;
-            //_rigidbody.position = _spawnPos;
-            isd = false;
-            _firstState = false;
-        }
+        //if (isd)
+        //{
+        //    stateMotor.position = _spawnPos;
+        //    //_rigidbody.position = _spawnPos;
+        //    isd = false;
+        //    _firstState = false;
+        //}
 
         return stateMotor;
     }

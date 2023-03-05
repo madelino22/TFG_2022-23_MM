@@ -120,30 +120,6 @@ public class BasicShooter : EntityEventListener
         }
     }
 
-
-   
-
-    //private void FixedUpdate()
-    //{
-    //    if (attackJoystick != null)
-    //    {
-    //        //PREPARE SHOOTER
-    //        if (Mathf.Abs(attackJoystick.Horizontal) > 0.1f || Mathf.Abs(attackJoystick.Vertical) > 0.1f)
-    //        {
-    //            if (!shoot) shoot = true;
-    //        }
-    //        //JOYSTICK WAS RELEASED
-    //        else if (shoot && Input.GetMouseButtonUp(0))
-    //        {
-    //            object[] array = { transform.position, transform.rotation };
-    //            Debug.Log("Shoot");
-    //            view.RPC("ShootBullet", RpcTarget.All, array);
-    //            shoot = false;
-    //            //PhotonNetwork.Instantiate(bulletPrefab.name, transform.position, transform.rotation);
-    //        }
-    //    }
-    //}
-
     private void ShootBullet(object[] arr)
     {
         ShootEvent evnt = ShootEvent.Create(entity, EntityTargets.OnlySelf);
