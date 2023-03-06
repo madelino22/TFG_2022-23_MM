@@ -18,6 +18,8 @@ public class Bullet : MonoBehaviour
     [SerializeField]
     bool wasFiredByRed = true;
 
+    private string creatorName = "";
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,6 +32,16 @@ public class Bullet : MonoBehaviour
     void FixedUpdate()
     {
         transform.Translate(Vector3.forward * speed * Time.fixedDeltaTime);
+    }
+
+    public void setCreatorName(string n)
+    {
+        creatorName = n;
+    }
+
+    public string getCreatorName()
+    {
+        return creatorName;
     }
 
     private void OnTriggerEnter(Collider collision)
@@ -46,37 +58,8 @@ public class Bullet : MonoBehaviour
         {
             bool redWasHit = !wasFiredByRed; //rojo es golpeado si la bala la disparo azul
             if (BoltNetwork.IsServer)
-                target.GetComponent<PlayerCallback>().loseLife(redWasHit);
+                target.GetComponent<PlayerCallback>().loseLife(redWasHit, creatorName);
             BoltNetwork.Destroy(this.gameObject);
         }
-        if (BoltNetwork.IsServer)
-        {
-            
-
-
-
-
-
-
-            /*//Enemy team
-            if ((collision.gameObject.CompareTag("Red") && ComInfo.getTeam() == team.blue) ||
-                (collision.gameObject.CompareTag("Blue") && ComInfo.getTeam() == team.red))
-            {
-                Debug.Log("Soy enemigo");
-                HealthSystemComponent live = collision.gameObject.GetComponent<HealthSystemComponent>();
-
-                damage = 300;
-
-                //if() //Hacer a mano aqui los daños si hacemos varios personajes
-
-                live.receiveDamage(damage);
-
-
-            }
-            //DESTROY BULLET
-            Destroy(this.gameObject);
-            Debug.Log("Me destruyo?");*/
-        }
-
     }
 }

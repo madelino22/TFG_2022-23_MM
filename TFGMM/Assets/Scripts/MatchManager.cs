@@ -51,7 +51,6 @@ public class MatchManager : GlobalEventListener
         BoltLog.Warn("Soy el jugador" + nPlayerRoom);
     }
 
-
     public void endGameScene()
     {
         if (redPoints > bluePoints)
@@ -76,8 +75,7 @@ public class MatchManager : GlobalEventListener
         del.numPlayer = nPlayerRoom;
         del.Send();
 
-        //ENVIAR INFO FIREBASE DEL JUGADOR
-
+        //ENVIAR INFO FIREBASE DEL JUGADOR------------------------
         //Cogemos la info del jugador
         UserHistory userHistory = ComInfo.getPlayerData();
 

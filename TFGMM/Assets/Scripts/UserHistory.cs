@@ -43,7 +43,7 @@ public class UserHistory : MonoBehaviour
 
     public string saveGames(int index)
     {
-        lastMatches[index] = new Match();
+        lastMatches[index] = new Match(6);
 
         return JsonUtility.ToJson(lastMatches[index]);
     }

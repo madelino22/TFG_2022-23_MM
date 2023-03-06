@@ -44,20 +44,16 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
 
     }
 
-    public void Respawn()
-    {
-        
-
-    }
-
     // SOLO SE EJECUTA EN EL SERVER (OnlyServer)
-    public void loseLife(bool redWasHit)
+    public void loseLife(bool redWasHit, string creatorName)
     {
         this._playerMotor.ActualLife -= 500;
+        //MANDAR EVENTO DE QUE SE HA HECHO DANYO------------------
+
         if (this._playerMotor.ActualLife <= 0)
         {
             //RESPAWN ==> MOVER JUGADOR
-            _playerMotor.Respawn();
+            _playerMotor.Respawn(creatorName);
 
             //ACTUALIZAR PUNTUACION
             PlayerDiedEvent evnt1 = PlayerDiedEvent.Create(GlobalTargets.OnlyServer);

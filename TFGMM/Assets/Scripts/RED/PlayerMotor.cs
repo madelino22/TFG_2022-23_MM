@@ -38,6 +38,7 @@ public class PlayerMotor : EntityEventListener<IPlayerState>
 
     private int team = -1;
     private int id = 0;
+    public int getID() { return id; }
     public void setID(int i) { id = i; }
 
     public int TotalLife { get => _totalLife; }
@@ -84,13 +85,15 @@ public class PlayerMotor : EntityEventListener<IPlayerState>
         }
     }
 
-    public void Respawn()
+    public void Respawn(string killedBy)
     {
         _firstState = true;
         SetState(_spawnPos, 0f);
         _lastServerPos = _spawnPos;
         RespawnEvent evnt1 = RespawnEvent.Create(GlobalTargets.OnlyServer);
         evnt1.id = id;
+        evnt1.killedBy = killedBy;
+        evnt1.nameKilled = ComInfo.getPlayerName();
         evnt1.Send();
     }
 

@@ -23,11 +23,13 @@ public class PlayerSetupController : GlobalEventListener
 
     private int contador = 0; // Team lejos (0,2) || Team cerca (3,5)
 
-    private BoltEntity[] entities = new BoltEntity[6];
+    private BoltEntity[] entities = new BoltEntity[PLAYEROOM];
 
     private BoltEntity entityCanvas;
 
-    private BoltConnection[] entityConnection = new BoltConnection[6];
+    private BoltConnection[] entityConnection = new BoltConnection[PLAYEROOM];
+
+    private string[] namePlayers = new string[PLAYEROOM];
 
     //Referencia a Firebase
     DatabaseReference reference;
@@ -43,15 +45,24 @@ public class PlayerSetupController : GlobalEventListener
         if (!BoltNetwork.IsServer)
         {
             SpawnPlayerEvent evnt2 = SpawnPlayerEvent.Create(GlobalTargets.OnlyServer);
+            string name = ComInfo.getPlayerData().name;
+            evnt2.playerName = name;
             evnt2.Send();
         }
     }
     public override void OnEvent(RespawnEvent evnt)
     {
         int id = evnt.id;
+        string killedBy = evnt.killedBy;
+        string nameKilled = evnt.nameKilled;
+
+        //FIREBASE
+        partida.killed(nameKilled, killedBy);
+
+        //CHANGE POS IN SCENE
         PlayerMotor playerMotor = entities[id].GetComponentInChildren<PlayerMotor>();
         if (playerMotor)
-            playerMotor.gameObject.transform.position= spawners[id].transform.position;        
+            playerMotor.gameObject.transform.position = spawners[id].transform.position; 
     }
 
     public override void OnEvent(SpawnPlayerEvent evnt)
@@ -70,6 +81,8 @@ public class PlayerSetupController : GlobalEventListener
         }
         entities[contador].GetComponentInChildren<PlayerMotor>().setID(contador);
         entityConnection[contador] = evnt.RaisedBy;
+        //FIREBASE
+        namePlayers[contador] = evnt.playerName;
         //id = contador;
         //Establecemos el numero del jugador en la sala
         setPlayerEvent evnts = setPlayerEvent.Create(evnt.RaisedBy, ReliabilityModes.ReliableOrdered);
@@ -90,7 +103,14 @@ public class PlayerSetupController : GlobalEventListener
 
     public override void OnEvent(StartMatchEvent evnt)
     {
-        partida = new Match(); //Creamos donde se va a guardar toda la info
+        partida = new Match(PLAYEROOM); //Creamos donde se va a guardar toda la info
+        for (int i = 0; i< PLAYEROOM; i++)
+        {
+            team equipo = team.blue;
+            if (entities[i].gameObject.transform.CompareTag("Red"))
+                equipo = team.red;
+            partida.addPlayer(namePlayers[i], equipo, i);
+        }
         entityCanvas = BoltNetwork.Instantiate(BoltPrefabs.Canvas, new Vector3(0,0,0), Quaternion.identity);
     }
 

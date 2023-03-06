@@ -4,13 +4,14 @@ using UnityEngine;
 using Firebase.Database;
 using UnityEngine.UI;
 
+//Esta en Lobby:TestDatbase
+
 public class realtimeDatabase : MonoBehaviour
 {
     DatabaseReference reference;
 
     //Data stored in Firebase
-    UserHistory userHistory = ComInfo.getPlayerData();
-
+    UserHistory userHistory = ComInfo.getPlayerData(); // el correo de Login
 
     // Start is called before the first frame update
     void Start()

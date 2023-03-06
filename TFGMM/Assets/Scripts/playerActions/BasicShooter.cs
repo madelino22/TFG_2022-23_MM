@@ -128,7 +128,7 @@ public class BasicShooter : EntityEventListener
         evnt.Send();
     }
 
-    public override void OnEvent(ShootEvent evnt)
+    public override void OnEvent(ShootEvent evnt) //ASUMIMOS QUE SOLO SE LLAMA EN EL CLIENTE
     {
         Vector3 e = new Vector3(0, 1.7f, 0);
         BoltEntity entity;
@@ -137,6 +137,9 @@ public class BasicShooter : EntityEventListener
             entity = BoltNetwork.Instantiate(BoltPrefabs.Bullet, evnt.Position+ e, evnt.Rotation);
         else 
             entity = BoltNetwork.Instantiate(BoltPrefabs.BlueBullet, evnt.Position+ e, evnt.Rotation);
+
+
+        entity.gameObject.GetComponent<Bullet>().setCreatorName(ComInfo.getPlayerName());
     }
 
     //???????????????????????

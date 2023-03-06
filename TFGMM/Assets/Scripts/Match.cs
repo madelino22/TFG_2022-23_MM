@@ -8,7 +8,7 @@ public class PlayerMatch
 {
     public PlayerMatch(int n)
     {
-        name = name + n;
+        name = name +n;
     }
 
     public PlayerMatch(string n, int k, int d, int tDamage, team myTeam)
@@ -37,12 +37,19 @@ public class PlayerMatch
 
 public class Match
 {
-    public Match()
+    public PlayerMatch[] players;
+
+    public team winner = team.red;
+
+
+    public Match(int n)
     {
-        for(int i = 0; i < 6; i++)
-        {
-            players[i] = new PlayerMatch(i);
-        }
+        players = new PlayerMatch[n];
+    }
+
+    public void addPlayer(string name, team t, int i)
+    {
+        players[i] = new PlayerMatch(name, 0, 0, 0, t);
     }
 
     public Match(team w, DataSnapshot info)
@@ -65,12 +72,25 @@ public class Match
         }
     }
 
-    public PlayerMatch[] players = new PlayerMatch[6];
+    public void killed(string killed, string killedBy)
+    {
+        for (int i = 0; i < players.Length; i++)
+        {
+            if(players[i].name == killed)
+            {
+                players[i].deaths++;
+            }
+            else if (players[i].name == killedBy)
+            {
+                players[i].kills++;
+            }
+        }
+    }
+
+    
 
     public string playerJSON(int i)
     {
         return JsonUtility.ToJson(players[i]);
     }
-
-    public team winner = team.red;
 }
