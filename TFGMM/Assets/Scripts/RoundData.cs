@@ -18,6 +18,8 @@ public class RoundData : MonoBehaviour
 
     public int assists = 0;
 
+    public int totalShots = 0;
+
     public int damage = 0; //Damage Inflicted on Enemy
     public int damageReceived = 0; //Damage Received by Player
 

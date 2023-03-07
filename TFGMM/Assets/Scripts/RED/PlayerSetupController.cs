@@ -55,20 +55,7 @@ public class PlayerSetupController : GlobalEventListener
             actualGame = new RoundData();
         }
     }
-    public override void OnEvent(RespawnEvent evnt)
-    {
-        int id = evnt.id;
-        string killedBy = evnt.killedBy;
-        string nameKilled = evnt.nameKilled;
 
-        //FIREBASE
-        partida.killed(nameKilled, killedBy);
-
-        //CHANGE POS IN SCENE
-        PlayerMotor playerMotor = entities[id].GetComponentInChildren<PlayerMotor>();
-        if (playerMotor)
-            playerMotor.gameObject.transform.position = spawners[id].transform.position; 
-    }
 
     public override void OnEvent(SpawnPlayerEvent evnt)
     {
@@ -141,6 +128,49 @@ public class PlayerSetupController : GlobalEventListener
 
     //------------------------------------UPDATE INFO FIREBASE MATCH PART------------------------------------------------------
 
+    public override void OnEvent(RespawnEvent evnt)
+    {
+        if (BoltNetwork.IsServer)
+        {
+            int id = evnt.id;
+            string killedBy = evnt.killedBy;
+            string nameKilled = evnt.nameKilled;
+
+            //FIREBASE
+            partida.killed(nameKilled, killedBy);
+
+            //CHANGE POS IN SCENE
+            PlayerMotor playerMotor = entities[id].GetComponentInChildren<PlayerMotor>();
+            if (playerMotor)
+                playerMotor.gameObject.transform.position = spawners[id].transform.position;
+        }
+        else //El propio jugador actualiza sus stats
+        {
+            if (evnt.nameKilled != ComInfo.getPlayerName()) //Comprueba que hasta aqui esta bien
+            {
+                BoltLog.Warn("JUGADOR ACTUALIZANDO INFO QUE NO DEBE SER takeDamageEvent");
+            }
+            else
+            {
+                actualGame.deaths += 500;
+            }
+
+            //Conseguir posicion del jugador que ha hecho daño
+            int i = 0;
+            bool found = false;
+            while (!found)
+            {
+                if (namePlayers[i] == evnt.killedBy) break;
+                i++;
+            }
+            sendDataToPlayerEvent evn = sendDataToPlayerEvent.Create(GlobalTargets.OnlyServer);
+            evn.action = "killer";
+            evn.numPlayer = i;
+            evn.Send();
+
+        }
+    }
+
     public override void OnEvent(takeDamageEvent evnt)
     {
         if (BoltNetwork.IsServer)
@@ -149,13 +179,55 @@ public class PlayerSetupController : GlobalEventListener
         {
             if (evnt.nameDamaged != ComInfo.getPlayerName()) //Comprueba que hasta aqui esta bien
             {
-                BoltLog.Warn("JUGADOR ACTUALIZANDO INFO QUE NO DEBE SER");
+                BoltLog.Warn("JUGADOR ACTUALIZANDO INFO QUE NO DEBE SER takeDamageEvent");
             }
             else
             {
                 actualGame.damageReceived += 500;
             }
+
+            //Conseguir posicion del jugador que ha hecho daño
+            int i = 0;
+            bool found = false;
+            while(!found)
+            {
+                if (namePlayers[i] == evnt.damagedBy) break;
+                i++;
+            }
+            sendDataToPlayerEvent evn = sendDataToPlayerEvent.Create(GlobalTargets.OnlyServer);
+            evn.action = "damaged";
+            evn.numPlayer = i;
+            evn.Send();
+
         }
+    }
+
+    public override void OnEvent(sendDataToPlayerEvent evnt)
+    {
+        switch(evnt.action)
+        {
+            case "damaged":
+                damageDoneEvent evn = damageDoneEvent.Create(entityConnection[(int)evnt.numPlayer]);
+                evn.Send();
+                break;
+            case "killer":
+                killerEvent evn2 = killerEvent.Create(entityConnection[(int)evnt.numPlayer]);
+                evn2.Send();
+                break;
+            default:
+                BoltLog.Warn("Esta accion de guardado de datos no existe");
+                break;
+        }
+    }
+
+    public override void OnEvent(killerEvent evnt)
+    {
+        actualGame.kills += 500;
+    }
+
+    public override void OnEvent(damageDoneEvent evnt) //Lo recibe el jugador que ha hecho daño
+    {
+        actualGame.damage += 500; //SE SUPONE QUE EL DAÑO ES 500 SIEMPRE
     }
 
     public override void OnEvent(updatePlayerShots evnt)
@@ -164,7 +236,7 @@ public class PlayerSetupController : GlobalEventListener
             partida.shoot(evnt.shooterName);
         else //El propio jugador actualiza sus stats
         {
-           
+            actualGame.totalShots++;
         }
     }
 
@@ -189,19 +261,32 @@ public class PlayerSetupController : GlobalEventListener
 
     public override void OnEvent(saveGameEvent evnt)
     {
-        partida.pointsRed = (int)evnt.redPoints;
-        partida.pointsBlue = (int)evnt.bluePoints;
-        if(partida.pointsRed == partida.pointsBlue)
+        if(BoltNetwork.IsServer)
         {
-            partida.winner = team.none;
+            partida.pointsRed = (int)evnt.redPoints;
+            partida.pointsBlue = (int)evnt.bluePoints;
+            if (partida.pointsRed == partida.pointsBlue)
+            {
+                partida.winner = team.none;
+            }
+            else if (partida.pointsRed > partida.pointsBlue)
+            {
+                partida.winner = team.red;
+            }
+            else partida.winner = team.blue;
+            saveMatch();
         }
-        else if(partida.pointsRed > partida.pointsBlue)
+        else //Los clientes actualizan su resultado
         {
-            partida.winner = team.red;
+            if (partida.pointsRed > partida.pointsBlue)
+            {
+                partida.winner = team.none;
+            }
+            else if (partida.pointsRed > partida.pointsBlue)
+            {
+                partida.winner = team.red;
+            }
         }
-        else partida.winner = team.blue;
-
-        saveMatch();
     }
 
     public void saveMatch()

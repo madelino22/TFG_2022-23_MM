@@ -95,6 +95,12 @@ public class PlayerMotor : EntityEventListener<IPlayerState>
         evnt1.killedBy = killedBy;
         evnt1.nameKilled = ComInfo.getPlayerName();
         evnt1.Send();
+
+        RespawnEvent evnt2 = RespawnEvent.Create(GlobalTargets.OnlySelf);
+        evnt2.id = id;
+        evnt2.killedBy = killedBy;
+        evnt2.nameKilled = ComInfo.getPlayerName();
+        evnt2.Send();
     }
 
     public State ExecuteCommand(float horizontal, float vertical)

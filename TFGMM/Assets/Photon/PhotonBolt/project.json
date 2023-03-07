@@ -958,6 +958,87 @@
       "Name": "updatePlayerStatsEvent",
       "Guid": "0daf43de-ee6d-4539-8717-9b073236f8f9",
       "Groups": []
+    },
+    {
+      "$type": "Photon.Bolt.Compiler.EventDefinition, bolt.compiler",
+      "Properties": [
+        {
+          "Name": "action",
+          "Enabled": true,
+          "Expanded": true,
+          "ReplicationMode": 1,
+          "Priority": 1,
+          "PropertyType": {
+            "$type": "Photon.Bolt.Compiler.PropertyTypeString, bolt.compiler",
+            "MaxLength": 1
+          },
+          "AssetSettings": {
+            "$type": "Photon.Bolt.Compiler.PropertyEventSettings, bolt.compiler"
+          }
+        },
+        {
+          "Name": "numPlayer",
+          "Enabled": true,
+          "Expanded": true,
+          "ReplicationMode": 1,
+          "Priority": 1,
+          "PropertyType": {
+            "$type": "Photon.Bolt.Compiler.PropertyTypeFloat, bolt.compiler",
+            "Compression": {
+              "MinValue": -2048,
+              "MaxValue": 2048,
+              "Accuracy": 0.01,
+              "Pack": 100.0,
+              "Read": 0.01,
+              "Shift": 2048.0,
+              "BitsRequired": 19
+            }
+          },
+          "AssetSettings": {
+            "$type": "Photon.Bolt.Compiler.PropertyEventSettings, bolt.compiler"
+          }
+        }
+      ],
+      "Name": "sendDataToPlayerEvent",
+      "Guid": "0d5ca203-1bb2-4063-8eed-78e08a445b2a",
+      "Groups": []
+    },
+    {
+      "$type": "Photon.Bolt.Compiler.EventDefinition, bolt.compiler",
+      "Properties": [
+        {
+          "Name": "numPlayer",
+          "Enabled": true,
+          "Expanded": true,
+          "ReplicationMode": 1,
+          "Priority": 1,
+          "PropertyType": {
+            "$type": "Photon.Bolt.Compiler.PropertyTypeFloat, bolt.compiler",
+            "Compression": {
+              "MinValue": -2048,
+              "MaxValue": 2048,
+              "Accuracy": 0.01,
+              "Pack": 100.0,
+              "Read": 0.01,
+              "Shift": 2048.0,
+              "BitsRequired": 19
+            }
+          },
+          "AssetSettings": {
+            "$type": "Photon.Bolt.Compiler.PropertyEventSettings, bolt.compiler"
+          }
+        }
+      ],
+      "Name": "damageDoneEvent",
+      "Guid": "c545f92b-5bf5-4b95-b5c7-854de5ee1d83",
+      "Groups": []
+    },
+    {
+      "$type": "Photon.Bolt.Compiler.EventDefinition, bolt.compiler",
+      "Properties": [],
+      "Name": "killerEvent",
+      "Guid": "ba74860b-827c-41dc-b67e-4ac685c275ec",
+      "Groups": []
     }
   ],
   "ActiveGroup": "Everything"
