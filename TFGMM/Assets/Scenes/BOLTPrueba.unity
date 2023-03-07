@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.3708985, g: 0.3783704, b: 0.35722548, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a02d7a14bde7b0f4bbe540d3b834f918, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _headlessServerManager: {fileID: 0}
+  _headlessServerManager: {fileID: 631379956}
 --- !u!1 &631379951
 GameObject:
   m_ObjectHideFlags: 0
@@ -177,9 +177,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 631379953}
-  - component: {fileID: 631379954}
   - component: {fileID: 631379956}
-  - component: {fileID: 631379955}
   m_Layer: 0
   m_Name: HeadlessServerManager
   m_TagString: Untagged
@@ -202,7 +200,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &631379954
+--- !u!114 &631379956
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -214,36 +212,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69b2e7a42788d8b4eaa4ee25bec35b12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _map: Searching
-  _roomID: Test
-  _isServer: 0
---- !u!114 &631379955
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 631379951}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69b2e7a42788d8b4eaa4ee25bec35b12, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _map: BOLTMapa
-  _roomID: 1
-  _isServer: 1
---- !u!114 &631379956
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 631379951}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69b2e7a42788d8b4eaa4ee25bec35b12, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _map: BOLTMapa
-  _roomID: 0
+  serverMode: 0
   _isServer: 1

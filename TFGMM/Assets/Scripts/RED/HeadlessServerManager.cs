@@ -5,13 +5,17 @@ using Photon.Bolt.Matchmaking;
 using Photon.Bolt;
 using Photon.Bolt.Utils;
 
+
+enum ServerMode {DEFAULT, ROOM0, ROOM1};
 public class HeadlessServerManager : GlobalEventListener
 {
-    [SerializeField]
+
+
+    [SerializeField] ServerMode serverMode = ServerMode.DEFAULT;
+
     private string _map = "";
     private static string s_map;
 
-    [SerializeField]
     private string _roomID = "Test";
     private static string s_roomID;
 
@@ -61,6 +65,24 @@ public class HeadlessServerManager : GlobalEventListener
 
     private void Awake()
     {
+
+        switch (serverMode)
+        {
+            case ServerMode.DEFAULT:
+                _map = "Searching";
+                _roomID = "Test";
+                break;
+            case ServerMode.ROOM0:
+                _map = "BOLTMapa";
+                _roomID = "0";
+                break;
+            case ServerMode.ROOM1:
+                _map = "BOLTMapa";
+                _roomID = "1";
+                break;
+        }
+
+
         _isServer = "true" == (GetArg("-s", "-isServer") ?? (_isServer ? "true" : "false"));
         s_map = GetArg("-m", "-map") ?? _map;
         s_roomID = GetArg("-r", "-room") ?? _roomID;
