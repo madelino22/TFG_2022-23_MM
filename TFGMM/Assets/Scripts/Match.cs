@@ -11,7 +11,14 @@ public class PlayerMatch
         name = name +n;
     }
 
-    public PlayerMatch(string n, int k, int d, int tDamage, team myTeam)
+    public PlayerMatch(string n, team myTeam)
+    {
+        name = n;
+
+        t = myTeam;
+    }
+
+    public PlayerMatch(string n, int k, int d, int tDamage, int damageR, int tshots, team myTeam)
     {
         name = n;
 
@@ -20,6 +27,10 @@ public class PlayerMatch
         deaths = d;
 
         totalDamage = tDamage;
+
+        damageReceived = damageR;
+
+        totalShots = tshots;
 
         t = myTeam;
     }
@@ -32,6 +43,10 @@ public class PlayerMatch
 
     public int totalDamage = 0;
 
+    public int damageReceived = 0;
+
+    public int totalShots = 0; //Para saber el porcentaje de acierto multiplicar por 500(El daño que recibe un jugador) y dividir con daño hecho
+
     public team t = team.red;
 }
 
@@ -41,6 +56,9 @@ public class Match
 
     public team winner = team.red;
 
+    public int pointsBlue = 0;
+
+    public int pointsRed = 0;
 
     public Match(int n)
     {
@@ -49,7 +67,7 @@ public class Match
 
     public void addPlayer(string name, team t, int i)
     {
-        players[i] = new PlayerMatch(name, 0, 0, 0, t);
+        players[i] = new PlayerMatch(name, t);
     }
 
     public Match(team w, DataSnapshot info)
@@ -66,9 +84,13 @@ public class Match
 
             int totalDamage = int.Parse(info.Child("Jugador " + i).Child("totalDamage").Value.ToString().ToString());
 
+            int damageReceived = int.Parse(info.Child("Jugador " + i).Child("damageReceived").Value.ToString().ToString());
+
+            int totalShots = int.Parse(info.Child("Jugador " + i).Child("totalShots").Value.ToString().ToString());
+
             team t =(team) int.Parse(info.Child("Jugador " + i).Child("t").Value.ToString().ToString());
 
-            players[i] = new PlayerMatch(name, kills, deaths, totalDamage, t);
+            players[i] = new PlayerMatch(name, kills, deaths, totalDamage, damageReceived, totalShots,  t);
         }
     }
 
@@ -87,7 +109,32 @@ public class Match
         }
     }
 
-    
+    public void damaged(string damaged, string damagedBy)
+    {
+        for (int i = 0; i < players.Length; i++)
+        {
+            if (players[i].name == damaged)
+            {
+                players[i].damageReceived +=500;
+            }
+            else if (players[i].name == damagedBy)
+            {
+                players[i].totalDamage += 500;
+            }
+        }
+    }
+
+    public void shoot(string shotBy)
+    {
+        for (int i = 0; i < players.Length; i++)
+        {
+            if (players[i].name == shotBy)
+            {
+                players[i].totalShots++;
+                break;
+            }
+        }
+    }
 
     public string playerJSON(int i)
     {

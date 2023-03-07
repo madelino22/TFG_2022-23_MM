@@ -36,6 +36,9 @@ public class PlayerSetupController : GlobalEventListener
 
     Match partida;
 
+    //Info de lo que ha hecho el jugador en esta partida
+    RoundData actualGame;
+
     public void Awake()
     {
         reference = FirebaseDatabase.DefaultInstance.RootReference;
@@ -48,6 +51,8 @@ public class PlayerSetupController : GlobalEventListener
             string name = ComInfo.getPlayerData().name;
             evnt2.playerName = name;
             evnt2.Send();
+
+            actualGame = new RoundData();
         }
     }
     public override void OnEvent(RespawnEvent evnt)
@@ -134,10 +139,68 @@ public class PlayerSetupController : GlobalEventListener
         evnt.Send();
     }
 
+    //------------------------------------UPDATE INFO FIREBASE MATCH PART------------------------------------------------------
+
+    public override void OnEvent(takeDamageEvent evnt)
+    {
+        if (BoltNetwork.IsServer)
+            partida.damaged(evnt.nameDamaged, evnt.damagedBy);
+        else //El propio jugador actualiza sus stats
+        {
+            if (evnt.nameDamaged != ComInfo.getPlayerName()) //Comprueba que hasta aqui esta bien
+            {
+                BoltLog.Warn("JUGADOR ACTUALIZANDO INFO QUE NO DEBE SER");
+            }
+            else
+            {
+                actualGame.damageReceived += 500;
+            }
+        }
+    }
+
+    public override void OnEvent(updatePlayerShots evnt)
+    {
+        if (BoltNetwork.IsServer)
+            partida.shoot(evnt.shooterName);
+        else //El propio jugador actualiza sus stats
+        {
+           
+        }
+    }
+
+    //------------------------------------UPDATE INFO FIREBASE PLAYERSTATS PART------------------------------------------------------
+
+    public override void OnEvent(updatePlayerStatsEvent evnt) //Se llama un vez por player al acabar partida
+    {
+        //ENVIAR INFO FIREBASE DEL JUGADOR------------------------
+        //Cogemos la info del jugador
+        UserHistory userHistory = ComInfo.getPlayerData();
+
+        //Actualizamos con lo hecho en la partida
+        userHistory.UpdateUserHistory(actualGame);
+
+        //Guardamos la info con la partida actualizada
+        ComInfo.setPlayerData(userHistory);
+
+        saveData(userHistory);
+    }
+
     //------------------------------------SEND MATCH INFO-------------------------------------------------------
 
     public override void OnEvent(saveGameEvent evnt)
     {
+        partida.pointsRed = (int)evnt.redPoints;
+        partida.pointsBlue = (int)evnt.bluePoints;
+        if(partida.pointsRed == partida.pointsBlue)
+        {
+            partida.winner = team.none;
+        }
+        else if(partida.pointsRed > partida.pointsBlue)
+        {
+            partida.winner = team.red;
+        }
+        else partida.winner = team.blue;
+
         saveMatch();
     }
 
@@ -178,7 +241,7 @@ public class PlayerSetupController : GlobalEventListener
 
         //Guardar que ha hecho cada jugador en la partida
 
-        for (int j = 0; j < 6; j++)
+        for (int j = 0; j < PLAYEROOM; j++)
         {
             string json = partida.playerJSON(j);
 
@@ -227,4 +290,69 @@ public class PlayerSetupController : GlobalEventListener
         });
 
     }
+
+    private void saveData(UserHistory userHistory) //if player doesn't exist in firebase
+    {
+        string json = JsonUtility.ToJson(userHistory);
+
+        Debug.Log(json);
+
+        //Save base data
+        reference.Child("User").Child(userHistory.userName).SetRawJsonValueAsync(json).ContinueWith(task =>
+        {
+            if (task.IsCompleted)
+            {
+                //  Debug.Log("saved Data Profile");
+            }
+            else
+            {
+                //   Debug.Log("No se han enviado los datos");
+            }
+        }
+        );
+
+
+        for (int i = 0; i < 5; i++)
+        {
+            json = userHistory.saveGames(i);
+            Debug.Log(i);
+            Debug.Log(json);
+
+            reference.Child("User").Child(userHistory.userName).Child("zzzLastGames").Child("Partida" + i).SetRawJsonValueAsync(json).ContinueWith(task =>
+            {
+                if (task.IsCompleted)
+                {
+                    //   Debug.Log("saved games");
+                }
+                else
+                {
+                    //     Debug.Log("No se ha guardado la partida");
+                }
+            }
+            );
+
+            for (int j = 0; j < 6; j++)
+            {
+                json = userHistory.saveGamePlayer(i, j);
+
+                //  Debug.Log(i);
+                //  Debug.Log(json);
+
+                reference.Child("User").Child(userHistory.userName).Child("zzzLastGames").Child("Partida" + i).Child(userHistory.lastMatches[i].players[j].name).SetRawJsonValueAsync(json).ContinueWith(task =>
+                {
+                    if (task.IsCompleted)
+                    {
+                        //       Debug.Log("saved players of game");
+                    }
+                    else
+                    {
+                        //      Debug.Log("No se ha guardado al jugador");
+                    }
+                }
+                );
+            }
+        }
+
+    }
+
 }

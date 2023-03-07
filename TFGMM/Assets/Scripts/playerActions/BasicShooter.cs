@@ -140,6 +140,10 @@ public class BasicShooter : EntityEventListener
 
 
         entity.gameObject.GetComponent<Bullet>().setCreatorName(ComInfo.getPlayerName());
+
+        updatePlayerShots evnt2 = updatePlayerShots.Create(GlobalTargets.OnlyServer);
+        evnt2.shooterName = ComInfo.getPlayerName();
+        evnt2.Send();
     }
 
     //???????????????????????

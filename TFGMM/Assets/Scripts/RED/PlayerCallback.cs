@@ -45,15 +45,25 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
     }
 
     // SOLO SE EJECUTA EN EL SERVER (OnlyServer)
-    public void loseLife(bool redWasHit, string creatorName)
+    public void loseLife(bool redWasHit, string shooterName)
     {
         this._playerMotor.ActualLife -= 500;
         //MANDAR EVENTO DE QUE SE HA HECHO DANYO------------------
 
+        takeDamageEvent evn = takeDamageEvent.Create(GlobalTargets.OnlyServer);
+        evn.damagedBy = shooterName;
+        evn.nameDamaged = ComInfo.getPlayerName();
+        evn.Send();
+
+        takeDamageEvent evn2 = takeDamageEvent.Create(GlobalTargets.OnlySelf);
+        evn2.damagedBy = shooterName;
+        evn2.nameDamaged = ComInfo.getPlayerName();
+        evn2.Send();
+
         if (this._playerMotor.ActualLife <= 0)
         {
             //RESPAWN ==> MOVER JUGADOR
-            _playerMotor.Respawn(creatorName);
+            _playerMotor.Respawn(shooterName);
 
             //ACTUALIZAR PUNTUACION
             PlayerDiedEvent evnt1 = PlayerDiedEvent.Create(GlobalTargets.OnlyServer);
