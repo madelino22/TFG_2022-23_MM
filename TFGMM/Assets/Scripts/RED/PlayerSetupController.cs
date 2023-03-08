@@ -43,13 +43,15 @@ public class PlayerSetupController : GlobalEventListener
     {
         reference = FirebaseDatabase.DefaultInstance.RootReference;
     }
+
     public override void SceneLoadLocalDone(string scene, IProtocolToken token)
     {
         if (!BoltNetwork.IsServer)
         {
+            BoltLog.Warn("POR FAVOR SPAWNEA");
             SpawnPlayerEvent evnt2 = SpawnPlayerEvent.Create(GlobalTargets.OnlyServer);
-            string name = ComInfo.getPlayerData().name;
-            evnt2.playerName = name;
+            //string name = ComInfo.getPlayerData().name;
+            //evnt2.playerName = name;
             evnt2.Send();
 
             actualGame = new RoundData();
@@ -74,7 +76,7 @@ public class PlayerSetupController : GlobalEventListener
         entities[contador].GetComponentInChildren<PlayerMotor>().setID(contador);
         entityConnection[contador] = evnt.RaisedBy;
         //FIREBASE
-        namePlayers[contador] = evnt.playerName;
+        //namePlayers[contador] = evnt.playerName;
         //id = contador;
         //Establecemos el numero del jugador en la sala
         setPlayerEvent evnts = setPlayerEvent.Create(evnt.RaisedBy, ReliabilityModes.ReliableOrdered);
@@ -95,14 +97,14 @@ public class PlayerSetupController : GlobalEventListener
 
     public override void OnEvent(StartMatchEvent evnt)
     {
-        partida = new Match(PLAYEROOM); //Creamos donde se va a guardar toda la info
-        for (int i = 0; i< PLAYEROOM; i++)
-        {
-            team equipo = team.blue;
-            if (entities[i].gameObject.transform.CompareTag("Red"))
-                equipo = team.red;
-            partida.addPlayer(namePlayers[i], equipo, i);
-        }
+        //partida = new Match(PLAYEROOM); //Creamos donde se va a guardar toda la info
+        //for (int i = 0; i< PLAYEROOM; i++)
+        //{
+        //    team equipo = team.blue;
+        //    if (entities[i].gameObject.transform.CompareTag("Red"))
+        //        equipo = team.red;
+        //    partida.addPlayer(namePlayers[i], equipo, i);
+        //}
         entityCanvas = BoltNetwork.Instantiate(BoltPrefabs.Canvas, new Vector3(0,0,0), Quaternion.identity);
     }
 

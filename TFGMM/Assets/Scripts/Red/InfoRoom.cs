@@ -75,8 +75,8 @@ public class InfoRoom : GlobalEventListener
                 SceneManager.LoadScene("BOLTMapa");
                 BoltLog.Warn("BBBB");
 
-                SpawnPlayerEvent evnt2 = SpawnPlayerEvent.Create(GlobalTargets.OnlyServer);
-                evnt2.Send();
+                //SpawnPlayerEvent evnt2 = SpawnPlayerEvent.Create(GlobalTargets.OnlyServer);
+                //evnt2.Send();
             }
 
             // PROBAR SI ESTO FUNCIONA ----------------------------------------------------
@@ -92,6 +92,7 @@ public class InfoRoom : GlobalEventListener
     {
         int contador = 0;
         int numPlayers = playersConnections.Count;
+        BoltLog.Warn("Hay " + numPlayers);
         //Crear partida si hay jugadores
         while (numPlayers >= PLAYEROOM)
         {
@@ -104,7 +105,8 @@ public class InfoRoom : GlobalEventListener
 
             playersConnections.RemoveAt(0);
             contador++;
-            numPlayers--;
+            //numPlayers--;
+            BoltLog.Warn("Jugador " + contador + ", va a " + evnt.ID);
         }
 
         //Devolver al menu a los jugadores que no hacen falta
