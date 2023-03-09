@@ -223,10 +223,17 @@ public class GoogleSignInDemo : MonoBehaviour
             ComInfo.setPlayerID(task.Result.IdToken);
             ComInfo.getPlayerData().email = task.Result.Email;
 
-            SceneManager.LoadScene("Lobby");
+            Invoke(nameof(LoadSceneTime), 2f);
         }
     }
 
+
+
+    void LoadSceneTime()
+    {
+        SceneManager.LoadScene("Lobby");
+
+    }
     public void OnSignInSilently()
     {
         GoogleSignIn.Configuration = configuration;

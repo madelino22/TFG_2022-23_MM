@@ -25,30 +25,6 @@ public enum team
     red, blue, none
 }
 
-public struct friendInfo
-{
-    string name;
-
-    int id;
-
-    ranks solo;
-    ranks team;
-
-    bool playing;
-    bool conected;
-
-    public friendInfo(string n,int identification, ranks s, ranks t, bool gaming, bool inGame)
-    {
-        name = n;
-        id = identification;
-
-        solo = s;
-        team = t;
-        playing = gaming;
-        conected = inGame; 
-    }
-}
-
 public static class ComInfo 
 {
     public static UserHistory player = new UserHistory();

@@ -32,13 +32,13 @@ public class realtimeDatabase : MonoBehaviour
                 //Check if player already in database
                 if (snapshot.HasChild(userHistory.userName)) 
                 {
-                    //Debug.Log("Player already registered");
+                    Debug.Log("Player already registered");
 
                     reference.Child("User").Child(userHistory.userName).GetValueAsync().ContinueWith(task =>
                     {
                         if (task.IsCompleted) //If player exist put existing data
                         {
-                            //Debug.Log("Reading Previous Data from Firebase");
+                            Debug.Log("Reading Previous Data from Firebase");
 
                             DataSnapshot snapshot = task.Result;
 
@@ -46,7 +46,7 @@ public class realtimeDatabase : MonoBehaviour
                         }
                         else //Create a new player in the database
                         {
-                           // Debug.Log("Error reading data");
+                            Debug.Log("Error reading data");
                         }
                     });
                 }
@@ -57,7 +57,7 @@ public class realtimeDatabase : MonoBehaviour
             }
             else
             {
-              //  Debug.Log("Error checking if player exist ");
+                Debug.Log("Error checking if player exist ");
             }
         });
     }
@@ -73,11 +73,11 @@ public class realtimeDatabase : MonoBehaviour
         {
             if (task.IsCompleted)
             {
-              //  Debug.Log("saved Data Profile");
+                Debug.Log("saved Data Profile");
             }
             else
             {
-             //   Debug.Log("No se han enviado los datos");
+                Debug.Log("No se han enviado los datos");
             }
         }
         );
@@ -93,11 +93,11 @@ public class realtimeDatabase : MonoBehaviour
             {
                 if (task.IsCompleted)
                 {
-                 //   Debug.Log("saved games");
+                    Debug.Log("saved games");
                 }
                 else
                 {
-               //     Debug.Log("No se ha guardado la partida");
+                    Debug.Log("No se ha guardado la partida");
                 }
             }
             );
@@ -106,18 +106,18 @@ public class realtimeDatabase : MonoBehaviour
             {
                 json = userHistory.saveGamePlayer(i, j);
 
-              //  Debug.Log(i);
-              //  Debug.Log(json);
+                Debug.Log(i);
+                Debug.Log(json);
 
                 reference.Child("User").Child(userHistory.userName).Child("zzzLastGames").Child("Partida" + i).Child(userHistory.lastMatches[i].players[j].name).SetRawJsonValueAsync(json).ContinueWith(task =>
                 {
                     if (task.IsCompleted)
                     {
-                 //       Debug.Log("saved players of game");
+                        Debug.Log("saved players of game");
                     }
                     else
                     {
-                  //      Debug.Log("No se ha guardado al jugador");
+                        Debug.Log("No se ha guardado al jugador");
                     }
                 }
                 );
