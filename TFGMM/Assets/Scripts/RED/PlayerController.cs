@@ -6,7 +6,6 @@ using Photon.Bolt.Utils;
 public class PlayerController : EntityBehaviour<IPhysicState>
 {
     private PlayerMotor _playerMotor;
-    private PlayerMov _playerMov;
     private float _horizontal;
     private float _vertical;
 
@@ -15,7 +14,6 @@ public class PlayerController : EntityBehaviour<IPhysicState>
     public void Awake()
     {
         _playerMotor = GetComponent<PlayerMotor>();
-        _playerMov = GetComponent<PlayerMov>();
     }
 
     public override void Attached()
@@ -48,15 +46,15 @@ public class PlayerController : EntityBehaviour<IPhysicState>
 
     private void PollKeys()
     {
+
 #if PLATFORM_ANDROID
-        _horizontal = _playerMov.GetJoystickMov().Horizontal;
-        _vertical = _playerMov.GetJoystickMov().Vertical;
+        _horizontal = -_playerMotor.GetJoystickMov().Horizontal;
+        _vertical = -_playerMotor.GetJoystickMov().Vertical;
 #else
         _horizontal = Input.GetAxis("Horizontal");
         _vertical = Input.GetAxis("Vertical");
         //_playerMov.DisableJoysticks();
 #endif
-
     }
 
     public override void SimulateController()

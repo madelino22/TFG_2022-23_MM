@@ -16,9 +16,14 @@ public class PlayerMotor : EntityEventListener<IPlayerState>
 
     [SerializeField]
     float movementLimit = 0.05f;
+    
+    [SerializeField]
+    Joystick joystick;
 
     [SerializeField]
     Transform playerBall;
+    
+   
 
     //[SerializeField] //VA RAPIDISIMO NO SE PORQUE. VALOR CABLEADO EN LA LINEA 125 (APROX)
     private float _speed = 3.0f; 
@@ -59,7 +64,10 @@ public class PlayerMotor : EntityEventListener<IPlayerState>
         Debug.Log("Speed Debuffed");
         //_speed -= buff;
     }
-
+    public Joystick GetJoystickMov()
+    {
+        return joystick;
+    }
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();

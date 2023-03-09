@@ -111,7 +111,7 @@ public class InfoRoom : GlobalEventListener
                 else
                     evnt.ID = "1";
                 evnt.Send();
-
+                
                 playersConnections.RemoveAt(0);
                 //numPlayers--;
                 BoltLog.Warn("Jugador " + contador + ", va a " + evnt.ID);
