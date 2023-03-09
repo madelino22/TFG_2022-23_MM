@@ -6,6 +6,9 @@ public class AppManager : MonoBehaviour
     [SerializeField]
     private HeadlessServerManager _headlessServerManager = null;
 
+    [SerializeField]
+    private string _map = "Login";
+
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -15,7 +18,7 @@ public class AppManager : MonoBehaviour
     {
         if (!_headlessServerManager.IsServer)
         {
-            SceneManager.LoadScene("Lobby");
+            SceneManager.LoadScene(_map);
         }
     }
 }

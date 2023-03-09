@@ -70,6 +70,8 @@ public class InfoRoom : GlobalEventListener
             BoltMatchmaking.JoinSession(sessionID);
             BoltLog.Warn("AAAAA");
 
+            ComInfo.setTeam(team.red);
+
             if (BoltMatchmaking.CurrentSession.HostName != "Test")
             {
                 SceneManager.LoadScene("BOLTMapa");
@@ -92,9 +94,10 @@ public class InfoRoom : GlobalEventListener
     {
         int contador = 0;
         int numPlayers = playersConnections.Count;
+        int n = numPlayers;
         BoltLog.Warn("Hay " + numPlayers);
         //Crear partida si hay jugadores
-        while (numPlayers >= PLAYEROOM)
+        while (numPlayers >= PLAYEROOM && ((numPlayers - contador) >= PLAYEROOM))
         {
             GoGameEvent evnt = GoGameEvent.Create(playersConnections[0]);
             if (contador < PLAYEROOM)
