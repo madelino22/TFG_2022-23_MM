@@ -48,8 +48,8 @@ public class PlayerController : EntityBehaviour<IPhysicState>
     {
 
 #if PLATFORM_ANDROID
-        _horizontal = -_playerMotor.GetJoystickMov().Horizontal;
-        _vertical = -_playerMotor.GetJoystickMov().Vertical;
+        _horizontal = _playerMotor.GetJoystickMov().Horizontal;
+        _vertical = _playerMotor.GetJoystickMov().Vertical;
 #else
         _horizontal = Input.GetAxis("Horizontal");
         _vertical = Input.GetAxis("Vertical");
