@@ -1048,7 +1048,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72f434b147ea85a4e9c07aaee0894891, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  testingScene: 0
   attackJoystick: {fileID: 2663373111562773227}
   attackLookPoint: {fileID: 3089766732585637999}
   spawnDistance: 1.5

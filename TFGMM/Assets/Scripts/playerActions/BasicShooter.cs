@@ -7,9 +7,6 @@ using Photon.Bolt;
 public class BasicShooter : EntityEventListener
 {
     [SerializeField]
-    bool testingScene = false;
-
-    [SerializeField]
     Joystick attackJoystick;
 
     //[SerializeField]

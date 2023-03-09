@@ -23,7 +23,7 @@ public class PlayerAttackTrail : MonoBehaviour
     Transform player;
 
     private RaycastHit hit;
-    private int team = 1;
+    private int team = -1;
 
     public void GetJoystick(Joystick a) { attackJoystick = a; }
     //GETS
@@ -36,7 +36,7 @@ public class PlayerAttackTrail : MonoBehaviour
         if (gameObject.tag.Equals("Blue"))
         {
             Debug.Log("Start Trail TAG");
-            team = -1;
+            team = 1;
         }
         lineRenderer = GetComponentInChildren<LineRenderer>();
     }
