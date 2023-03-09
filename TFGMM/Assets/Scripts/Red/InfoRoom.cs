@@ -92,25 +92,49 @@ public class InfoRoom : GlobalEventListener
 
     public void Matchmaking()
     {
-        int contador = 0;
         int numPlayers = playersConnections.Count;
         int n = numPlayers;
         BoltLog.Warn("Hay " + numPlayers);
-        //Crear partida si hay jugadores
-        while (numPlayers >= PLAYEROOM && ((numPlayers - contador) >= PLAYEROOM))
-        {
-            GoGameEvent evnt = GoGameEvent.Create(playersConnections[0]);
-            if (contador < PLAYEROOM)
-                evnt.ID = "0";
-            else
-                evnt.ID = "1";
-            evnt.Send();
 
-            playersConnections.RemoveAt(0);
-            contador++;
-            //numPlayers--;
-            BoltLog.Warn("Jugador " + contador + ", va a " + evnt.ID);
+        //Crear partida si hay jugadores
+
+        int map = 0;
+        while (numPlayers >= PLAYEROOM)
+        {
+            int contador = 0;
+            while (contador < PLAYEROOM)
+            {
+                contador++;
+                GoGameEvent evnt = GoGameEvent.Create(playersConnections[0]);
+                if (map == 0)
+                    evnt.ID = "0";
+                else
+                    evnt.ID = "1";
+                evnt.Send();
+
+                playersConnections.RemoveAt(0);
+                //numPlayers--;
+                BoltLog.Warn("Jugador " + contador + ", va a " + evnt.ID);
+            }
+
+            numPlayers -= PLAYEROOM;
+            map++;
         }
+
+        //while (numPlayers >= PLAYEROOM && ((numPlayers - contador) >= PLAYEROOM))
+        //{
+        //    GoGameEvent evnt = GoGameEvent.Create(playersConnections[0]);
+        //    if (contador < PLAYEROOM)
+        //        evnt.ID = "0";
+        //    else
+        //        evnt.ID = "1";
+        //    evnt.Send();
+
+        //    playersConnections.RemoveAt(0);
+        //    contador++;
+        //    //numPlayers--;
+        //    BoltLog.Warn("Jugador " + contador + ", va a " + evnt.ID);
+        //}
 
         //Devolver al menu a los jugadores que no hacen falta
         foreach (BoltConnection conection in playersConnections)
