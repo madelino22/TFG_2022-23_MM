@@ -275,6 +275,10 @@ public class PlayerSetupController : GlobalEventListener
             }
             else partida.winner = team.blue;
             saveMatch();
+
+            // MANDAMOS A LOS PLAYERS A OTRA ESCENA
+            SendPlayersToFinalScene ev = SendPlayersToFinalScene.Create(GlobalTargets.AllClients);
+            ev.Send();
         }
         else //Los clientes actualizan su resultado
         {
@@ -286,6 +290,8 @@ public class PlayerSetupController : GlobalEventListener
             {
                 partida.winner = team.red;
             }
+
+
         }
     }
 

@@ -23,27 +23,16 @@ public class UI_Callback : GlobalEventListener
         _matchManager.UpdateUI(1, 1, 1);
         timer = 0;
     }
-
-
    
-    public override void OnEvent(MatchInfoEvent evnt)
+    public override void OnEvent(MatchInfoEvent evnt)// 
     {
-        if (evnt.Time <= 0)
-        {
-            _matchManager.endGameScene();
-        }
-        else
-        {
-            blue = evnt.BlueScore;
-            red = evnt.RedScore;
-            _matchManager.UpdateUI(evnt.BlueScore, evnt.RedScore, evnt.Time);
-           
-        }
+        blue = evnt.BlueScore;
+        red = evnt.RedScore;
+        _matchManager.UpdateUI(evnt.BlueScore, evnt.RedScore, evnt.Time);
     }
 
     public override void OnEvent(PlayerDiedEvent evnt)
     {
-
         if (evnt.isRed) //el que ha muerto es rojo
         {
             blue+=1;
@@ -69,33 +58,39 @@ public class UI_Callback : GlobalEventListener
         }
     }
 
+    //UNA VEZ SE HA ACTUALIZADO FIREBASE CON LOS DATOS NOS CAMBIAMOS DE ESCENA
+    public override void OnEvent(SendPlayersToFinalScene evnt)
+    {
+        _matchManager.endGameScene();
+    }
+
     // Update is called once per frame
     void Update()
     {
         if (BoltNetwork.IsServer)
         {
             timer += Time.deltaTime;
+
             if (seg < timer)
             {
                 time--;
 
-                if (time > 0)
-                {
-                    MatchInfoEvent evnt = MatchInfoEvent.Create(GlobalTargets.AllClients);
-                    evnt.BlueScore = blue;
-                    evnt.RedScore = red;
-                    evnt.Time = time;
-                    evnt.Send();
+                MatchInfoEvent evnt = MatchInfoEvent.Create(GlobalTargets.AllClients);
+                evnt.BlueScore = blue;
+                evnt.RedScore = red;
+                evnt.Time = time;
+                evnt.Send();
 
-                    _matchManager.UpdateUI(blue, red, time);
-                }
+                _matchManager.UpdateUI(blue, red, time);
 
                 //Si el tiempo se ha acabao el server manda mensaje de guardar estado de partida
                 if (time <= 0)
                 {
-                    saveGameEvent evnt = saveGameEvent.Create(GlobalTargets.OnlyServer);
-                    evnt.Send();
+                    saveGameEvent evnt2 = saveGameEvent.Create(GlobalTargets.OnlyServer);
+                    evnt2.Send();
+                    Debug.Log("FINISH");
                 }
+                Debug.Log("TIEMPO: " + time);
                 seg++;
             }
         }

@@ -1039,6 +1039,13 @@
       "Name": "killerEvent",
       "Guid": "ba74860b-827c-41dc-b67e-4ac685c275ec",
       "Groups": []
+    },
+    {
+      "$type": "Photon.Bolt.Compiler.EventDefinition, bolt.compiler",
+      "Properties": [],
+      "Name": "SendPlayersToFinalScene",
+      "Guid": "27d9f85b-654b-4da0-a2a0-ed87fd095326",
+      "Groups": []
     }
   ],
   "ActiveGroup": "Everything"
