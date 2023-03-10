@@ -290,8 +290,6 @@ public class PlayerSetupController : GlobalEventListener
             {
                 partida.winner = team.red;
             }
-
-
         }
     }
 
@@ -299,16 +297,16 @@ public class PlayerSetupController : GlobalEventListener
     {
         string json2 = JsonUtility.ToJson(partida); //Cambiar el new Match por los datos reales de la partida
 
-
         //Saber que numero de partida es la siguiente
         int nMatches = 0;
-        reference.Child("Matches").GetValueAsync().ContinueWith(task =>
+        reference.Child("Matches").Child("nMatches").GetValueAsync().ContinueWith(task =>
         {
             if (task.IsCompleted)
             {
                 DataSnapshot snapshot = task.Result;
 
-                nMatches = int.Parse(snapshot.Child("nMatches").Value.ToString());
+                nMatches = int.Parse(snapshot.Value.ToString());
+                //Debug.Log("n matches: "+nMatches);
             }
             else
             {
@@ -321,12 +319,18 @@ public class PlayerSetupController : GlobalEventListener
         {
             if (task.IsCompleted)
             {
+                int x = 0;
+                x++;
                 //Debug.Log("saved the match");
             }
             else
             {
+                int c = 1000;
+                c = 5;
                 //Debug.Log("No se han enviado los datos");
             }
+            int a = 8;
+            a = 7;
         }
        );
 
