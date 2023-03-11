@@ -100,32 +100,32 @@ public class UserHistory : MonoBehaviour
         }
     }
 
-    public void UpdateUserHistory(RoundData lastRound)
+    public void UpdateUserHistory()
     {
-        rankProgress += lastRound.rankProgress; //?????????
+        rankProgress += RoundData.rankProgress; //?????????
 
-        soloRank = lastRound.soloRank; //??????????
+        soloRank = RoundData.soloRank; //??????????
 
-        dps = (gamesPlayed * dps + lastRound.dps) / (gamesPlayed + 1); //damage per second
+        dps = (gamesPlayed * dps + RoundData.dps) / (gamesPlayed + 1); //damage per second
 
-        if(lastRound.won) wins++;
+        if(RoundData.won) wins++;
 
         else loses++;
 
-        assists += lastRound.assists; 
-        totalDamage += lastRound.damageReceived; //Damage Received by Player
-        kills += lastRound.kills;
-        deaths += lastRound.deaths;
+        assists += RoundData.assists; 
+        totalDamage += RoundData.damageReceived; //Damage Received by Player
+        kills += RoundData.kills;
+        deaths += RoundData.deaths;
 
-        if (lastRound.deaths != 0) //Don't divide by zero
-            killsDeathsAverage = (gamesPlayed * killsDeathsAverage + (lastRound.kills / lastRound.deaths)) / (gamesPlayed + 1);
+        if (RoundData.deaths != 0) //Don't divide by zero
+            killsDeathsAverage = (gamesPlayed * killsDeathsAverage + (RoundData.kills / RoundData.deaths)) / (gamesPlayed + 1);
 
         //Damage Inflicted on Enemy
-        averageDamagePerGame = (gamesPlayed * averageDamagePerGame + lastRound.damage) / (gamesPlayed + 1);
+        averageDamagePerGame = (gamesPlayed * averageDamagePerGame + RoundData.damage) / (gamesPlayed + 1);
         //Damage Received by Player
-        damageReceivedPerGame = (gamesPlayed * damageReceivedPerGame + lastRound.damageReceived) / (gamesPlayed + 1);
+        damageReceivedPerGame = (gamesPlayed * damageReceivedPerGame + RoundData.damageReceived) / (gamesPlayed + 1);
 
-        healedLifePerGame = (gamesPlayed * healedLifePerGame + lastRound.healedLife) / (gamesPlayed + 1);
+        healedLifePerGame = (gamesPlayed * healedLifePerGame + RoundData.healedLife) / (gamesPlayed + 1);
                 
         gamesPlayed++;
     }

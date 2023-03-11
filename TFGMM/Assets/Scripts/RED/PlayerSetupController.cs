@@ -36,9 +36,6 @@ public class PlayerSetupController : GlobalEventListener
 
     Match partida;
 
-    //Info de lo que ha hecho el jugador en esta partida
-    RoundData actualGame;
-
     public void Awake()
     {
         reference = FirebaseDatabase.DefaultInstance.RootReference;
@@ -52,7 +49,7 @@ public class PlayerSetupController : GlobalEventListener
             string name = ComInfo.getPlayerData().userName;
             evnt2.playerName = name;
             evnt2.Send();
-            actualGame = new RoundData();
+            RoundData.ResetData();
         }
     }
 
@@ -143,19 +140,9 @@ public class PlayerSetupController : GlobalEventListener
             PlayerMotor playerMotor = entities[id].GetComponentInChildren<PlayerMotor>();
             if (playerMotor)
                 playerMotor.gameObject.transform.position = spawners[id].transform.position;
-        }
-        else //El propio jugador actualiza sus stats
-        {
-            if (evnt.nameKilled != ComInfo.getPlayerName()) //Comprueba que hasta aqui esta bien
-            {
-                BoltLog.Warn("JUGADOR ACTUALIZANDO INFO QUE NO DEBE SER takeDamageEvent");
-            }
-            else
-            {
-                actualGame.deaths += 500;
-            }
 
-            //Conseguir posicion del jugador que ha hecho daño
+
+            //Conseguir posicion del jugador que ha matado
             int i = 0;
             bool found = false;
             while (!found)
@@ -167,29 +154,30 @@ public class PlayerSetupController : GlobalEventListener
             evn.action = "killer";
             evn.numPlayer = i;
             evn.Send();
-
+        }
+        else //El propio jugador actualiza sus stats
+        {
+            if (evnt.nameKilled != ComInfo.getPlayerName()) //Comprueba que hasta aqui esta bien
+            {
+                BoltLog.Warn("JUGADOR ACTUALIZANDO INFO QUE NO DEBE SER takeDamageEvent");
+            }
+            else
+            {
+                RoundData.deaths += 500;
+            }
         }
     }
 
     public override void OnEvent(takeDamageEvent evnt)
     {
         if (BoltNetwork.IsServer)
-            partida.damaged(evnt.nameDamaged, evnt.damagedBy);
-        else //El propio jugador actualiza sus stats
         {
-            if (evnt.nameDamaged != ComInfo.getPlayerName()) //Comprueba que hasta aqui esta bien
-            {
-                BoltLog.Warn("JUGADOR ACTUALIZANDO INFO QUE NO DEBE SER takeDamageEvent");
-            }
-            else
-            {
-                actualGame.damageReceived += 500;
-            }
+            partida.damaged(evnt.nameDamaged, evnt.damagedBy);
 
             //Conseguir posicion del jugador que ha hecho daño
             int i = 0;
             bool found = false;
-            while(!found)
+            while (!found)
             {
                 if (namePlayers[i] == evnt.damagedBy) break;
                 i++;
@@ -198,7 +186,17 @@ public class PlayerSetupController : GlobalEventListener
             evn.action = "damaged";
             evn.numPlayer = i;
             evn.Send();
-
+        }
+        else //El propio jugador actualiza sus stats
+        {
+            if (evnt.nameDamaged != ComInfo.getPlayerName()) //Comprueba que hasta aqui esta bien
+            {
+                BoltLog.Warn("JUGADOR ACTUALIZANDO INFO QUE NO DEBE SER takeDamageEvent");
+            }
+            else
+            {
+                RoundData.damageReceived += 500;
+            }
         }
     }
 
@@ -222,12 +220,12 @@ public class PlayerSetupController : GlobalEventListener
 
     public override void OnEvent(killerEvent evnt)
     {
-        actualGame.kills += 500;
+        RoundData.kills += 500;
     }
 
     public override void OnEvent(damageDoneEvent evnt) //Lo recibe el jugador que ha hecho daño
     {
-        actualGame.damage += 500; //SE SUPONE QUE EL DAÑO ES 500 SIEMPRE
+        RoundData.damage += 500; //SE SUPONE QUE EL DAÑO ES 500 SIEMPRE
     }
 
     public override void OnEvent(updatePlayerShots evnt)
@@ -236,7 +234,7 @@ public class PlayerSetupController : GlobalEventListener
             partida.shoot(evnt.shooterName);
         else //El propio jugador actualiza sus stats
         {
-            actualGame.totalShots++;
+             RoundData.totalShots++;
         }
     }
 
@@ -245,16 +243,20 @@ public class PlayerSetupController : GlobalEventListener
     public override void OnEvent(updatePlayerStatsEvent evnt) //Se llama un vez por player al acabar partida
     {
         //ENVIAR INFO FIREBASE DEL JUGADOR------------------------
-        //Cogemos la info del jugador
-        UserHistory userHistory = ComInfo.getPlayerData();
+        if (BoltNetwork.IsClient)
+        {
+            //Cogemos la info del jugador
+            UserHistory userHistory = ComInfo.getPlayerData();
 
-        //Actualizamos con lo hecho en la partida
-        userHistory.UpdateUserHistory(actualGame);
+            //Actualizamos con lo hecho en la partida
+            userHistory.UpdateUserHistory();
 
-        //Guardamos la info con la partida actualizada
-        ComInfo.setPlayerData(userHistory);
+            //Guardamos la info con la partida actualizada
+            ComInfo.setPlayerData(userHistory);
 
-        saveData(userHistory);
+            saveData(userHistory);
+        }
+
     }
 
     //------------------------------------SEND MATCH INFO-------------------------------------------------------

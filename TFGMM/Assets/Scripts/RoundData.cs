@@ -2,30 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RoundData : MonoBehaviour
+public static class RoundData
 {
-    public int rankProgress = 0;
+    public static int rankProgress = 0;
+    public static ranks soloRank = ranks.silver3;
 
-    public ranks soloRank = ranks.silver3;
+    public static float dps = 0; //damage per second
 
-    public float dps = 0; //damage per second
+    public static int kills = 0;
 
-    public int kills = 0;
+    public static int deaths = 0;
 
-    public int deaths = 0;
+    public static bool won = false;
 
-    public bool won = false;
+    public static int assists = 0;
 
-    public int assists = 0;
+    public static int totalShots = 0;
 
-    public int totalShots = 0;
+    public static int damage = 0; //Damage Inflicted on Enemy
+    public static int damageReceived = 0; //Damage Received by Player
 
-    public int damage = 0; //Damage Inflicted on Enemy
-    public int damageReceived = 0; //Damage Received by Player
+    public static int healedLife = 0;
 
-    public int healedLife = 0;
-
-    public void ResetData()
+    public static void ResetData()
     {
         rankProgress = 0;
         soloRank = ranks.silver3;
