@@ -93,20 +93,20 @@ public class PlayerMotor : EntityEventListener<IPlayerState>
         }
     }
 
-    public void Respawn(string killedBy)
+    public void Respawn(int killedBy)
     {
         _firstState = true;
         SetState(_spawnPos, 0f);
         _lastServerPos = _spawnPos;
         RespawnEvent evnt1 = RespawnEvent.Create(GlobalTargets.OnlyServer);
         evnt1.id = id;
-        evnt1.killedBy = killedBy;
+        evnt1.killedBy = "0";// killedBy;
         evnt1.nameKilled = ComInfo.getPlayerName();
         evnt1.Send();
 
         RespawnEvent evnt2 = RespawnEvent.Create(GlobalTargets.OnlySelf);
         evnt2.id = id;
-        evnt2.killedBy = killedBy;
+        evnt2.killedBy = "0";//killedBy;
         evnt2.nameKilled = ComInfo.getPlayerName();
         evnt2.Send();
     }

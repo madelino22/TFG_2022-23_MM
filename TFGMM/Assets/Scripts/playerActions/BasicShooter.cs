@@ -135,8 +135,11 @@ public class BasicShooter : EntityEventListener
         else 
             entity = BoltNetwork.Instantiate(BoltPrefabs.BlueBullet, evnt.Position+ e, evnt.Rotation);
 
-
-        entity.gameObject.GetComponent<Bullet>().setCreatorName(ComInfo.getPlayerName());
+        //BasicShooter esta en AttackModule.
+        //PlayerMotor esta en IceElemental
+        //AttackModule y IceElemental son hijos de Player
+        int id = this.transform.parent.GetComponentInChildren<PlayerMotor>().getID();
+        entity.gameObject.GetComponent<Bullet>().setCreatorName(id); 
 
         updatePlayerShots evnt2 = updatePlayerShots.Create(GlobalTargets.OnlyServer);
         evnt2.shooterName = ComInfo.getPlayerName();

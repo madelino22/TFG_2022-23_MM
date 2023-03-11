@@ -141,7 +141,6 @@ public class PlayerSetupController : GlobalEventListener
             if (playerMotor)
                 playerMotor.gameObject.transform.position = spawners[id].transform.position;
 
-
             //Conseguir posicion del jugador que ha matado
             int i = 0;
             bool found = false;
@@ -172,32 +171,32 @@ public class PlayerSetupController : GlobalEventListener
     {
         if (BoltNetwork.IsServer)
         {
-            partida.damaged(evnt.nameDamaged, evnt.damagedBy);
+            partida.damaged(namePlayers[evnt.nameDamaged], namePlayers[evnt.damagedBy]);
 
             //Conseguir posicion del jugador que ha hecho daño
-            int i = 0;
-            bool found = false;
-            while (!found)
+            if (evnt.damagedBy < PLAYEROOM)
             {
-                if (namePlayers[i] == evnt.damagedBy) break;
-                i++;
+                damageDoneEvent evn = damageDoneEvent.Create(entityConnection[evnt.damagedBy]);
+                evn.Send();
             }
-            sendDataToPlayerEvent evn = sendDataToPlayerEvent.Create(GlobalTargets.OnlyServer);
-            evn.action = "damaged";
-            evn.numPlayer = i;
-            evn.Send();
-        }
-        else //El propio jugador actualiza sus stats
-        {
-            if (evnt.nameDamaged != ComInfo.getPlayerName()) //Comprueba que hasta aqui esta bien
+
+            // CONSEGUIR POS ALGO
+            if (evnt.nameDamaged < PLAYEROOM)
             {
-                BoltLog.Warn("JUGADOR ACTUALIZANDO INFO QUE NO DEBE SER takeDamageEvent");
-            }
-            else
-            {
-                RoundData.damageReceived += 500;
+               
             }
         }
+        //else //El propio jugador actualiza sus stats
+        //{
+        //    if (evnt.nameDamaged != ComInfo.getPlayerName()) //Comprueba que hasta aqui esta bien
+        //    {
+        //        BoltLog.Warn("JUGADOR ACTUALIZANDO INFO QUE NO DEBE SER takeDamageEvent");
+        //    }
+        //    else
+        //    {
+        //        RoundData.damageReceived += 500;
+        //    }
+        //}
     }
 
     public override void OnEvent(sendDataToPlayerEvent evnt)

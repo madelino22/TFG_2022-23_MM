@@ -18,7 +18,7 @@ public class Bullet : MonoBehaviour
     [SerializeField]
     bool wasFiredByRed = true;
 
-    private string creatorName = "";
+    int creatorName = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -34,14 +34,9 @@ public class Bullet : MonoBehaviour
         transform.Translate(Vector3.forward * speed * Time.fixedDeltaTime);
     }
 
-    public void setCreatorName(string n)
+    public void setCreatorName(int n)
     {
         creatorName = n;
-    }
-
-    public string getCreatorName()
-    {
-        return creatorName;
     }
 
     private void OnTriggerEnter(Collider collision)
@@ -53,12 +48,14 @@ public class Bullet : MonoBehaviour
         if (target.CompareTag("Muro"))
             BoltNetwork.Destroy(this.gameObject);
 
+
         else if (wasFiredByRed && target.CompareTag("Blue") //Rojo le da a azul
             || !wasFiredByRed && target.CompareTag("Red")) // Azul le da a rojo
         {
+            int wasHitName = collision.gameObject.GetComponent<PlayerMotor>().getID();
             bool redWasHit = !wasFiredByRed; //rojo es golpeado si la bala la disparo azul
             if (BoltNetwork.IsServer)
-                target.GetComponent<PlayerCallback>().loseLife(redWasHit, creatorName);
+                target.GetComponent<PlayerCallback>().loseLife(redWasHit, creatorName, wasHitName);
             BoltNetwork.Destroy(this.gameObject);
         }
     }
