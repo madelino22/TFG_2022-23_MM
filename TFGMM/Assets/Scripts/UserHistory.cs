@@ -27,8 +27,6 @@ public class UserHistory : MonoBehaviour
 
     public int assists = 0;
 
-    public int averageDamagePerGame = 0;
-
     public int totalDamage = 0;
 
     public int killsDeathsAverage = 0;
@@ -77,8 +75,6 @@ public class UserHistory : MonoBehaviour
 
         assists = int.Parse(snapshot.Child("assists").Value.ToString());
 
-        averageDamagePerGame = int.Parse(snapshot.Child("averageDamagePerGame").Value.ToString());
-
         totalDamage = int.Parse(snapshot.Child("totalDamage").Value.ToString());
 
         killsDeathsAverage = int.Parse(snapshot.Child("killsDeathsAverage").Value.ToString());
@@ -102,11 +98,14 @@ public class UserHistory : MonoBehaviour
 
     public void UpdateUserHistory()
     {
+        gamesPlayed++;
+
         rankProgress += RoundData.rankProgress; //?????????
 
         soloRank = RoundData.soloRank; //??????????
 
-        dps = (gamesPlayed * dps + RoundData.dps) / (gamesPlayed + 1); //damage per second
+        int dpsThisGame = RoundData.damage / 15; //15 HASTA QUE PONGAS 90 CON PARTIDAS BIEN
+        dps = ((gamesPlayed - 1) * dps + dpsThisGame) / (gamesPlayed); //damage per second
 
         if(RoundData.won) wins++;
 
@@ -118,15 +117,11 @@ public class UserHistory : MonoBehaviour
         deaths += RoundData.deaths;
 
         if (RoundData.deaths != 0) //Don't divide by zero
-            killsDeathsAverage = (gamesPlayed * killsDeathsAverage + (RoundData.kills / RoundData.deaths)) / (gamesPlayed + 1);
+            killsDeathsAverage = ((gamesPlayed - 1) * killsDeathsAverage + (RoundData.kills / RoundData.deaths)) / (gamesPlayed);
 
-        //Damage Inflicted on Enemy
-        averageDamagePerGame = (gamesPlayed * averageDamagePerGame + RoundData.damage) / (gamesPlayed + 1);
         //Damage Received by Player
-        damageReceivedPerGame = (gamesPlayed * damageReceivedPerGame + RoundData.damageReceived) / (gamesPlayed + 1);
+        damageReceivedPerGame = ((gamesPlayed - 1) * damageReceivedPerGame + RoundData.damageReceived) / (gamesPlayed);
 
-        healedLifePerGame = (gamesPlayed * healedLifePerGame + RoundData.healedLife) / (gamesPlayed + 1);
-                
-        gamesPlayed++;
+        healedLifePerGame = ((gamesPlayed - 1) * healedLifePerGame + RoundData.healedLife) / (gamesPlayed);
     }
 }

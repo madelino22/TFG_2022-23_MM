@@ -26,24 +26,25 @@ public class MatchManager : GlobalEventListener
 
     public Text timeText;
 
-    private float time = 15f;
-
     teams myTeam = teams.blue;
 
-    private int nPlayerRoom = 0;
+    public static int nPlayerRoom = 0;
+    public override void OnEvent(setPlayerEvent evnt)
+    {
+        nPlayerRoom = (int)evnt.nPlayer;
+        BoltLog.Warn("SOY EL JUGADOR: " + nPlayerRoom);
+    }
 
+    public int getPlayerRoom()
+    {
+        return nPlayerRoom;
+    }
 
     void Start()
     {
         redPointsText.text = redPoints.ToString();
         bluePointsText.text = bluePoints.ToString();
         timeText.text = "1:30";
-    }
-
-    public override void OnEvent(setPlayerEvent evnt)
-    {
-        nPlayerRoom = (int)evnt.nPlayer;
-        BoltLog.Warn("Soy el jugador" + nPlayerRoom);
     }
 
     public void endGameScene()

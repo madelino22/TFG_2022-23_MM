@@ -121,16 +121,17 @@ public class BasicShooter : EntityEventListener
     {
         ShootEvent evnt = ShootEvent.Create(entity, EntityTargets.OnlySelf);
         evnt.Position = (Vector3)arr[0];
-        evnt.Rotation = (Quaternion)arr[1]; 
+        evnt.Rotation = (Quaternion)arr[1];
+        evnt.redTeam = this.gameObject.CompareTag("Red");
         evnt.Send();
     }
 
-    public override void OnEvent(ShootEvent evnt) //ASUMIMOS QUE SOLO SE LLAMA EN EL CLIENTE
+    public override void OnEvent(ShootEvent evnt)
     {
         Vector3 e = new Vector3(0, 1.7f, 0);
         BoltEntity entity;
         //DEPENDIENDO DEL EQUIPO DISPARA UNA BALA U OTRA
-        if (this.gameObject.CompareTag("Red"))
+        if (evnt.redTeam)
             entity = BoltNetwork.Instantiate(BoltPrefabs.Bullet, evnt.Position+ e, evnt.Rotation);
         else 
             entity = BoltNetwork.Instantiate(BoltPrefabs.BlueBullet, evnt.Position+ e, evnt.Rotation);
@@ -138,7 +139,7 @@ public class BasicShooter : EntityEventListener
         //BasicShooter esta en AttackModule.
         //PlayerMotor esta en IceElemental
         //AttackModule y IceElemental son hijos de Player
-        int id = this.transform.parent.GetComponentInChildren<PlayerMotor>().getID();
+        int id = MatchManager.nPlayerRoom;
         entity.gameObject.GetComponent<Bullet>().setCreatorName(id); 
 
         updatePlayerShots evnt2 = updatePlayerShots.Create(GlobalTargets.OnlyServer);

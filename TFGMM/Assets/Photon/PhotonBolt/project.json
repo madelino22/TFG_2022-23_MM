@@ -538,10 +538,21 @@
           "AssetSettings": {
             "$type": "Photon.Bolt.Compiler.PropertyEventSettings, bolt.compiler"
           }
+        },
+        {
+          "Name": "redTeam",
+          "Enabled": true,
+          "Expanded": true,
+          "ReplicationMode": 1,
+          "Priority": 1,
+          "PropertyType": {
+            "$type": "Photon.Bolt.Compiler.PropertyTypeBool, bolt.compiler"
+          },
+          "AssetSettings": {
+            "$type": "Photon.Bolt.Compiler.PropertyEventSettings, bolt.compiler"
+          }
         }
       ],
-      "EntitySenders": 2,
-      "GlobalSenders": 3,
       "Name": "ShootEvent",
       "Guid": "4e6cb36d-cbd6-4e88-a890-e7385e716d1f",
       "Groups": []
@@ -782,7 +793,7 @@
       "$type": "Photon.Bolt.Compiler.EventDefinition, bolt.compiler",
       "Properties": [
         {
-          "Name": "id",
+          "Name": "nameKilled",
           "Enabled": true,
           "Expanded": true,
           "ReplicationMode": 1,
@@ -802,22 +813,21 @@
           "ReplicationMode": 1,
           "Priority": 1,
           "PropertyType": {
-            "$type": "Photon.Bolt.Compiler.PropertyTypeString, bolt.compiler",
-            "MaxLength": 1
+            "$type": "Photon.Bolt.Compiler.PropertyTypeInteger, bolt.compiler",
+            "MaxValue": 255
           },
           "AssetSettings": {
             "$type": "Photon.Bolt.Compiler.PropertyEventSettings, bolt.compiler"
           }
         },
         {
-          "Name": "nameKilled",
+          "Name": "delete",
           "Enabled": true,
-          "Expanded": true,
           "ReplicationMode": 1,
           "Priority": 1,
           "PropertyType": {
-            "$type": "Photon.Bolt.Compiler.PropertyTypeString, bolt.compiler",
-            "MaxLength": 1
+            "$type": "Photon.Bolt.Compiler.PropertyTypeInteger, bolt.compiler",
+            "MaxValue": 255
           },
           "AssetSettings": {
             "$type": "Photon.Bolt.Compiler.PropertyEventSettings, bolt.compiler"
@@ -1045,6 +1055,20 @@
       "Properties": [],
       "Name": "SendPlayersToFinalScene",
       "Guid": "27d9f85b-654b-4da0-a2a0-ed87fd095326",
+      "Groups": []
+    },
+    {
+      "$type": "Photon.Bolt.Compiler.EventDefinition, bolt.compiler",
+      "Properties": [],
+      "Name": "damageReceivedEvent",
+      "Guid": "3c2816bd-8445-4938-a9d5-ec99b2803ec5",
+      "Groups": []
+    },
+    {
+      "$type": "Photon.Bolt.Compiler.EventDefinition, bolt.compiler",
+      "Properties": [],
+      "Name": "killedEvent",
+      "Guid": "26fd7cfa-a808-40fa-9a28-b5dcc288a2bf",
       "Groups": []
     }
   ],

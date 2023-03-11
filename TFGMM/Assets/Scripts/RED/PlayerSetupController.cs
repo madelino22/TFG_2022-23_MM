@@ -111,7 +111,6 @@ public class PlayerSetupController : GlobalEventListener
 
         entityConnection[(int)evnt.numPlayer].Disconnect();
 
-
         contador--;
         BoltLog.Warn("Contador: " + contador);
         if (contador == 0) BoltNetwork.Destroy(entityCanvas);
@@ -129,41 +128,22 @@ public class PlayerSetupController : GlobalEventListener
     {
         if (BoltNetwork.IsServer)
         {
-            int id = evnt.id;
-            string killedBy = evnt.killedBy;
-            string nameKilled = evnt.nameKilled;
 
             //FIREBASE
-            partida.killed(nameKilled, killedBy);
+            partida.killed(namePlayers[evnt.nameKilled], namePlayers[evnt.killedBy]);
 
             //CHANGE POS IN SCENE
-            PlayerMotor playerMotor = entities[id].GetComponentInChildren<PlayerMotor>();
+            PlayerMotor playerMotor = entities[evnt.nameKilled].GetComponentInChildren<PlayerMotor>();
             if (playerMotor)
-                playerMotor.gameObject.transform.position = spawners[id].transform.position;
+                playerMotor.gameObject.transform.position = spawners[evnt.nameKilled].transform.position;
 
-            //Conseguir posicion del jugador que ha matado
-            int i = 0;
-            bool found = false;
-            while (!found)
-            {
-                if (namePlayers[i] == evnt.killedBy) break;
-                i++;
-            }
-            sendDataToPlayerEvent evn = sendDataToPlayerEvent.Create(GlobalTargets.OnlyServer);
-            evn.action = "killer";
-            evn.numPlayer = i;
+
+            killerEvent evn = killerEvent.Create(entityConnection[evnt.killedBy]);
             evn.Send();
-        }
-        else //El propio jugador actualiza sus stats
-        {
-            if (evnt.nameKilled != ComInfo.getPlayerName()) //Comprueba que hasta aqui esta bien
-            {
-                BoltLog.Warn("JUGADOR ACTUALIZANDO INFO QUE NO DEBE SER takeDamageEvent");
-            }
-            else
-            {
-                RoundData.deaths += 500;
-            }
+
+
+            killerEvent evn2 = killerEvent.Create(entityConnection[evnt.nameKilled]);
+            evn2.Send();
         }
     }
 
@@ -173,58 +153,32 @@ public class PlayerSetupController : GlobalEventListener
         {
             partida.damaged(namePlayers[evnt.nameDamaged], namePlayers[evnt.damagedBy]);
 
-            //Conseguir posicion del jugador que ha hecho daño
-            if (evnt.damagedBy < PLAYEROOM)
-            {
-                damageDoneEvent evn = damageDoneEvent.Create(entityConnection[evnt.damagedBy]);
-                evn.Send();
-            }
-
-            // CONSEGUIR POS ALGO
-            if (evnt.nameDamaged < PLAYEROOM)
-            {
-               
-            }
+            damageDoneEvent evn = damageDoneEvent.Create(entityConnection[evnt.damagedBy]);
+            evn.Send();
+            
+            damageReceivedEvent evn2 = damageReceivedEvent.Create(entityConnection[evnt.nameDamaged]);
+            evn2.Send();
         }
-        //else //El propio jugador actualiza sus stats
-        //{
-        //    if (evnt.nameDamaged != ComInfo.getPlayerName()) //Comprueba que hasta aqui esta bien
-        //    {
-        //        BoltLog.Warn("JUGADOR ACTUALIZANDO INFO QUE NO DEBE SER takeDamageEvent");
-        //    }
-        //    else
-        //    {
-        //        RoundData.damageReceived += 500;
-        //    }
-        //}
     }
 
-    public override void OnEvent(sendDataToPlayerEvent evnt)
+    public override void OnEvent(killedEvent evnt)
     {
-        switch(evnt.action)
-        {
-            case "damaged":
-                damageDoneEvent evn = damageDoneEvent.Create(entityConnection[(int)evnt.numPlayer]);
-                evn.Send();
-                break;
-            case "killer":
-                killerEvent evn2 = killerEvent.Create(entityConnection[(int)evnt.numPlayer]);
-                evn2.Send();
-                break;
-            default:
-                BoltLog.Warn("Esta accion de guardado de datos no existe");
-                break;
-        }
+        RoundData.deaths++;
     }
 
     public override void OnEvent(killerEvent evnt)
     {
-        RoundData.kills += 500;
+        RoundData.kills++;
     }
 
     public override void OnEvent(damageDoneEvent evnt) //Lo recibe el jugador que ha hecho daño
     {
         RoundData.damage += 500; //SE SUPONE QUE EL DAÑO ES 500 SIEMPRE
+    }
+
+    public override void OnEvent(damageReceivedEvent evnt) //Lo recibe el jugador que ha hecho daño
+    {
+        RoundData.damageReceived += 500; //SE SUPONE QUE EL DAÑO ES 500 SIEMPRE
     }
 
     public override void OnEvent(updatePlayerShots evnt)

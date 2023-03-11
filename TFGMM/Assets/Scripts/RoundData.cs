@@ -7,8 +7,6 @@ public static class RoundData
     public static int rankProgress = 0;
     public static ranks soloRank = ranks.silver3;
 
-    public static float dps = 0; //damage per second
-
     public static int kills = 0;
 
     public static int deaths = 0;
@@ -28,7 +26,6 @@ public static class RoundData
     {
         rankProgress = 0;
         soloRank = ranks.silver3;
-        dps = 0;
         kills = 0;
         deaths = 0;
         won = false;
