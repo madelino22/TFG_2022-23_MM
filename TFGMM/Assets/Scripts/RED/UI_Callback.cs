@@ -24,6 +24,7 @@ public class UI_Callback : GlobalEventListener
         timer = 0;
     }
    
+    //SE EJECUTA EN LOS CLIENTES
     public override void OnEvent(MatchInfoEvent evnt)// 
     {
         blue = evnt.BlueScore;
@@ -31,6 +32,7 @@ public class UI_Callback : GlobalEventListener
         _matchManager.UpdateUI(evnt.BlueScore, evnt.RedScore, evnt.Time);
     }
 
+    //SE EJECUTA EN EL SERVER
     public override void OnEvent(PlayerDiedEvent evnt)
     {
         if (evnt.isRed) //el que ha muerto es rojo
@@ -87,6 +89,8 @@ public class UI_Callback : GlobalEventListener
                 if (time <= 0)
                 {
                     saveGameEvent evnt2 = saveGameEvent.Create(GlobalTargets.OnlyServer);
+                    evnt2.redPoints = red;
+                    evnt2.bluePoints = blue;
                     evnt2.Send();
                     Debug.Log("FINISH");
                 }

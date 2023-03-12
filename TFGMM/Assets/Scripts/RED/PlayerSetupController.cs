@@ -225,7 +225,7 @@ public class PlayerSetupController : GlobalEventListener
             UserHistory userHistory = ComInfo.getPlayerData();
 
             //Actualizamos con lo hecho en la partida
-            userHistory.UpdateUserHistory(team.red); // REVISAR
+            userHistory.UpdateUserHistory((team)evnt.winnerTeam); 
 
             //Guardamos la info con la partida actualizada
             ComInfo.setPlayerData(userHistory);
@@ -252,6 +252,7 @@ public class PlayerSetupController : GlobalEventListener
                 partida.winner = team.red;
             }
             else partida.winner = team.blue;
+
             saveMatch();
 
             // MANDAMOS A LOS PLAYERS A OTRA ESCENA
@@ -259,7 +260,7 @@ public class PlayerSetupController : GlobalEventListener
             ev.Send();
 
             updatePlayerStatsEvent ev2 = updatePlayerStatsEvent.Create(GlobalTargets.AllClients);
-
+            ev2.winnerTeam = (int)partida.winner;
             ev2.Send();
         }
         //else //Los clientes actualizan su resultado

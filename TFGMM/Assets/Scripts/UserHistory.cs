@@ -111,9 +111,20 @@ public class UserHistory : MonoBehaviour
         int dpsThisGame = daño / 25; //15 HASTA QUE PONGAS 90 CON PARTIDAS BIEN
         dps = ((gamesPlayed - 1) * dps + dpsThisGame) / (gamesPlayed); //damage per second
 
-        //if(RoundData.won) wins++;
-
-        //else loses++;
+        switch (winner)
+        {
+            case team.red:
+                if (RoundData.isRed) wins++;
+                else loses++;
+                break;
+            case team.blue:
+                if (!RoundData.isRed) wins++;
+                else loses++;
+                break;
+            case team.none:
+                draws++;
+                break;
+        }
 
         kills += RoundData.kills;
         deaths += RoundData.deaths;
