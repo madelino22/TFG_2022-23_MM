@@ -4,6 +4,8 @@ using Photon.Bolt.Utils;
 
 public class PlayerCallback : EntityEventListener<IPlayerState>
 {
+
+
     private PlayerMotor _playerMotor;
     private GUI_Controller _guiController;
     private MatchManager _matchManager;

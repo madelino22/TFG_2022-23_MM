@@ -11,6 +11,8 @@ public class Bullet : MonoBehaviour
     [SerializeField]
     public float speed = 10f;
 
+    AudioSource shootSound;
+
     [SerializeField]
     public int damage = 300;
     Vector3 bulletEndDist;
@@ -23,8 +25,11 @@ public class Bullet : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        shootSound = GetComponent<AudioSource>();
         playerAttacking = GameObject.Find("AttackModule").GetComponent<PlayerAttackTrail>();
         bulletEndDist = transform.position + transform.forward * playerAttacking.getTrailDistance();
+        if(!BoltNetwork.IsServer)
+            shootSound.Play();
         //GetComponent<Rigidbody>().velocity = Vector3.forward * speed;        
     }
 
@@ -52,10 +57,15 @@ public class Bullet : MonoBehaviour
         else if (wasFiredByRed && target.CompareTag("Blue") //Rojo le da a azul
             || !wasFiredByRed && target.CompareTag("Red")) // Azul le da a rojo
         {
-            int wasHitName = collision.gameObject.GetComponent<PlayerMotor>().getID();
+            PlayerMotor pMotor = collision.gameObject.GetComponent<PlayerMotor>();
+            int wasHitName = pMotor.getID();
             bool redWasHit = !wasFiredByRed; //rojo es golpeado si la bala la disparo azul
             if (BoltNetwork.IsServer)
                 target.GetComponent<PlayerCallback>().loseLife(redWasHit, creatorName, wasHitName);
+            else
+            {
+                pMotor.Hurt();
+            }
             BoltNetwork.Destroy(this.gameObject);
         }
     }

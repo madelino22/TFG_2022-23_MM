@@ -25,6 +25,8 @@ public class PlayerMotor : EntityEventListener<IPlayerState>
     Transform playerBall;
     
    
+    AudioSource deadSound = null;
+    AudioSource hurtSound = null;
 
     //[SerializeField] //VA RAPIDISIMO NO SE PORQUE. VALOR CABLEADO EN LA LINEA 125 (APROX)
     private float _speed = 3.0f; 
@@ -55,6 +57,17 @@ public class PlayerMotor : EntityEventListener<IPlayerState>
     public int RedScore { get => _redScore; set => _redScore = value; }
     public int TimeMatch { get => _timeMatch; set => _timeMatch = value; }
 
+
+
+    public void Hurt()
+    {
+        if(hurtSound)hurtSound.Play();
+    } 
+    
+    public void Dead()
+    {
+        if(deadSound)deadSound.Play();
+    }
     public void BuffSpeed(float buff)
     {
         Debug.Log("Speed buffed");
@@ -94,6 +107,12 @@ public class PlayerMotor : EntityEventListener<IPlayerState>
         }
     }
 
+
+    private void Start()
+    {
+        deadSound = GetComponents<AudioSource>()[0];
+        hurtSound = GetComponents<AudioSource>()[1];
+    }
     public void Respawn(int killedBy)
     {
         _firstState = true;
