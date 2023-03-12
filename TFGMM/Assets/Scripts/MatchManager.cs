@@ -70,10 +70,6 @@ public class MatchManager : GlobalEventListener
         deletePlayersEvent del = deletePlayersEvent.Create(GlobalTargets.OnlyServer);
         del.numPlayer = nPlayerRoom;
         del.Send();
-
-        //Cada jugador llega aqui y lo llama el mismo recibe en PlayerSetupController
-        updatePlayerStatsEvent dataevnt = updatePlayerStatsEvent.Create(GlobalTargets.OnlySelf);
-        dataevnt.Send();
     }
 
     public void UpdateUI(int blueScore, int redScore, int time)
