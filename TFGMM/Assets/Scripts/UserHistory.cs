@@ -104,7 +104,9 @@ public class UserHistory : MonoBehaviour
 
         soloRank = RoundData.soloRank; //??????????
 
-        int dpsThisGame = RoundData.damage / 15; //15 HASTA QUE PONGAS 90 CON PARTIDAS BIEN
+        int daño =  RoundData.damage;
+
+        int dpsThisGame = daño / 15; //15 HASTA QUE PONGAS 90 CON PARTIDAS BIEN
         dps = ((gamesPlayed - 1) * dps + dpsThisGame) / (gamesPlayed); //damage per second
 
         if(RoundData.won) wins++;

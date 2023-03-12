@@ -551,6 +551,20 @@
           "AssetSettings": {
             "$type": "Photon.Bolt.Compiler.PropertyEventSettings, bolt.compiler"
           }
+        },
+        {
+          "Name": "id",
+          "Enabled": true,
+          "Expanded": true,
+          "ReplicationMode": 1,
+          "Priority": 1,
+          "PropertyType": {
+            "$type": "Photon.Bolt.Compiler.PropertyTypeInteger, bolt.compiler",
+            "MaxValue": 255
+          },
+          "AssetSettings": {
+            "$type": "Photon.Bolt.Compiler.PropertyEventSettings, bolt.compiler"
+          }
         }
       ],
       "Name": "ShootEvent",
@@ -840,13 +854,6 @@
     },
     {
       "$type": "Photon.Bolt.Compiler.EventDefinition, bolt.compiler",
-      "Properties": [],
-      "Name": "NewEvent",
-      "Guid": "2dd10ec1-bfd1-4087-bbe0-acab8e560b11",
-      "Groups": []
-    },
-    {
-      "$type": "Photon.Bolt.Compiler.EventDefinition, bolt.compiler",
       "Properties": [
         {
           "Name": "bluePoints",
@@ -1069,6 +1076,41 @@
       "Properties": [],
       "Name": "killedEvent",
       "Guid": "26fd7cfa-a808-40fa-9a28-b5dcc288a2bf",
+      "Groups": []
+    },
+    {
+      "$type": "Photon.Bolt.Compiler.EventDefinition, bolt.compiler",
+      "Properties": [
+        {
+          "Name": "isRedHit",
+          "Enabled": true,
+          "Expanded": true,
+          "ReplicationMode": 1,
+          "Priority": 1,
+          "PropertyType": {
+            "$type": "Photon.Bolt.Compiler.PropertyTypeBool, bolt.compiler"
+          },
+          "AssetSettings": {
+            "$type": "Photon.Bolt.Compiler.PropertyEventSettings, bolt.compiler"
+          }
+        },
+        {
+          "Name": "creatorName",
+          "Enabled": true,
+          "Expanded": true,
+          "ReplicationMode": 1,
+          "Priority": 1,
+          "PropertyType": {
+            "$type": "Photon.Bolt.Compiler.PropertyTypeInteger, bolt.compiler",
+            "MaxValue": 255
+          },
+          "AssetSettings": {
+            "$type": "Photon.Bolt.Compiler.PropertyEventSettings, bolt.compiler"
+          }
+        }
+      ],
+      "Name": "sendBulletCreator",
+      "Guid": "46642c41-36a1-44f4-bd68-1325f897b9e9",
       "Groups": []
     }
   ],
