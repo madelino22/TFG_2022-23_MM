@@ -9,9 +9,7 @@ public class UserHistory : MonoBehaviour
 
     public string email = "Este es mi correo";
 
-    public int rankProgress = 0;
-
-    public ranks soloRank = ranks.silver3;
+    public int eloRanking = 1500;
 
     public float dps = 0;
 
@@ -19,15 +17,13 @@ public class UserHistory : MonoBehaviour
 
     public int wins = 0;
 
+    public int draws = 0;
+
     public int loses = 0;
 
     public int kills = 0;
 
     public int deaths = 0;
-
-    public int assists = 0;
-
-    public int totalDamage = 0;
 
     public int killsDeathsAverage = 0;
 
@@ -35,21 +31,35 @@ public class UserHistory : MonoBehaviour
 
     public int healedLifePerGame = 0;
 
-    public int zzlastGameSaved = 1;
+    public int zzlastGameSaved = 0;
 
-    public Match[] lastMatches = new Match[5];
+    private const int NUM_SAVED_MATCHES = 5;
+    private string[] lastMatches = new string[NUM_SAVED_MATCHES];
 
     public string saveGames(int index)
     {
-        lastMatches[index] = new Match(6);
-
         return JsonUtility.ToJson(lastMatches[index]);
     }
 
-    public string saveGamePlayer(int indexGame, int nPlayer)
+    public string initLastMatchesAtNull(int i)
     {
-        return JsonUtility.ToJson(lastMatches[indexGame].players[nPlayer]);
+        lastMatches[i] = "Partida Null";
+        return JsonUtility.ToJson(lastMatches[i]);
     }
+
+    public string lastGameNotSaved(string newGame)
+    {
+        lastMatches[zzlastGameSaved] = newGame;
+        zzlastGameSaved++;
+        zzlastGameSaved %= NUM_SAVED_MATCHES;
+
+        return JsonUtility.ToJson(newGame);
+    }
+
+    //public string saveGamePlayer(int indexGame, int nPlayer)
+    //{
+    //    return JsonUtility.ToJson(lastMatches[indexGame].players[nPlayer]);
+    //}
 
     public void loadInfo(DataSnapshot snapshot)
     {
@@ -57,9 +67,7 @@ public class UserHistory : MonoBehaviour
 
         email = snapshot.Child("email").Value.ToString();
 
-        rankProgress = int.Parse(snapshot.Child("rankProgress").Value.ToString());
-
-        soloRank = (ranks)int.Parse(snapshot.Child("soloRank").Value.ToString());
+        eloRanking = int.Parse(snapshot.Child("eloRanking").Value.ToString());
 
         dps = float.Parse(snapshot.Child("dps").Value.ToString());
 
@@ -67,15 +75,13 @@ public class UserHistory : MonoBehaviour
 
         wins = int.Parse(snapshot.Child("wins").Value.ToString());
 
+        draws = int.Parse(snapshot.Child("draws").Value.ToString());
+
         loses = int.Parse(snapshot.Child("loses").Value.ToString());
 
         kills = int.Parse(snapshot.Child("kills").Value.ToString());
 
         deaths = int.Parse(snapshot.Child("deaths").Value.ToString());
-
-        assists = int.Parse(snapshot.Child("assists").Value.ToString());
-
-        totalDamage = int.Parse(snapshot.Child("totalDamage").Value.ToString());
 
         killsDeathsAverage = int.Parse(snapshot.Child("killsDeathsAverage").Value.ToString());
 
@@ -85,36 +91,30 @@ public class UserHistory : MonoBehaviour
 
         zzlastGameSaved = int.Parse(snapshot.Child("damageReceivedPerGame").Value.ToString());
 
-
-        //Load Games
-
-        for (int i = 0; i < 5; i++)
+        //Load Saved Games
+        for (int i = 0; i < NUM_SAVED_MATCHES; i++)
         {
-            team aux = (team)int.Parse(snapshot.Child("zzzLastGames").Child("Partida" + i).Child("winner").Value.ToString());
+            string aux = snapshot.Child("zzzLastGames").Child("Partida " + i).Value.ToString();
 
-            lastMatches[i] = new Match(aux, snapshot.Child("zzzLastGames").Child("Partida" + i));
+            lastMatches[i] = aux;
         }
     }
 
-    public void UpdateUserHistory()
+    public void UpdateUserHistory(team winner)
     {
         gamesPlayed++;
 
-        rankProgress += RoundData.rankProgress; //?????????
+        eloRanking += 0; // LOLITOOOOOO
 
-        soloRank = RoundData.soloRank; //??????????
+        int daño = RoundData.damage;
 
-        int daño =  RoundData.damage;
-
-        int dpsThisGame = daño / 15; //15 HASTA QUE PONGAS 90 CON PARTIDAS BIEN
+        int dpsThisGame = daño / 25; //15 HASTA QUE PONGAS 90 CON PARTIDAS BIEN
         dps = ((gamesPlayed - 1) * dps + dpsThisGame) / (gamesPlayed); //damage per second
 
-        if(RoundData.won) wins++;
+        //if(RoundData.won) wins++;
 
-        else loses++;
+        //else loses++;
 
-        assists += RoundData.assists; 
-        totalDamage += RoundData.damageReceived; //Damage Received by Player
         kills += RoundData.kills;
         deaths += RoundData.deaths;
 

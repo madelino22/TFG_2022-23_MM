@@ -45,18 +45,25 @@ public class PlayerSetupController : GlobalEventListener
     {
         if (!BoltNetwork.IsServer)
         {
+            RoundData.ResetData();
+
             SpawnPlayerEvent evnt2 = SpawnPlayerEvent.Create(GlobalTargets.OnlyServer);
             string name = ComInfo.getPlayerData().userName;
             evnt2.playerName = name;
+            evnt2.isRed = RoundData.isRed; //MATCH MAKING YA DETERMINO A QUE EQUIPO PERTENECE
             evnt2.Send();
-            RoundData.ResetData();
         }
     }
 
+    //public void SpawnPlayer()
+    //{
+    //    SpawnPlayerEvent evnt = SpawnPlayerEvent.Create(GlobalTargets.OnlyServer);
+    //    evnt.Send();
+    //}
 
     public override void OnEvent(SpawnPlayerEvent evnt)
     {
-        if (contador % 2 == 0) //RED 0,2,4
+        if (evnt.isRed) //RED 0,2,4
         {
             entities[contador] = BoltNetwork.Instantiate(BoltPrefabs.Player2, spawners[contador].transform.position, Quaternion.identity);
             entities[contador].AssignControl(evnt.RaisedBy);
@@ -141,19 +148,12 @@ public class PlayerSetupController : GlobalEventListener
         if (contador == 0) BoltNetwork.Destroy(entityCanvas);
     }
 
-    public void SpawnPlayer()
-    {
-        SpawnPlayerEvent evnt = SpawnPlayerEvent.Create(GlobalTargets.OnlyServer);
-        evnt.Send();
-    }
-
     //------------------------------------UPDATE INFO FIREBASE MATCH PART------------------------------------------------------
 
     public override void OnEvent(RespawnEvent evnt)
     {
         if (BoltNetwork.IsServer)
         {
-
             //FIREBASE
             partida.killed(namePlayers[evnt.nameKilled], namePlayers[evnt.killedBy]);
 
@@ -162,12 +162,10 @@ public class PlayerSetupController : GlobalEventListener
             if (playerMotor)
                 playerMotor.gameObject.transform.position = spawners[evnt.nameKilled].transform.position;
 
-
             killerEvent evn = killerEvent.Create(entityConnection[evnt.killedBy]);
             evn.Send();
 
-
-            killerEvent evn2 = killerEvent.Create(entityConnection[evnt.nameKilled]);
+            killedEvent evn2 = killedEvent.Create(entityConnection[evnt.nameKilled]);
             evn2.Send();
         }
     }
@@ -227,7 +225,7 @@ public class PlayerSetupController : GlobalEventListener
             UserHistory userHistory = ComInfo.getPlayerData();
 
             //Actualizamos con lo hecho en la partida
-            userHistory.UpdateUserHistory();
+            userHistory.UpdateUserHistory(team.red); // REVISAR
 
             //Guardamos la info con la partida actualizada
             ComInfo.setPlayerData(userHistory);
@@ -259,18 +257,22 @@ public class PlayerSetupController : GlobalEventListener
             // MANDAMOS A LOS PLAYERS A OTRA ESCENA
             SendPlayersToFinalScene ev = SendPlayersToFinalScene.Create(GlobalTargets.AllClients);
             ev.Send();
+
+            updatePlayerStatsEvent ev2 = updatePlayerStatsEvent.Create(GlobalTargets.AllClients);
+
+            ev2.Send();
         }
-        else //Los clientes actualizan su resultado
-        {
-            if (partida.pointsRed > partida.pointsBlue)
-            {
-                partida.winner = team.none;
-            }
-            else if (partida.pointsRed > partida.pointsBlue)
-            {
-                partida.winner = team.red;
-            }
-        }
+        //else //Los clientes actualizan su resultado
+        //{
+        //    if (partida.pointsRed > partida.pointsBlue)
+        //    {
+        //        partida.winner = team.none;
+        //    }
+        //    else if (partida.pointsRed > partida.pointsBlue)
+        //    {
+        //        partida.winner = team.red;
+        //    }
+        //}
     }
 
     public void saveMatch()
@@ -366,7 +368,7 @@ public class PlayerSetupController : GlobalEventListener
 
     }
 
-    private void saveData(UserHistory userHistory) //if player doesn't exist in firebase
+    private void saveData(UserHistory userHistory) 
     {
         string json = JsonUtility.ToJson(userHistory);
 
@@ -386,6 +388,25 @@ public class PlayerSetupController : GlobalEventListener
         }
         );
 
+        int nMatches = 0;
+        reference.Child("Matches").Child("nMatches").GetValueAsync().ContinueWith(task =>
+        {
+            if (task.IsCompleted)
+            {
+                DataSnapshot snapshot = task.Result;
+
+                nMatches = int.Parse(snapshot.Value.ToString());
+                //Debug.Log("n matches: "+nMatches);
+            }
+            else
+            {
+                Debug.Log("No se han encontrado el numero de partidas totales");
+            }
+        });
+
+        json = userHistory.lastGameNotSaved("Partida "+ nMatches);
+        //Debug.Log(i);
+        Debug.Log(json);
 
         for (int i = 0; i < 5; i++)
         {
@@ -397,35 +418,16 @@ public class PlayerSetupController : GlobalEventListener
             {
                 if (task.IsCompleted)
                 {
-                    //   Debug.Log("saved games");
+                    Debug.Log("saved games");
                 }
                 else
                 {
-                    //     Debug.Log("No se ha guardado la partida");
+                    Debug.Log("No se ha guardado la partida");
                 }
             }
             );
 
-            for (int j = 0; j < 6; j++)
-            {
-                json = userHistory.saveGamePlayer(i, j);
-
-                //  Debug.Log(i);
-                //  Debug.Log(json);
-
-                reference.Child("User").Child(userHistory.userName).Child("zzzLastGames").Child("Partida" + i).Child(userHistory.lastMatches[i].players[j].name).SetRawJsonValueAsync(json).ContinueWith(task =>
-                {
-                    if (task.IsCompleted)
-                    {
-                        //       Debug.Log("saved players of game");
-                    }
-                    else
-                    {
-                        //      Debug.Log("No se ha guardado al jugador");
-                    }
-                }
-                );
-            }
+          
         }
 
     }

@@ -73,26 +73,6 @@ public static class ComInfo
         gameResult = gameEnd;
     }
 
-    public static float getRankProgress()
-    {
-        return player.rankProgress;
-    }
-
-    public static void addRankProgress(int progress)
-    {
-        player.rankProgress += progress;
-    }
-
-    public static void setRankProgress(int progress)
-    {
-        player.rankProgress = progress;
-    }
-
-    public static ranks getPlayerSoloRank()
-    {
-        return player.soloRank;
-    }
-
     static heroes PlayerHero = heroes.rojo;
     public static heroes getPlayerHero() 
     {

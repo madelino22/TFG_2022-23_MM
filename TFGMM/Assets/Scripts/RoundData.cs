@@ -2,16 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//INFORMACION DEL JUGADOR EN LA PARTIDA ACTUAL
+
 public static class RoundData
 {
-    public static int rankProgress = 0;
-    public static ranks soloRank = ranks.silver3;
-
     public static int kills = 0;
 
     public static int deaths = 0;
-
-    public static bool won = false;
 
     public static int assists = 0;
 
@@ -22,13 +19,12 @@ public static class RoundData
 
     public static int healedLife = 0;
 
+    public static bool isRed = true;
+
     public static void ResetData()
     {
-        rankProgress = 0;
-        soloRank = ranks.silver3;
         kills = 0;
         deaths = 0;
-        won = false;
         assists = 0;
         damage = 0; //Damage Inflicted on Enemy
         damageReceived = 0; //Damage Received by Player

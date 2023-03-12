@@ -94,7 +94,7 @@ public class InfoRoom : GlobalEventListener
     {
         int numPlayers = playersConnections.Count;
         int n = numPlayers;
-        BoltLog.Warn("Hay " + numPlayers);
+        BoltLog.Warn("Hay " + numPlayers + "players.");
 
         //Crear partida si hay jugadores
 
@@ -106,6 +106,10 @@ public class InfoRoom : GlobalEventListener
             {
                 contador++;
                 GoGameEvent evnt = GoGameEvent.Create(playersConnections[0]);
+
+                // HACEMOS NUESTRO MATCHMAKING Y DETERMINAMOS COMO SE FORMAN LOS EQUIPOS
+                evnt.isRed = (contador % 2) == 0;  //PARA QUE SPAWN EVENT SEPA A QUE EQUIPO VA
+
                 if (map == 0)
                     evnt.ID = "0";
                 else
@@ -200,6 +204,8 @@ public class InfoRoom : GlobalEventListener
 
     public override void OnEvent(GoGameEvent evnt)
     {
+        RoundData.isRed = evnt.isRed; //PARA QUE SPAWN EVENT SEPA A QUE EQUIPO VA
+
         //SceneManager.LoadScene("BOLTMapa");
         sessionID = evnt.ID;
         BoltLog.Warn("Guardo ID: " + sessionID);

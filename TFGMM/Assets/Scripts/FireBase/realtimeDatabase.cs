@@ -52,7 +52,7 @@ public class realtimeDatabase : MonoBehaviour
                 }
                 else //Player dont exist create it
                 {
-                    saveData();
+                    setDataToDefault();
                 }
             }
             else
@@ -62,7 +62,7 @@ public class realtimeDatabase : MonoBehaviour
         });
     }
 
-    public void saveData() //if player doesn't exist in firebase
+    public void setDataToDefault() //if player doesn't exist in firebase
     {
         string json = JsonUtility.ToJson(userHistory);
 
@@ -85,11 +85,11 @@ public class realtimeDatabase : MonoBehaviour
 
         for (int i = 0; i < 5; i++)
         {
-            json = userHistory.saveGames(i);
+            json = userHistory.initLastMatchesAtNull(i);
             Debug.Log(i);
             Debug.Log(json);
 
-            reference.Child("User").Child(userHistory.userName).Child("zzzLastGames").Child("Partida" + i).SetRawJsonValueAsync(json).ContinueWith(task =>
+            reference.Child("User").Child(userHistory.userName).Child("zzzLastGames").Child("Partida " + i).SetRawJsonValueAsync(json).ContinueWith(task =>
             {
                 if (task.IsCompleted)
                 {
@@ -102,26 +102,7 @@ public class realtimeDatabase : MonoBehaviour
             }
             );
 
-            for (int j = 0; j < 6; j++)
-            {
-                json = userHistory.saveGamePlayer(i, j);
-
-                Debug.Log(i);
-                Debug.Log(json);
-
-                reference.Child("User").Child(userHistory.userName).Child("zzzLastGames").Child("Partida" + i).Child(userHistory.lastMatches[i].players[j].name).SetRawJsonValueAsync(json).ContinueWith(task =>
-                {
-                    if (task.IsCompleted)
-                    {
-                        Debug.Log("saved players of game");
-                    }
-                    else
-                    {
-                        Debug.Log("No se ha guardado al jugador");
-                    }
-                }
-                );
-            }
+           
         }
         
     }

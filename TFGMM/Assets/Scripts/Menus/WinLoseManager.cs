@@ -90,13 +90,13 @@ public class WinLoseManager : MonoBehaviour
 
         //Modify ranks images when we have them
 
-        progressBar.GetComponent<Slider>().value = ComInfo.getRankProgress();
+        //progressBar.GetComponent<Slider>().value = ComInfo.getRankProgress();
 
         //Decide with the algorithm the progress
         amountProgress = 20;
 
 
-        ComInfo.addRankProgress(amountProgress);
+       // ComInfo.addRankProgress(amountProgress);
 
 
         //Set Rank Progresss visual
@@ -150,22 +150,22 @@ public class WinLoseManager : MonoBehaviour
 
     private void UpdateProgressBar()
     {
-        if (progressBar.GetComponent<Slider>().value < ComInfo.getRankProgress())
-        {
-            float auxValue = progressBar.GetComponent<Slider>().value;
+        //if (progressBar.GetComponent<Slider>().value < ComInfo.getRankProgress())
+        //{
+        //    float auxValue = progressBar.GetComponent<Slider>().value;
 
-            float progress = Time.deltaTime * multiplayer;
-            multiplayer *= 1.01f;
+        //    float progress = Time.deltaTime * multiplayer;
+        //    multiplayer *= 1.01f;
 
-            auxValue += progress;
+        //    auxValue += progress;
 
-            if (auxValue > ComInfo.getRankProgress())
-            {
-                auxValue = ComInfo.getRankProgress();
-            }
+        //    //if (auxValue > ComInfo.getRankProgress())
+        //    //{
+        //    //    auxValue = ComInfo.getRankProgress();
+        //    //}
 
-            progressBar.GetComponent<Slider>().value = auxValue;
-        }
+        //    progressBar.GetComponent<Slider>().value = auxValue;
+        //}
     }
 
     private void UpdateImageAnimation()
