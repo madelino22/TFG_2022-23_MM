@@ -9,6 +9,8 @@ using System;
 using Photon.Bolt.Matchmaking;
 using UdpKit;
 
+using System.Linq; //List sort
+
 public class InfoRoom : GlobalEventListener
 {
     const int PLAYEROOM = 2;
@@ -24,12 +26,23 @@ public class InfoRoom : GlobalEventListener
     private int connections = 0;
 
     private List<BoltConnection> playersConnections = new List<BoltConnection>();
+    private List<KeyValuePair<int, int>> dataOfAllUsers = new List<KeyValuePair<int, int>>(); //esto sera UserHistory mas tarde
+
+    //private Use
+    //public override void BoltStartBegin()
+    //{
+    //    BoltNetwork.RegisterTokenClass<UserHistory>();
+    //}
 
     public override void SceneLoadLocalDone(string scene, IProtocolToken token)
     {
         if (!BoltNetwork.IsServer)
         {
+            UserHistory user = ComInfo.getPlayerData();
+
             JoinPlayerEvent evnt = JoinPlayerEvent.Create(GlobalTargets.OnlyServer);
+            evnt.name = user.userName;
+            evnt.elo = user.eloRanking;
             evnt.Send();
         }
     }
@@ -98,16 +111,21 @@ public class InfoRoom : GlobalEventListener
 
         //Crear partida si hay jugadores
 
+        
         int map = 0;
+        var sortedList = dataOfAllUsers.OrderBy(x => x.Value).ToList(); //ordena el elo en orden ascendente
+
         while (numPlayers >= PLAYEROOM)
-        {
+        {           
             int contador = 0;
             while (contador < PLAYEROOM)
             {
                 contador++;
+                //GoGameEvent evnt = GoGameEvent.Create(playersConnections[sortedList[0].Key]);
                 GoGameEvent evnt = GoGameEvent.Create(playersConnections[0]);
 
                 // HACEMOS NUESTRO MATCHMAKING Y DETERMINAMOS COMO SE FORMAN LOS EQUIPOS
+
                 evnt.isRed = (contador % 2) == 0;  //PARA QUE SPAWN EVENT SEPA A QUE EQUIPO VA
 
                 if (map == 0)
@@ -117,6 +135,8 @@ public class InfoRoom : GlobalEventListener
                 evnt.Send();
                 
                 playersConnections.RemoveAt(0);
+                //playersConnections.RemoveAt(sortedList[0].Key);
+                sortedList.RemoveAt(0);
                 //numPlayers--;
                 BoltLog.Warn("Jugador " + contador + ", va a " + evnt.ID);
             }
@@ -180,10 +200,14 @@ public class InfoRoom : GlobalEventListener
 
     // ----------------------------------  EVENTOS SERVER  --------------------------------------------
 
-    public override void OnEvent(JoinPlayerEvent evnt)
+    public override void OnEvent(JoinPlayerEvent evnt) //LO RECIBE EL SERVER
     {
         //Guardamos conexion del player
         playersConnections.Add(evnt.RaisedBy);
+
+        // DATA PLAYER ==> MATCHMAKING
+        int elo = evnt.elo;
+        dataOfAllUsers.Add(new KeyValuePair<int,int>(connections, elo));
 
         connections++;
 
