@@ -135,9 +135,12 @@ public class Match
             }
         }
     }
+    //"{\"name\":\"Este es mi usuario\",\"kills\":0,\"deaths\":0,\"totalDamage\":0,\"damageReceived\":0,\"totalShots\":0,\"t\":0}"
 
+    
     public string playerJSON(int i)
     {
-        return JsonUtility.ToJson(players[i]);
+        string s = JsonUtility.ToJson(players[i]);
+        return s;
     }
 }
