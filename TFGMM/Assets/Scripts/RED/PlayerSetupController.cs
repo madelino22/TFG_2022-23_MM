@@ -280,15 +280,18 @@ public class PlayerSetupController : GlobalEventListener
     {
         string json2 = JsonUtility.ToJson(partida); //Cambiar el new Match por los datos reales de la partida
 
+        nMatches Nmatches = new nMatches();
+        Nmatches.setTotalGames(4);
+
         //Saber que numero de partida es la siguiente
-        int nMatches = 0;
+        //int num = 0;
         reference.Child("Matches").Child("nMatches").GetValueAsync().ContinueWith(task =>
         {
             if (task.IsCompleted)
             {
                 DataSnapshot snapshot = task.Result;
 
-                nMatches = int.Parse(snapshot.Value.ToString());
+                Nmatches.LoadInfo(snapshot);
                 //Debug.Log("n matches: "+nMatches);
             }
             else
@@ -298,7 +301,7 @@ public class PlayerSetupController : GlobalEventListener
         });
 
         //Crear la partida en la base de datos
-        reference.Child("Matches").Child("Partida " + nMatches.ToString()).SetRawJsonValueAsync(json2).ContinueWith(task =>
+        reference.Child("Matches").Child("Partida " + Nmatches.getTotalGames().ToString()).SetRawJsonValueAsync(json2).ContinueWith(task =>
         {
             if (task.IsCompleted)
             {
@@ -325,7 +328,7 @@ public class PlayerSetupController : GlobalEventListener
 
             Debug.Log(json);
 
-            reference.Child("Matches").Child("Partida " + nMatches.ToString()).Child(partida.players[j].name).SetRawJsonValueAsync(json).ContinueWith(task =>
+            reference.Child("Matches").Child("Partida " + Nmatches.getTotalGames().ToString()).Child(partida.players[j].name).SetRawJsonValueAsync(json).ContinueWith(task =>
             {
                 if (task.IsCompleted)
                 {
@@ -341,9 +344,9 @@ public class PlayerSetupController : GlobalEventListener
 
         //Guardar que se ha jugado una partida mas
 
-        nMatches++;
+        Nmatches.setTotalGames(Nmatches.getTotalGames() + 1);
 
-        string json3 = JsonUtility.ToJson(nMatches);
+        string json3 = JsonUtility.ToJson(Nmatches);
 
         reference.Child("Matches").GetValueAsync().ContinueWith(task =>
         {
@@ -389,48 +392,68 @@ public class PlayerSetupController : GlobalEventListener
         }
         );
 
-        int nMatches = 0;
-        reference.Child("Matches").Child("nMatches").GetValueAsync().ContinueWith(task =>
-        {
-            if (task.IsCompleted)
-            {
-                DataSnapshot snapshot = task.Result;
+        //int nMatches = 0;
+        //reference.Child("Matches").Child("nMatches").GetValueAsync().ContinueWith(task =>
+        //{
+        //    if (task.IsCompleted)
+        //    {
+        //        DataSnapshot snapshot = task.Result;
 
-                nMatches = int.Parse(snapshot.Value.ToString());
-                //Debug.Log("n matches: "+nMatches);
-            }
-            else
-            {
-                Debug.Log("No se han encontrado el numero de partidas totales");
-            }
-        });
+        //        nMatches = int.Parse(snapshot.Value.ToString());
+        //        //Debug.Log("n matches: "+nMatches);
+        //    }
+        //    else
+        //    {
+        //        Debug.Log("No se han encontrado el numero de partidas totales");
+        //    }
+        //});
 
-        json = userHistory.lastGameNotSaved("Partida "+ nMatches);
-        //Debug.Log(i);
-        Debug.Log(json);
+        //json = userHistory.lastGameNotSaved("Partida "+ nMatches);
+        ////Debug.Log(i);
+        //Debug.Log(json);
 
-        for (int i = 0; i < 5; i++)
-        {
-            json = userHistory.saveGames(i);
-            Debug.Log(i);
-            Debug.Log(json);
+        //for (int i = 0; i < 5; i++)
+        //{
+        //    json = userHistory.saveGames(i);
+        //    Debug.Log(i);
+        //    Debug.Log(json);
 
-            reference.Child("User").Child(userHistory.userName).Child("zzzLastGames").Child("Partida" + i).SetRawJsonValueAsync(json).ContinueWith(task =>
-            {
-                if (task.IsCompleted)
-                {
-                    Debug.Log("saved games");
-                }
-                else
-                {
-                    Debug.Log("No se ha guardado la partida");
-                }
-            }
-            );
-
-          
-        }
+        //    reference.Child("User").Child(userHistory.userName).Child("zzzLastGames").Child("Partida" + i).SetRawJsonValueAsync(json).ContinueWith(task =>
+        //    {
+        //        if (task.IsCompleted)
+        //        {
+        //            Debug.Log("saved games");
+        //        }
+        //        else
+        //        {
+        //            Debug.Log("No se ha guardado la partida");
+        //        }
+        //    }
+        //    );
+        //}
 
     }
 
+}
+
+
+public class nMatches : MonoBehaviour
+{
+    private int totalGames = 0;
+    public nMatches() { }
+    public void LoadInfo(DataSnapshot snapshot)
+    {
+        string value = snapshot.Child("totalGames").Value.ToString();
+        totalGames = int.Parse(value);
+    }
+
+    public void setTotalGames(int n)
+    {
+        totalGames = n;
+    }
+
+    public int getTotalGames()
+    {
+        return totalGames;
+    }
 }

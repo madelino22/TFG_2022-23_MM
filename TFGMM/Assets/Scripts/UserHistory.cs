@@ -24,27 +24,27 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
     public int healedLifePerGame = 0;
     public int zzlastGameSaved = 0;
     private const int NUM_SAVED_MATCHES = 5;
-    private string[] lastMatches = new string[NUM_SAVED_MATCHES];
+    //private string[] lastMatches = new string[NUM_SAVED_MATCHES];
 
-    public string saveGames(int index)
-    {
-        return JsonUtility.ToJson(lastMatches[index]);
-    }
+    //public string saveGames(int index)
+    //{
+    //    return JsonUtility.ToJson(lastMatches[index]);
+    //}
 
-    public string initLastMatchesAtNull(int i)
-    {
-        lastMatches[i] = "Partida Null";
-        return JsonUtility.ToJson(lastMatches[i]);
-    }
+    //public string initLastMatchesAtNull(int i)
+    //{
+    //    lastMatches[i] = "Partida Null";
+    //    return JsonUtility.ToJson(lastMatches[i]);
+    //}
 
-    public string lastGameNotSaved(string newGame)
-    {
-        lastMatches[zzlastGameSaved] = newGame;
-        zzlastGameSaved++;
-        zzlastGameSaved %= NUM_SAVED_MATCHES;
+    //public string lastGameNotSaved(string newGame)
+    //{
+    //    lastMatches[zzlastGameSaved] = newGame;
+    //    zzlastGameSaved++;
+    //    zzlastGameSaved %= NUM_SAVED_MATCHES;
 
-        return JsonUtility.ToJson(newGame);
-    }
+    //    return JsonUtility.ToJson(newGame);
+    //}
 
     //public string saveGamePlayer(int indexGame, int nPlayer)
     //{
@@ -69,11 +69,11 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
         zzlastGameSaved = int.Parse(snapshot.Child("damageReceivedPerGame").Value.ToString());
 
         //Load Saved Games
-        for (int i = 0; i < NUM_SAVED_MATCHES; i++)
-        {
-            string aux = snapshot.Child("zzzLastGames").Child("Partida " + i).Value.ToString();
-            lastMatches[i] = aux;
-        }
+        //for (int i = 0; i < NUM_SAVED_MATCHES; i++)
+        //{
+        //    string aux = snapshot.Child("zzzLastGames").Child("Partida " + i).Value.ToString();
+        //    lastMatches[i] = aux;
+        //}
     }
 
     public void UpdateUserHistory(team winner)

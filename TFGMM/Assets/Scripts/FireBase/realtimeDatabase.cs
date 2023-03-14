@@ -83,27 +83,27 @@ public class realtimeDatabase : MonoBehaviour
         );
 
 
-        for (int i = 0; i < 5; i++)
-        {
-            json = userHistory.initLastMatchesAtNull(i);
-            Debug.Log(i);
-            Debug.Log(json);
+        //for (int i = 0; i < 5; i++)
+        //{
+        //    json = userHistory.initLastMatchesAtNull(i);
+        //    Debug.Log(i);
+        //    Debug.Log(json);
 
-            reference.Child("User").Child(userHistory.userName).Child("zzzLastGames").Child("Partida " + i).SetRawJsonValueAsync(json).ContinueWith(task =>
-            {
-                if (task.IsCompleted)
-                {
-                    Debug.Log("saved games");
-                }
-                else
-                {
-                    Debug.Log("No se ha guardado la partida");
-                }
-            }
-            );
+        //    reference.Child("User").Child(userHistory.userName).Child("zzzLastGames").Child("Partida " + i).SetRawJsonValueAsync(json).ContinueWith(task =>
+        //    {
+        //        if (task.IsCompleted)
+        //        {
+        //            Debug.Log("saved games");
+        //        }
+        //        else
+        //        {
+        //            Debug.Log("No se ha guardado la partida");
+        //        }
+        //    }
+        //    );
 
            
-        }
+        //}
         
     }
 }

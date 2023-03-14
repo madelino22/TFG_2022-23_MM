@@ -7,13 +7,15 @@ public class UI_Callback : GlobalEventListener
     [SerializeField]
     private MatchManager _matchManager;
 
+    private bool inGame = true;
+
     private int seg = 1;
     private float timer;
 
     private int blue = 0;
     private int red = 0;
 
-    const int START_TIME = 40; //Segundos de una partida
+    const int START_TIME = 10; //Segundos de una partida
     private int time = START_TIME; //seconds
 
     // Start is called before the first frame update
@@ -86,8 +88,9 @@ public class UI_Callback : GlobalEventListener
                 _matchManager.UpdateUI(blue, red, time);
 
                 //Si el tiempo se ha acabao el server manda mensaje de guardar estado de partida
-                if (time <= 0)
+                if (time <= 0 && inGame)
                 {
+                    inGame = false;
                     saveGameEvent evnt2 = saveGameEvent.Create(GlobalTargets.OnlyServer);
                     evnt2.redPoints = red;
                     evnt2.bluePoints = blue;
