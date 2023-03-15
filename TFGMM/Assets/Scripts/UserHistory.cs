@@ -24,6 +24,8 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
     public int healedLifePerGame = 0;
     public int zzlastGameSaved = 0;
     private const int NUM_SAVED_MATCHES = 5;
+
+    public int totalShots = 0;
     //private string[] lastMatches = new string[NUM_SAVED_MATCHES];
 
     //public string saveGames(int index)
@@ -68,6 +70,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
         damageReceivedPerGame = int.Parse(snapshot.Child("damageReceivedPerGame").Value.ToString());
         zzlastGameSaved = int.Parse(snapshot.Child("damageReceivedPerGame").Value.ToString());
 
+        totalShots = int.Parse(snapshot.Child("totalShots").Value.ToString());
         //Load Saved Games
         //for (int i = 0; i < NUM_SAVED_MATCHES; i++)
         //{
@@ -104,6 +107,8 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
 
         kills += RoundData.kills;
         deaths += RoundData.deaths;
+
+        totalShots += RoundData.totalShots;
 
         if (RoundData.deaths != 0) //Don't divide by zero
             killsDeathsAverage = ((gamesPlayed - 1) * killsDeathsAverage + (RoundData.kills / RoundData.deaths)) / (gamesPlayed);

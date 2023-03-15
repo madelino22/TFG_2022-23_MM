@@ -208,9 +208,9 @@ public class PlayerSetupController : GlobalEventListener
     {
         if (BoltNetwork.IsServer)
             partida.shoot(evnt.shooterName);
-        else //El propio jugador actualiza sus stats
+        else //OnlySelf ==> El propio jugador actualiza sus stats
         {
-             RoundData.totalShots++;
+            RoundData.totalShots++;
         }
     }
 

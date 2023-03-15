@@ -119,6 +119,8 @@ public class BasicShooter : EntityEventListener
 
     private void ShootBullet(object[] arr)
     {
+        //RoundData.totalShots++; //se llama en el server & los 2 clientes
+
         ShootEvent evnt = ShootEvent.Create(GlobalTargets.OnlyServer);
         evnt.Position = (Vector3)arr[0];
         evnt.Rotation = (Quaternion)arr[1];
