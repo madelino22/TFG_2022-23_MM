@@ -126,6 +126,8 @@ public class InfoRoom : GlobalEventListener
 
                 // HACEMOS NUESTRO MATCHMAKING Y DETERMINAMOS COMO SE FORMAN LOS EQUIPOS
 
+
+                //aquí hay que seleccionar el equipo al que va a ir en fución del ELO
                 evnt.isRed = (contador % 2) == 0;  //PARA QUE SPAWN EVENT SEPA A QUE EQUIPO VA
 
                 if (map == 0)
