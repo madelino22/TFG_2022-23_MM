@@ -127,6 +127,12 @@ public class BasicShooter : EntityEventListener
         evnt.redTeam = this.gameObject.CompareTag("Red");
         evnt.id = MatchManager.nPlayerRoom;
         evnt.Send();
+
+
+
+        updatePlayerShots evnt3 = updatePlayerShots.Create(GlobalTargets.OnlySelf);
+        evnt3.shooterName = ComInfo.getPlayerName();
+        evnt3.Send();
     }
 
     //???????????????????????

@@ -117,9 +117,6 @@ public class PlayerSetupController : GlobalEventListener
         evnt2.shooterName = ComInfo.getPlayerName();
         evnt2.Send();
 
-        updatePlayerShots evnt3 = updatePlayerShots.Create(GlobalTargets.OnlySelf);
-        evnt3.shooterName = ComInfo.getPlayerName();
-        evnt3.Send();
     }
 
     public override void OnEvent(StartMatchEvent evnt)
