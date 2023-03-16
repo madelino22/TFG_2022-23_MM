@@ -30,7 +30,7 @@ MonoBehaviour:
     serverDejitterDelay: 6
     serverDejitterDelayMin: 3
     serverDejitterDelayMax: 9
-    serverConnectionLimit: 32
+    serverConnectionLimit: 20
     serverConnectionAcceptMode: 0
     commandQueueSize: 60
     commandRedundancy: 6
@@ -55,7 +55,7 @@ MonoBehaviour:
   overrideTimeScale: 1
   debugEditorMode: 1
   consoleToggleKey: 9
-  consoleVisibleByDefault: 0
+  consoleVisibleByDefault: 1
   compilationWarnLevel: 4
   editorSkin: 4
   scopeModeHideWarningInGui: 0
