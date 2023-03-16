@@ -1,50 +1,49 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-public class ELO
+public static class ELO
 {
     #region Calculate E (Chances of winning before playing the match)
     
     
     //These two methods return each team E (EA and EB)
-    public Tuple<float, float> CalculateWinningChances(float averageEA, float averageEB)
+    public static Tuple<int, int> CalculateWinningChances(int averageEA, int averageEB)
     {
-        
-        float EA = (float)(1 / (1 + Math.Pow(10f, (averageEB - averageEA) / 400)));
-        float EB = (float)(1 / (1 + Math.Pow(10f, (averageEA - averageEB) / 400)));
-        return new Tuple<float, float>(EA, EB);
+        int EA = (int)(1 / (1 + Math.Pow(10f, (averageEB - averageEA) / 400)));
+        int EB = (int)(1 / (1 + Math.Pow(10f, (averageEA - averageEB) / 400)));
+        return new Tuple<int, int>(EA, EB);
     }
 
 
 
-    public Tuple<float, float> CalculateWinningChances(List<float> RA, List<float> RB)
+    public static Tuple<int, int> CalculateWinningChances(List<int> RA, List<int> RB)
     {
-        float averageRatingA = 0;
-        foreach (float individualRA in RA)
+        int averageRatingA = 0;
+        foreach (int individualRA in RA)
         {
             averageRatingA += individualRA;
         }
         averageRatingA = averageRatingA / RA.Count;
 
-        float averageRatingB = 0;
-        foreach (float individualRB in RB)
+        int averageRatingB = 0;
+        foreach (int individualRB in RB)
         {
             averageRatingB += individualRB;
         }
         averageRatingB = averageRatingB / RB.Count;
 
-        float EA = (float)(1 / (1 + Math.Pow(10f, (averageRatingB - averageRatingA) / 400)));
-        float EB = (float)(1 / (1 + Math.Pow(10f, (averageRatingA - averageRatingB) / 400)));
+        int EA = (int)(1 / (1 + Math.Pow(10f, (averageRatingB - averageRatingA) / 400)));
+        int EB = (int)(1 / (1 + Math.Pow(10f, (averageRatingA - averageRatingB) / 400)));
 
 
-        return new Tuple<float, float>(EA,EB);  
+        return new Tuple<int, int>(EA,EB);  
     }
 
 
     #endregion
-    public float CalculteNewElo(float RA, float K, float SA, float EA)
+    public static int CalculteNewElo(int RA, int K, int SA, int EA)
     {
-        float RÀ = RA + K * (SA - EA);
+        int RÀ = RA + K * (SA - EA);
         Math.Clamp(RÀ, 0, 3000);
         return RÀ;
     }

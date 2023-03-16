@@ -126,7 +126,6 @@ public class PlayerSetupController : GlobalEventListener
 
     public override void OnEvent(StartMatchEvent evnt)
     {
-        //UwU aquí debemos pedir el elo a cada jugador para calcular EA y EB de la variable partida
         partida = new Match(PLAYEROOM); //Creamos donde se va a guardar toda la info
         for (int i = 0; i < PLAYEROOM; i++)
         {

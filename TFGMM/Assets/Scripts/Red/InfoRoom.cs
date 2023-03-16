@@ -103,6 +103,8 @@ public class InfoRoom : GlobalEventListener
         }
     }
 
+
+
     public void Matchmaking()
     {
         int numPlayers = playersConnections.Count;
@@ -118,17 +120,27 @@ public class InfoRoom : GlobalEventListener
         while (numPlayers >= PLAYEROOM)
         {           
             int contador = 0;
+            
+            //UwU descomentar esto
+            //List<int> blueELOS = new();
+            //List<int> redELOS = new();
             while (contador < PLAYEROOM)
             {
                 contador++;
-                //GoGameEvent evnt = GoGameEvent.Create(playersConnections[sortedList[0].Key]);
-                GoGameEvent evnt = GoGameEvent.Create(playersConnections[0]);
+                //GoGameEvent evnt = GoGameEvent.Create(playersConnections[sortedList[0].Key]); //UwU descomentar esta y la de if evt.isred
+                GoGameEvent evnt = GoGameEvent.Create(playersConnections[0]);//UwU no se usa el evento
 
                 // HACEMOS NUESTRO MATCHMAKING Y DETERMINAMOS COMO SE FORMAN LOS EQUIPOS
 
 
                 //aquí hay que seleccionar el equipo al que va a ir en fución del ELO
                 evnt.isRed = (contador % 2) == 0;  //PARA QUE SPAWN EVENT SEPA A QUE EQUIPO VA
+
+                //if (evnt.isRed)
+                //    redELOS.Add(sortedList[0].Value);
+                //else
+                //    blueELOS.Add(sortedList[0].Value);
+
 
                 if (map == 0)
                     evnt.ID = "0";
@@ -142,6 +154,13 @@ public class InfoRoom : GlobalEventListener
                 //numPlayers--;
                 BoltLog.Warn("Jugador " + contador + ", va a " + evnt.ID);
             }
+
+            //UwU calcular media de los dos equipos
+            //llamar al método de cálculo de winning chances de ELO
+            //UwU descomentar esto
+            //Tuple<int, int> winningChances = ELO.CalculateWinningChances(redELOS, blueELOS);
+            //pasar la variable de probabilidad de victoria a cada cliente por evento
+
 
             numPlayers -= PLAYEROOM;
             map++;
