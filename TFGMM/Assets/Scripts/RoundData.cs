@@ -29,5 +29,6 @@ public static class RoundData
         damage = 0; //Damage Inflicted on Enemy
         damageReceived = 0; //Damage Received by Player
         healedLife = 0;
+        totalShots = 0;
     }
 }

@@ -120,13 +120,13 @@ public class InfoRoom : GlobalEventListener
             int contador = 0;
             while (contador < PLAYEROOM)
             {
-                contador++;
                 //GoGameEvent evnt = GoGameEvent.Create(playersConnections[sortedList[0].Key]);
                 GoGameEvent evnt = GoGameEvent.Create(playersConnections[0]);
 
                 // HACEMOS NUESTRO MATCHMAKING Y DETERMINAMOS COMO SE FORMAN LOS EQUIPOS
 
                 evnt.isRed = (contador % 2) == 0;  //PARA QUE SPAWN EVENT SEPA A QUE EQUIPO VA
+                //evnt.isRed = (contador < 3);  //PARA QUE SPAWN EVENT SEPA A QUE EQUIPO VA
 
                 if (map == 0)
                     evnt.ID = "0";
@@ -139,6 +139,8 @@ public class InfoRoom : GlobalEventListener
                 sortedList.RemoveAt(0);
                 //numPlayers--;
                 BoltLog.Warn("Jugador " + contador + ", va a " + evnt.ID);
+                
+                contador++;
             }
 
             numPlayers -= PLAYEROOM;
