@@ -19,7 +19,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
     public int loses = 0;
     public int kills = 0;
     public int deaths = 0;
-    public int killsDeathsAverage = 0;
+    public int killsDeathsRatioAverage = 0;
     public int damageReceivedPerGame = 0;
     public int healedLifePerGame = 0;
     public int zzlastGameSaved = 0;
@@ -65,7 +65,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
         loses = int.Parse(snapshot.Child("loses").Value.ToString());
         kills = int.Parse(snapshot.Child("kills").Value.ToString());
         deaths = int.Parse(snapshot.Child("deaths").Value.ToString());
-        killsDeathsAverage = int.Parse(snapshot.Child("killsDeathsAverage").Value.ToString());
+        killsDeathsRatioAverage = int.Parse(snapshot.Child("killsDeathsRatioAverage").Value.ToString());
         healedLifePerGame = int.Parse(snapshot.Child("healedLifePerGame").Value.ToString());
         damageReceivedPerGame = int.Parse(snapshot.Child("damageReceivedPerGame").Value.ToString());
         zzlastGameSaved = int.Parse(snapshot.Child("damageReceivedPerGame").Value.ToString());
@@ -111,7 +111,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
         totalShots += RoundData.totalShots;
 
         if (RoundData.deaths != 0) //Don't divide by zero
-            killsDeathsAverage = ((gamesPlayed - 1) * killsDeathsAverage + (RoundData.kills / RoundData.deaths)) / (gamesPlayed);
+            killsDeathsRatioAverage = ((gamesPlayed - 1) * killsDeathsRatioAverage + (RoundData.kills / RoundData.deaths)) / (gamesPlayed);
 
         //Damage Received by Player
         damageReceivedPerGame = ((gamesPlayed - 1) * damageReceivedPerGame + RoundData.damageReceived) / (gamesPlayed);

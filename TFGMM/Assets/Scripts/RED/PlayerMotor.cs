@@ -23,13 +23,12 @@ public class PlayerMotor : EntityEventListener<IPlayerState>
 
     [SerializeField]
     Transform playerBall;
-    
    
     AudioSource deadSound = null;
     AudioSource hurtSound = null;
 
-    //[SerializeField] //VA RAPIDISIMO NO SE PORQUE. VALOR CABLEADO EN LA LINEA 125 (APROX)
-    private float _speed = 3.0f; 
+    //[SerializeField] //VA RAPIDISIMO NO SE PORQUE. 
+    private float _speed = 5.0f; 
 
     private Vector3 _lastServerPos = Vector3.zero;
     private bool _firstState = true;
@@ -56,8 +55,6 @@ public class PlayerMotor : EntityEventListener<IPlayerState>
     public int BlueScore { get => _blueScore; set => _blueScore = value; }
     public int RedScore { get => _redScore; set => _redScore = value; }
     public int TimeMatch { get => _timeMatch; set => _timeMatch = value; }
-
-
 
     public void Hurt()
     {
