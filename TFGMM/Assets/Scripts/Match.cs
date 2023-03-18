@@ -14,39 +14,26 @@ public class PlayerMatch
     public PlayerMatch(string n, team myTeam)
     {
         name = n;
-
         t = myTeam;
     }
 
     public PlayerMatch(string n, int k, int d, int tDamage, int damageR, int tshots, team myTeam)
     {
         name = n;
-
         kills = k;
-
         deaths = d;
-
-        totalDamage = tDamage;
-
+        damageInflicted = tDamage;
         damageReceived = damageR;
-
         totalShots = tshots;
-
         t = myTeam;
     }
 
     public string name = "Jugador ";
-
     public int kills = 0;
-
     public int deaths = 0;
-
-    public int totalDamage = 0;
-
+    public int damageInflicted = 0;
     public int damageReceived = 0;
-
     public int totalShots = 0; //Para saber el porcentaje de acierto multiplicar por 500(El daño que recibe un jugador) y dividir con daño hecho
-
     public team t = team.red;
 }
 
@@ -77,20 +64,14 @@ public class Match
         for (int i = 0; i < 6; i++)
         {
             string name = info.Child("Jugador " + i).Child("name").Value.ToString();
-
             int kills = int.Parse(info.Child("Jugador " + i).Child("kills").Value.ToString().ToString());
-
             int deaths = int.Parse(info.Child("Jugador " + i).Child("deaths").Value.ToString().ToString());
-
-            int totalDamage = int.Parse(info.Child("Jugador " + i).Child("totalDamage").Value.ToString().ToString());
-
+            int damageInflicted = int.Parse(info.Child("Jugador " + i).Child("damageInflicted").Value.ToString().ToString());
             int damageReceived = int.Parse(info.Child("Jugador " + i).Child("damageReceived").Value.ToString().ToString());
-
             int totalShots = int.Parse(info.Child("Jugador " + i).Child("totalShots").Value.ToString().ToString());
-
             team t =(team) int.Parse(info.Child("Jugador " + i).Child("t").Value.ToString().ToString());
 
-            players[i] = new PlayerMatch(name, kills, deaths, totalDamage, damageReceived, totalShots,  t);
+            players[i] = new PlayerMatch(name, kills, deaths, damageInflicted, damageReceived, totalShots,  t);
         }
     }
 
@@ -119,7 +100,7 @@ public class Match
             }
             else if (players[i].name == damagedBy)
             {
-                players[i].totalDamage += 500;
+                players[i].damageInflicted += 500;
             }
         }
     }

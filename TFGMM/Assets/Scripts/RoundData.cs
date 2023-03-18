@@ -14,7 +14,7 @@ public static class RoundData
 
     public static int totalShots = 0;
 
-    public static int damage = 0; //Damage Inflicted on Enemy
+    public static int damageInflicted = 0; //Damage Inflicted on Enemy
     public static int damageReceived = 0; //Damage Received by Player
 
     public static int healedLife = 0;
@@ -26,7 +26,7 @@ public static class RoundData
         kills = 0;
         deaths = 0;
         assists = 0;
-        damage = 0; //Damage Inflicted on Enemy
+        damageInflicted = 0; //Damage Inflicted on Enemy
         damageReceived = 0; //Damage Received by Player
         healedLife = 0;
         totalShots = 0;

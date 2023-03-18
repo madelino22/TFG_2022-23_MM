@@ -984,7 +984,7 @@
           }
         },
         {
-          "Name": "nameDamaged",
+          "Name": "wasDamaged",
           "Enabled": true,
           "Expanded": true,
           "ReplicationMode": 1,
@@ -1094,7 +1094,7 @@
       "$type": "Photon.Bolt.Compiler.EventDefinition, bolt.compiler",
       "Properties": [
         {
-          "Name": "numPlayer",
+          "Name": "id",
           "Enabled": true,
           "Expanded": true,
           "ReplicationMode": 1,
@@ -1136,7 +1136,22 @@
     },
     {
       "$type": "Photon.Bolt.Compiler.EventDefinition, bolt.compiler",
-      "Properties": [],
+      "Properties": [
+        {
+          "Name": "id",
+          "Enabled": true,
+          "Expanded": true,
+          "ReplicationMode": 1,
+          "Priority": 1,
+          "PropertyType": {
+            "$type": "Photon.Bolt.Compiler.PropertyTypeInteger, bolt.compiler",
+            "MaxValue": 255
+          },
+          "AssetSettings": {
+            "$type": "Photon.Bolt.Compiler.PropertyEventSettings, bolt.compiler"
+          }
+        }
+      ],
       "Name": "damageReceivedEvent",
       "Guid": "3c2816bd-8445-4938-a9d5-ec99b2803ec5",
       "Groups": []

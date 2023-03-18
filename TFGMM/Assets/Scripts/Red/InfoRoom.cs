@@ -13,7 +13,7 @@ using System.Linq; //List sort
 
 public class InfoRoom : GlobalEventListener
 {
-    const int PLAYEROOM = 2;
+    const int PLAYEROOM = 2; // TAMBIEN CAMVIARLO EN INFO ROOM
 
     [SerializeField]
     TextMesh textoTotal;
@@ -126,7 +126,7 @@ public class InfoRoom : GlobalEventListener
                 // HACEMOS NUESTRO MATCHMAKING Y DETERMINAMOS COMO SE FORMAN LOS EQUIPOS
 
                 evnt.isRed = (contador % 2) == 0;  //PARA QUE SPAWN EVENT SEPA A QUE EQUIPO VA
-                //evnt.isRed = (contador < 3);  //PARA QUE SPAWN EVENT SEPA A QUE EQUIPO VA
+               // evnt.isRed = (contador < 3);  //PARA QUE SPAWN EVENT SEPA A QUE EQUIPO VA
 
                 if (map == 0)
                     evnt.ID = "0";

@@ -5,7 +5,7 @@ using Firebase.Database;
 
 public class PlayerSetupController : GlobalEventListener
 {
-    const int PLAYEROOM = 2; //NUM MAX JUGADORES?
+    const int PLAYEROOM = 2; // TAMBIEN CAMVIARLO EN INFO ROOM
 
     [SerializeField]
     private Camera _sceneCamera;
@@ -21,7 +21,9 @@ public class PlayerSetupController : GlobalEventListener
 
     public Camera SceneCamera { get => _sceneCamera; }
 
-    private int contador = 0; // Team lejos (0,2) || Team cerca (3,5)
+    private int contador = 0; 
+    int redIntSpawn = 0;  // Team lejos (0,2)
+    int blueIntSpawn = 3; //Team cerca (3,5)
 
     private BoltEntity[] entities = new BoltEntity[PLAYEROOM];
 
@@ -36,6 +38,7 @@ public class PlayerSetupController : GlobalEventListener
 
     Match partida;
     nMatches Nmatches = new nMatches();
+
     public void Awake()
     {
         reference = FirebaseDatabase.DefaultInstance.RootReference;
@@ -43,6 +46,8 @@ public class PlayerSetupController : GlobalEventListener
 
     public override void SceneLoadLocalDone(string scene, IProtocolToken token)
     {
+        contador = 0;
+
         if (!BoltNetwork.IsServer)
         {
             RoundData.ResetData();
@@ -52,6 +57,10 @@ public class PlayerSetupController : GlobalEventListener
             evnt2.playerName = name;
             evnt2.isRed = RoundData.isRed; //MATCH MAKING YA DETERMINO A QUE EQUIPO PERTENECE
             evnt2.Send();
+        }
+        else
+        {
+            
         }
     }
 
@@ -65,15 +74,17 @@ public class PlayerSetupController : GlobalEventListener
     {
         if (evnt.isRed) //RED 0,2,4
         {
-            entities[contador] = BoltNetwork.Instantiate(BoltPrefabs.Player2, spawners[contador].transform.position, Quaternion.identity);
+            entities[contador] = BoltNetwork.Instantiate(BoltPrefabs.Player2, spawners[redIntSpawn].transform.position, Quaternion.identity);
             entities[contador].AssignControl(evnt.RaisedBy);
             entities[contador].transform.Rotate(new Vector3(0, 180, 0));
+            redIntSpawn++;
             //entity[contador].GetComponent<PlayerCallback>().enabled = true;
         }
         else //BLUE 1,3,5
         {
-            entities[contador] = BoltNetwork.Instantiate(BoltPrefabs.Player1, spawners[contador].transform.position, Quaternion.identity);
+            entities[contador] = BoltNetwork.Instantiate(BoltPrefabs.Player1, spawners[blueIntSpawn].transform.position, Quaternion.identity);
             entities[contador].AssignControl(evnt.RaisedBy);
+            blueIntSpawn++;
         }
         entities[contador].GetComponentInChildren<PlayerMotor>().setID(contador);
         entityConnection[contador] = evnt.RaisedBy;
@@ -171,16 +182,31 @@ public class PlayerSetupController : GlobalEventListener
     {
         if (BoltNetwork.IsServer)
         {
-            partida.damaged(namePlayers[evnt.nameDamaged], namePlayers[evnt.damagedBy]);
+            // ESTO SE GUARDA BIEN
+            partida.damaged(namePlayers[evnt.wasDamaged], namePlayers[evnt.damagedBy]);
 
+            //ESTO SE GUARDA MAL
             damageDoneEvent evn = damageDoneEvent.Create(entityConnection[evnt.damagedBy]);
+            //evn.id = evnt.damagedBy;
             evn.Send();
             
-            damageReceivedEvent evn2 = damageReceivedEvent.Create(entityConnection[evnt.nameDamaged]);
+            damageReceivedEvent evn2 = damageReceivedEvent.Create(entityConnection[evnt.wasDamaged]);
+            //evn2.id = evnt.wasDamaged;
             evn2.Send();
         }
     }
 
+    public override void OnEvent(damageDoneEvent evnt) //Lo recibe el jugador que ha hecho daño
+    {
+        //if (evnt.id == PlayerMotor.id)
+            RoundData.damageInflicted += 500; //SE SUPONE QUE EL DAÑO ES 500 SIEMPRE
+    }
+
+    public override void OnEvent(damageReceivedEvent evnt) //Lo recibe el jugador que ha hecho daño
+    {
+        //if(evnt.id == PlayerMotor.id)
+            RoundData.damageReceived += 500; //SE SUPONE QUE EL DAÑO ES 500 SIEMPRE
+    }
     public override void OnEvent(killedEvent evnt)
     {
         RoundData.deaths++;
@@ -191,15 +217,6 @@ public class PlayerSetupController : GlobalEventListener
         RoundData.kills++;
     }
 
-    public override void OnEvent(damageDoneEvent evnt) //Lo recibe el jugador que ha hecho daño
-    {
-        RoundData.damage += 500; //SE SUPONE QUE EL DAÑO ES 500 SIEMPRE
-    }
-
-    public override void OnEvent(damageReceivedEvent evnt) //Lo recibe el jugador que ha hecho daño
-    {
-        RoundData.damageReceived += 500; //SE SUPONE QUE EL DAÑO ES 500 SIEMPRE
-    }
 
     public override void OnEvent(updatePlayerShots evnt)
     {
@@ -229,7 +246,6 @@ public class PlayerSetupController : GlobalEventListener
 
             saveData(userHistory);
         }
-
     }
 
     //------------------------------------SEND MATCH INFO-------------------------------------------------------

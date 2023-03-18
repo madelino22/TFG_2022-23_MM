@@ -44,7 +44,7 @@ public class PlayerMotor : EntityEventListener<IPlayerState>
     private int _timeMatch = 90;
 
     private int team = -1;
-    private int id = 0;
+    public static int id = 0;
     public int getID() { return id; }
     public void setID(int i) { id = i; }
 
@@ -58,7 +58,8 @@ public class PlayerMotor : EntityEventListener<IPlayerState>
 
     public void Hurt()
     {
-        if(hurtSound)hurtSound.Play();
+        if(hurtSound)
+            hurtSound.Play();
     } 
     
     public void Dead()

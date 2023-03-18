@@ -50,11 +50,11 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
     public void loseLife(bool redWasHit, int shooterName, int wasHitName)
     {
         this._playerMotor.ActualLife -= 500;
-        //MANDAR EVENTO DE QUE SE HA HECHO DANYO------------------
 
+        //MANDAR EVENTO DE QUE SE HA HECHO DANYO------------------
         takeDamageEvent evn = takeDamageEvent.Create(GlobalTargets.OnlyServer);
         evn.damagedBy = shooterName;
-        evn.nameDamaged = wasHitName;
+        evn.wasDamaged = wasHitName;
         evn.Send();
 
         if (this._playerMotor.ActualLife <= 0)
