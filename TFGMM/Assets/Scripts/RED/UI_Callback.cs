@@ -15,7 +15,7 @@ public class UI_Callback : GlobalEventListener
     private int blue = 0;
     private int red = 0;
 
-    const int START_TIME = 10; //Segundos de una partida
+    const int START_TIME = 20; //Segundos de una partida
     private int time = START_TIME; //seconds
 
     // Start is called before the first frame update

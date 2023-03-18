@@ -11,19 +11,21 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
 {
     public string userName = "Este es mi usuario";
     public string email = "Este es mi correo";
-    public int eloRanking = 1500;
-    public float dps = 0;
     public int gamesPlayed = 0;
     public int wins = 0;
     public int draws = 0;
     public int loses = 0;
+    //
     public int kills = 0;
     public int deaths = 0;
-    public int killsDeathsAverage = 0;
-    public int damageReceivedPerGame = 0;
-    public int healedLifePerGame = 0;
+    public int damageReceived = 0;
+    public int damageInflicted = 0; // NO SE USA
+    //
     public int zzlastGameSaved = 0;
-    private const int NUM_SAVED_MATCHES = 5;
+    //MEDIAS
+    public int eloRanking = 1500;
+    public float killsDeathsRatioAverage = 0;
+    public float dps = 0;
 
     public int totalShots = 0;
     //private string[] lastMatches = new string[NUM_SAVED_MATCHES];
@@ -57,20 +59,21 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
     {
         userName = snapshot.Child("userName").Value.ToString();
         email = snapshot.Child("email").Value.ToString();
-        eloRanking = int.Parse(snapshot.Child("eloRanking").Value.ToString());
-        dps = float.Parse(snapshot.Child("dps").Value.ToString());
         gamesPlayed = int.Parse(snapshot.Child("gamesPlayed").Value.ToString());
         wins = int.Parse(snapshot.Child("wins").Value.ToString());
         draws = int.Parse(snapshot.Child("draws").Value.ToString());
         loses = int.Parse(snapshot.Child("loses").Value.ToString());
         kills = int.Parse(snapshot.Child("kills").Value.ToString());
         deaths = int.Parse(snapshot.Child("deaths").Value.ToString());
-        killsDeathsAverage = int.Parse(snapshot.Child("killsDeathsAverage").Value.ToString());
-        healedLifePerGame = int.Parse(snapshot.Child("healedLifePerGame").Value.ToString());
-        damageReceivedPerGame = int.Parse(snapshot.Child("damageReceivedPerGame").Value.ToString());
-        zzlastGameSaved = int.Parse(snapshot.Child("damageReceivedPerGame").Value.ToString());
-
         totalShots = int.Parse(snapshot.Child("totalShots").Value.ToString());
+        damageReceived = int.Parse(snapshot.Child("damageReceived").Value.ToString());
+        damageInflicted = int.Parse(snapshot.Child("damageInflicted").Value.ToString());
+        //MEDIAS
+        dps = float.Parse(snapshot.Child("dps").Value.ToString());
+        killsDeathsRatioAverage = float.Parse(snapshot.Child("killsDeathsRatioAverage").Value.ToString());
+        eloRanking = int.Parse(snapshot.Child("eloRanking").Value.ToString());
+        zzlastGameSaved = int.Parse(snapshot.Child("zzlastGameSaved").Value.ToString());
+
         //Load Saved Games
         //for (int i = 0; i < NUM_SAVED_MATCHES; i++)
         //{
@@ -84,11 +87,11 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
         gamesPlayed++;
 
         eloRanking += 0; // LOLITOOOOOO
-
-        int daño = RoundData.damage;
-
-        int dpsThisGame = daño / 25; //15 HASTA QUE PONGAS 90 CON PARTIDAS BIEN
-        dps = ((gamesPlayed - 1) * dps + dpsThisGame) / (gamesPlayed); //damage per second
+        damageReceived += RoundData.damageReceived;
+        damageInflicted += RoundData.damageInflicted;
+        kills += RoundData.kills;
+        deaths += RoundData.deaths;
+        totalShots += RoundData.totalShots;
 
         switch (winner)
         {
@@ -105,18 +108,12 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                 break;
         }
 
-        kills += RoundData.kills;
-        deaths += RoundData.deaths;
+        //MEDIAS
+        killsDeathsRatioAverage = kills / deaths;
 
-        totalShots += RoundData.totalShots;
-
-        if (RoundData.deaths != 0) //Don't divide by zero
-            killsDeathsAverage = ((gamesPlayed - 1) * killsDeathsAverage + (RoundData.kills / RoundData.deaths)) / (gamesPlayed);
-
-        //Damage Received by Player
-        damageReceivedPerGame = ((gamesPlayed - 1) * damageReceivedPerGame + RoundData.damageReceived) / (gamesPlayed);
-
-        healedLifePerGame = ((gamesPlayed - 1) * healedLifePerGame + RoundData.healedLife) / (gamesPlayed);
+        int danyo = RoundData.damageInflicted;
+        float damageInflictedUntilNow = dps * (gamesPlayed - 1);
+        dps = (damageInflictedUntilNow + danyo) / (gamesPlayed); //damage per second
     }
 
     // METODOSO DE ProtocolToken--------------------------------------------

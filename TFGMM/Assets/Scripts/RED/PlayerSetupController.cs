@@ -193,7 +193,7 @@ public class PlayerSetupController : GlobalEventListener
 
     public override void OnEvent(damageDoneEvent evnt) //Lo recibe el jugador que ha hecho daño
     {
-        RoundData.damage += 500; //SE SUPONE QUE EL DAÑO ES 500 SIEMPRE
+        RoundData.damageInflicted += 500; //SE SUPONE QUE EL DAÑO ES 500 SIEMPRE
     }
 
     public override void OnEvent(damageReceivedEvent evnt) //Lo recibe el jugador que ha hecho daño
