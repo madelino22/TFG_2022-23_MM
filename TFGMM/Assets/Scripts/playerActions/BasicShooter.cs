@@ -125,7 +125,9 @@ public class BasicShooter : EntityEventListener
         evnt.Position = (Vector3)arr[0];
         evnt.Rotation = (Quaternion)arr[1];
         evnt.redTeam = this.gameObject.CompareTag("Red");
-        evnt.id = MatchManager.nPlayerRoom;
+        //evnt.id = MatchManager.nPlayerRoom;
+        //evnt.id =  transform.parent.GetComponentInChildren<PlayerMotor>().getID();
+        evnt.nameShooter = ComInfo.getPlayerName();
         evnt.Send();
 
 

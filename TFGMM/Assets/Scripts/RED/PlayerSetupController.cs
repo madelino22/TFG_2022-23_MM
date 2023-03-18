@@ -97,6 +97,7 @@ public class PlayerSetupController : GlobalEventListener
         else BoltLog.Warn("HAN ENTRADO " + contador + "/" + PLAYEROOM);
     }
 
+    //Solo lo ejecuta el server
     public override void OnEvent(ShootEvent evnt)
     {
         Vector3 e = new Vector3(0, 1.7f, 0);
@@ -110,11 +111,18 @@ public class PlayerSetupController : GlobalEventListener
         //BasicShooter esta en AttackModule.
         //PlayerMotor esta en IceElemental
         //AttackModule y IceElemental son hijos de Player
-        int id = evnt.id;
-        entity.gameObject.GetComponent<Bullet>().setCreatorName(id);
+        int i = 0;
+        while(i < PLAYEROOM && namePlayers[i] != evnt.nameShooter)
+        {
+            i++;
+        }
 
+        int id = i;
+        entity.gameObject.GetComponent<Bullet>().setCreatorID(id);
+
+        //Este evento es para actualizar match
         updatePlayerShots evnt2 = updatePlayerShots.Create(GlobalTargets.OnlyServer);
-        evnt2.shooterName = ComInfo.getPlayerName();
+        evnt2.shooterName = evnt.nameShooter;
         evnt2.Send();
 
     }
