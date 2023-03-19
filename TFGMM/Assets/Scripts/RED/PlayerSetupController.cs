@@ -5,7 +5,10 @@ using Firebase.Database;
 
 public class PlayerSetupController : GlobalEventListener
 {
-    const int PLAYEROOM = 2; //NUM MAX JUGADORES?
+    public static int PLAYEROOM = 2; //TIENE QUE VALER LO MISMO QUE EN INFOROOM
+    private int contador = 0; 
+    private int redIntSpawn = 0; //Team lejos (0,2)
+    private int blueIntSpawn = PLAYEROOM / 2; //Team cerca (3,5)
 
     [SerializeField]
     private Camera _sceneCamera;
@@ -21,7 +24,7 @@ public class PlayerSetupController : GlobalEventListener
 
     public Camera SceneCamera { get => _sceneCamera; }
 
-    private int contador = 0; // Team lejos (0,2) || Team cerca (3,5)
+
 
     private BoltEntity[] entities = new BoltEntity[PLAYEROOM];
 
@@ -65,17 +68,21 @@ public class PlayerSetupController : GlobalEventListener
     {
         if (evnt.isRed) //RED 0,2,4
         {
-            entities[contador] = BoltNetwork.Instantiate(BoltPrefabs.Player2, spawners[contador].transform.position, Quaternion.identity);
+            entities[contador] = BoltNetwork.Instantiate(BoltPrefabs.Player2, spawners[redIntSpawn].transform.position, Quaternion.identity);
             entities[contador].AssignControl(evnt.RaisedBy);
             entities[contador].transform.Rotate(new Vector3(0, 180, 0));
+            redIntSpawn++;
             //entity[contador].GetComponent<PlayerCallback>().enabled = true;
         }
         else //BLUE 1,3,5
         {
-            entities[contador] = BoltNetwork.Instantiate(BoltPrefabs.Player1, spawners[contador].transform.position, Quaternion.identity);
+            entities[contador] = BoltNetwork.Instantiate(BoltPrefabs.Player1, spawners[blueIntSpawn].transform.position, Quaternion.identity);
             entities[contador].AssignControl(evnt.RaisedBy);
+            blueIntSpawn++;
         }
-        entities[contador].GetComponentInChildren<PlayerMotor>().setID(contador);
+        PlayerMotor motor = entities[contador].GetComponentInChildren<PlayerMotor>();
+        motor.setID(contador);
+        motor.SetTeam((evnt.isRed) ? 1 : 0);
         entityConnection[contador] = evnt.RaisedBy;
         //FIREBASE
         namePlayers[contador] = evnt.playerName;
@@ -95,6 +102,13 @@ public class PlayerSetupController : GlobalEventListener
             evnt2.Send();
         }
         else BoltLog.Warn("HAN ENTRADO " + contador + "/" + PLAYEROOM);
+
+        if(redIntSpawn + blueIntSpawn == PLAYEROOM)
+        {
+            //reset values
+            redIntSpawn = 0;
+            blueIntSpawn = PLAYEROOM / 2;
+        }
     }
 
     //Solo lo ejecuta el server
@@ -164,8 +178,20 @@ public class PlayerSetupController : GlobalEventListener
 
             //CHANGE POS IN SCENE
             PlayerMotor playerMotor = entities[evnt.nameKilled].GetComponentInChildren<PlayerMotor>();
-            if (playerMotor)
-                playerMotor.gameObject.transform.position = spawners[evnt.nameKilled].transform.position;
+            if (playerMotor && playerMotor.GetTeam() == 1)
+            {
+                playerMotor.gameObject.transform.position = spawners[redIntSpawn].transform.position;
+                redIntSpawn++;
+            }
+            else if (playerMotor && playerMotor.GetTeam() == 0)
+            {
+                playerMotor.gameObject.transform.position = spawners[blueIntSpawn].transform.position;
+                blueIntSpawn++;
+            }
+
+
+            if (redIntSpawn >= PLAYEROOM / 2) redIntSpawn = 0;
+            if (blueIntSpawn >= PLAYEROOM) redIntSpawn = PLAYEROOM / 2;
 
             killerEvent evn = killerEvent.Create(entityConnection[evnt.killedBy]);
             evn.Send();
