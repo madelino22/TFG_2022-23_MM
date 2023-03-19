@@ -54,7 +54,7 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
         //MANDAR EVENTO DE QUE SE HA HECHO DANYO------------------
         takeDamageEvent evn = takeDamageEvent.Create(GlobalTargets.OnlyServer);
         evn.damagedBy = shooterName;
-        evn.wasDamaged = wasHitName;
+        evn.nameDamaged = wasHitName;
         evn.Send();
 
         if (this._playerMotor.ActualLife <= 0)
