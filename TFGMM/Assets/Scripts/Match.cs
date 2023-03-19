@@ -26,7 +26,7 @@ public class PlayerMatch
 
         deaths = d;
 
-        totalDamage = tDamage;
+        damageInflicted = tDamage;
 
         damageReceived = damageR;
 
@@ -41,7 +41,7 @@ public class PlayerMatch
 
     public int deaths = 0;
 
-    public int totalDamage = 0;
+    public int damageInflicted = 0;
 
     public int damageReceived = 0;
 
@@ -119,7 +119,7 @@ public class Match
             }
             else if (players[i].name == damagedBy)
             {
-                players[i].totalDamage += 500;
+                players[i].damageInflicted += 500;
             }
         }
     }

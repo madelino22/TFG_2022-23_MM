@@ -120,7 +120,6 @@ public class InfoRoom : GlobalEventListener
             int contador = 0;
             while (contador < PLAYEROOM)
             {
-                contador++;
                 //GoGameEvent evnt = GoGameEvent.Create(playersConnections[sortedList[0].Key]);
                 GoGameEvent evnt = GoGameEvent.Create(playersConnections[0]);
 
@@ -136,9 +135,10 @@ public class InfoRoom : GlobalEventListener
                 
                 playersConnections.RemoveAt(0);
                 //playersConnections.RemoveAt(sortedList[0].Key);
-                sortedList.RemoveAt(0);
+                //sortedList.RemoveAt(0);
                 //numPlayers--;
                 BoltLog.Warn("Jugador " + contador + ", va a " + evnt.ID);
+                contador++;
             }
 
             numPlayers -= PLAYEROOM;
