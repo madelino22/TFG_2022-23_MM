@@ -10,54 +10,37 @@ public class PlayerMatch
     {
         name = name +n;
     }
-
     public PlayerMatch(string n, team myTeam)
     {
         name = n;
-
         t = myTeam;
     }
 
     public PlayerMatch(string n, int k, int d, int tDamage, int damageR, int tshots, team myTeam)
     {
         name = n;
-
         kills = k;
-
         deaths = d;
-
         damageInflicted = tDamage;
-
         damageReceived = damageR;
-
         totalShots = tshots;
-
         t = myTeam;
     }
 
     public string name = "Jugador ";
-
     public int kills = 0;
-
     public int deaths = 0;
-
     public int damageInflicted = 0;
-
     public int damageReceived = 0;
-
     public int totalShots = 0; //Para saber el porcentaje de acierto multiplicar por 500(El daño que recibe un jugador) y dividir con daño hecho
-
     public team t = team.red;
 }
 
 public class Match
 {
     public PlayerMatch[] players;
-
     public team winner = team.red;
-
     public int pointsBlue = 0;
-
     public int pointsRed = 0;
 
     public Match(int n)
@@ -77,17 +60,11 @@ public class Match
         for (int i = 0; i < 6; i++)
         {
             string name = info.Child("Jugador " + i).Child("name").Value.ToString();
-
             int kills = int.Parse(info.Child("Jugador " + i).Child("kills").Value.ToString().ToString());
-
             int deaths = int.Parse(info.Child("Jugador " + i).Child("deaths").Value.ToString().ToString());
-
             int totalDamage = int.Parse(info.Child("Jugador " + i).Child("totalDamage").Value.ToString().ToString());
-
             int damageReceived = int.Parse(info.Child("Jugador " + i).Child("damageReceived").Value.ToString().ToString());
-
             int totalShots = int.Parse(info.Child("Jugador " + i).Child("totalShots").Value.ToString().ToString());
-
             team t =(team) int.Parse(info.Child("Jugador " + i).Child("t").Value.ToString().ToString());
 
             players[i] = new PlayerMatch(name, kills, deaths, totalDamage, damageReceived, totalShots,  t);
@@ -137,7 +114,6 @@ public class Match
     }
     //"{\"name\":\"Este es mi usuario\",\"kills\":0,\"deaths\":0,\"totalDamage\":0,\"damageReceived\":0,\"totalShots\":0,\"t\":0}"
 
-    
     public string playerJSON(int i)
     {
         string s = JsonUtility.ToJson(players[i]);

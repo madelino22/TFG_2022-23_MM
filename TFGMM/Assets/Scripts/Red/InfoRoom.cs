@@ -13,7 +13,6 @@ using System.Linq; //List sort
 
 public class InfoRoom : GlobalEventListener
 {
-
     const int PLAYEROOM = 2; //TIENE QUE VALER LO MISMO QUE EN PLAYERSETUPCONTROLLER
 
     [SerializeField]
@@ -36,9 +35,10 @@ public class InfoRoom : GlobalEventListener
     //}
     public override void SceneLoadLocalDone(string scene, IProtocolToken token)
     {
+        PlayerSetupController.PLAYEROOM = PLAYEROOM;
+
         if (!BoltNetwork.IsServer)
         {
-            PlayerSetupController.PLAYEROOM = PLAYEROOM;
             UserHistory user = ComInfo.getPlayerData();
 
             JoinPlayerEvent evnt = JoinPlayerEvent.Create(GlobalTargets.OnlyServer);

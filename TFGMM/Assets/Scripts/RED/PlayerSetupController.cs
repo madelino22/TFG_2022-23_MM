@@ -189,7 +189,6 @@ public class PlayerSetupController : GlobalEventListener
                 blueIntSpawn++;
             }
 
-
             if (redIntSpawn >= PLAYEROOM / 2) redIntSpawn = 0;
             if (blueIntSpawn >= PLAYEROOM) redIntSpawn = PLAYEROOM / 2;
 
