@@ -5,7 +5,7 @@ using Firebase.Database;
 
 public class PlayerSetupController : GlobalEventListener
 {
-    const int PLAYEROOM = 2; // TAMBIEN CAMVIARLO EN INFO ROOM
+    const int PLAYEROOM = 2; //NUM MAX JUGADORES?
 
     [SerializeField]
     private Camera _sceneCamera;
@@ -21,9 +21,7 @@ public class PlayerSetupController : GlobalEventListener
 
     public Camera SceneCamera { get => _sceneCamera; }
 
-    private int contador = 0; 
-    int redIntSpawn = 0;  // Team lejos (0,2)
-    int blueIntSpawn = 3; //Team cerca (3,5)
+    private int contador = 0; // Team lejos (0,2) || Team cerca (3,5)
 
     private BoltEntity[] entities = new BoltEntity[PLAYEROOM];
 
@@ -38,7 +36,6 @@ public class PlayerSetupController : GlobalEventListener
 
     Match partida;
     nMatches Nmatches = new nMatches();
-
     public void Awake()
     {
         reference = FirebaseDatabase.DefaultInstance.RootReference;
@@ -46,8 +43,6 @@ public class PlayerSetupController : GlobalEventListener
 
     public override void SceneLoadLocalDone(string scene, IProtocolToken token)
     {
-        contador = 0;
-
         if (!BoltNetwork.IsServer)
         {
             RoundData.ResetData();
@@ -57,10 +52,6 @@ public class PlayerSetupController : GlobalEventListener
             evnt2.playerName = name;
             evnt2.isRed = RoundData.isRed; //MATCH MAKING YA DETERMINO A QUE EQUIPO PERTENECE
             evnt2.Send();
-        }
-        else
-        {
-            
         }
     }
 
@@ -74,17 +65,15 @@ public class PlayerSetupController : GlobalEventListener
     {
         if (evnt.isRed) //RED 0,2,4
         {
-            entities[contador] = BoltNetwork.Instantiate(BoltPrefabs.Player2, spawners[redIntSpawn].transform.position, Quaternion.identity);
+            entities[contador] = BoltNetwork.Instantiate(BoltPrefabs.Player2, spawners[contador].transform.position, Quaternion.identity);
             entities[contador].AssignControl(evnt.RaisedBy);
             entities[contador].transform.Rotate(new Vector3(0, 180, 0));
-            redIntSpawn++;
             //entity[contador].GetComponent<PlayerCallback>().enabled = true;
         }
         else //BLUE 1,3,5
         {
-            entities[contador] = BoltNetwork.Instantiate(BoltPrefabs.Player1, spawners[blueIntSpawn].transform.position, Quaternion.identity);
+            entities[contador] = BoltNetwork.Instantiate(BoltPrefabs.Player1, spawners[contador].transform.position, Quaternion.identity);
             entities[contador].AssignControl(evnt.RaisedBy);
-            blueIntSpawn++;
         }
         entities[contador].GetComponentInChildren<PlayerMotor>().setID(contador);
         entityConnection[contador] = evnt.RaisedBy;
@@ -108,6 +97,7 @@ public class PlayerSetupController : GlobalEventListener
         else BoltLog.Warn("HAN ENTRADO " + contador + "/" + PLAYEROOM);
     }
 
+    //Solo lo ejecuta el server
     public override void OnEvent(ShootEvent evnt)
     {
         Vector3 e = new Vector3(0, 1.7f, 0);
@@ -121,11 +111,18 @@ public class PlayerSetupController : GlobalEventListener
         //BasicShooter esta en AttackModule.
         //PlayerMotor esta en IceElemental
         //AttackModule y IceElemental son hijos de Player
-        int id = evnt.id;
-        entity.gameObject.GetComponent<Bullet>().setCreatorName(id);
+        int i = 0;
+        while (i < PLAYEROOM && namePlayers[i] != evnt.nameShooter)
+        {
+            i++;
+        }
 
+        int id = i;
+        entity.gameObject.GetComponent<Bullet>().setCreatorID(id);
+
+        //Este evento es para actualizar match
         updatePlayerShots evnt2 = updatePlayerShots.Create(GlobalTargets.OnlyServer);
-        evnt2.shooterName = ComInfo.getPlayerName();
+        evnt2.shooterName = evnt.nameShooter;
         evnt2.Send();
 
     }
@@ -140,7 +137,7 @@ public class PlayerSetupController : GlobalEventListener
                 equipo = team.red;
             partida.addPlayer(namePlayers[i], equipo, i);
         }
-        entityCanvas = BoltNetwork.Instantiate(BoltPrefabs.Canvas, new Vector3(0,0,0), Quaternion.identity);
+        entityCanvas = BoltNetwork.Instantiate(BoltPrefabs.Canvas, new Vector3(0, 0, 0), Quaternion.identity);
     }
 
     public override void OnEvent(deletePlayersEvent evnt)
@@ -182,31 +179,22 @@ public class PlayerSetupController : GlobalEventListener
     {
         if (BoltNetwork.IsServer)
         {
-            // ESTO SE GUARDA BIEN
-            partida.damaged(namePlayers[evnt.wasDamaged], namePlayers[evnt.damagedBy]);
+            //esta llamada funciona bien
+            partida.damaged(namePlayers[evnt.nameDamaged], namePlayers[evnt.damagedBy]);
 
-            //ESTO SE GUARDA MAL
-            damageDoneEvent evn = damageDoneEvent.Create(entityConnection[evnt.damagedBy]);
-            //evn.id = evnt.damagedBy;
+            //Esto no funciona bien
+            //damageDoneEvent evn = damageDoneEvent.Create(entityConnection[evnt.damagedBy]);
+            damageDoneEvent evn = damageDoneEvent.Create(GlobalTargets.AllClients);
+            evn.namePlayer = namePlayers[evnt.damagedBy];
             evn.Send();
-            
-            damageReceivedEvent evn2 = damageReceivedEvent.Create(entityConnection[evnt.wasDamaged]);
-            //evn2.id = evnt.wasDamaged;
+
+            //damageReceivedEvent evn2 = damageReceivedEvent.Create(entityConnection[evnt.nameDamaged]);
+            damageReceivedEvent evn2 = damageReceivedEvent.Create(GlobalTargets.AllClients);
+            evn2.namePlayer = namePlayers[evnt.nameDamaged];
             evn2.Send();
         }
     }
 
-    public override void OnEvent(damageDoneEvent evnt) //Lo recibe el jugador que ha hecho daño
-    {
-        //if (evnt.id == PlayerMotor.id)
-            RoundData.damageInflicted += 500; //SE SUPONE QUE EL DAÑO ES 500 SIEMPRE
-    }
-
-    public override void OnEvent(damageReceivedEvent evnt) //Lo recibe el jugador que ha hecho daño
-    {
-        //if(evnt.id == PlayerMotor.id)
-            RoundData.damageReceived += 500; //SE SUPONE QUE EL DAÑO ES 500 SIEMPRE
-    }
     public override void OnEvent(killedEvent evnt)
     {
         RoundData.deaths++;
@@ -217,6 +205,27 @@ public class PlayerSetupController : GlobalEventListener
         RoundData.kills++;
     }
 
+    public override void OnEvent(damageDoneEvent evnt) //Lo recibe el jugador que ha hecho daño
+    {
+        Debug.Log("Disparó: hizo daño");
+        if (evnt.namePlayer == ComInfo.getPlayerName())
+        {
+            RoundData.damageInflicted += 500; //SE SUPONE QUE EL DAÑO ES 500 SIEMPRE
+            Debug.Log("Disparó: daño inflingido actual: " + RoundData.damageInflicted);
+        }
+    }
+
+    public override void OnEvent(damageReceivedEvent evnt) //Lo recibe el jugador que ha hecho daño
+    {
+        Debug.Log("Disparó: recibe daño");
+
+        if (evnt.namePlayer == ComInfo.getPlayerName())
+        {
+            RoundData.damageReceived += 500; //SE SUPONE QUE EL DAÑO ES 500 SIEMPRE
+            Debug.Log("Disparó: daño recibido actual: " + RoundData.damageReceived);
+
+        }
+    }
 
     public override void OnEvent(updatePlayerShots evnt)
     {
@@ -239,20 +248,21 @@ public class PlayerSetupController : GlobalEventListener
             UserHistory userHistory = ComInfo.getPlayerData();
 
             //Actualizamos con lo hecho en la partida
-            userHistory.UpdateUserHistory((team)evnt.winnerTeam); 
+            userHistory.UpdateUserHistory((team)evnt.winnerTeam);
 
             //Guardamos la info con la partida actualizada
             ComInfo.setPlayerData(userHistory);
 
             saveData(userHistory);
         }
+
     }
 
     //------------------------------------SEND MATCH INFO-------------------------------------------------------
 
     public override void OnEvent(saveGameEvent evnt)
     {
-        if(BoltNetwork.IsServer)
+        if (BoltNetwork.IsServer)
         {
             partida.pointsRed = (int)evnt.redPoints;
             partida.pointsBlue = (int)evnt.bluePoints;
@@ -298,7 +308,7 @@ public class PlayerSetupController : GlobalEventListener
         BoltLog.Warn("---------------------");
         BoltLog.Warn("---------------------");
         BoltLog.Warn("---------------------");
-        
+
         //Nmatches.setTotalGames(7);
 
         //Saber que numero de partida es la siguiente
@@ -331,7 +341,7 @@ public class PlayerSetupController : GlobalEventListener
                             Debug.Log(json);
 
                             reference.Child("Matches").Child("Partida " + num.ToString()).Child(partida.players[j].name).SetRawJsonValueAsync(json).ContinueWith(task =>
-                            {                               
+                            {
                                 if (task.IsCompleted && j + 1 == PLAYEROOM)
                                 {
                                     BoltLog.Warn("VAMOS A ACTUALIZAR AL JUGADOR " + j);
@@ -372,7 +382,7 @@ public class PlayerSetupController : GlobalEventListener
                         }
                         //--------------------------------------------------------------------------------
 
-                        
+
                     }
                     else
                     {
@@ -390,16 +400,16 @@ public class PlayerSetupController : GlobalEventListener
             }
         });
 
-        
-       
+
+
 
         //Guardar que se ha jugado una partida mas
 
-        
+
 
     }
 
-    private void saveData(UserHistory userHistory) 
+    private void saveData(UserHistory userHistory)
     {
         string json = JsonUtility.ToJson(userHistory);
 
@@ -464,22 +474,22 @@ public class PlayerSetupController : GlobalEventListener
 }
 
 
-public  class nMatches 
+public class nMatches
 {
-    private   int totalGames = 0;
+    private int totalGames = 0;
 
-    public  void LoadInfo(DataSnapshot snapshot)
+    public void LoadInfo(DataSnapshot snapshot)
     {
         string value = snapshot.Child("totalGames").Value.ToString();
         totalGames = int.Parse(value);
     }
 
-    public  void setTotalGames(int n)
+    public void setTotalGames(int n)
     {
         totalGames = n;
     }
 
-    public  int getTotalGames()
+    public int getTotalGames()
     {
         return totalGames;
     }

@@ -9,9 +9,6 @@ using UdpKit;
 
 public class UserHistory //: Photon.Bolt.IProtocolToken
 {
-    public static int DURACION_PARTIDA = 30;
-    private const int NUM_SAVED_MATCHES = 5;
-
     public string userName = "Este es mi usuario";
     public string email = "Este es mi correo";
     public int gamesPlayed = 0;
@@ -22,6 +19,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
     public int kills = 0;
     public int deaths = 0;
     public int damageReceived = 0;
+    public int damageInflicted = 0; // NO SE USA
     //
     public int zzlastGameSaved = 0;
     //MEDIAS
@@ -69,6 +67,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
         deaths = int.Parse(snapshot.Child("deaths").Value.ToString());
         totalShots = int.Parse(snapshot.Child("totalShots").Value.ToString());
         damageReceived = int.Parse(snapshot.Child("damageReceived").Value.ToString());
+        damageInflicted = int.Parse(snapshot.Child("damageInflicted").Value.ToString());
         //MEDIAS
         dps = float.Parse(snapshot.Child("dps").Value.ToString());
         killsDeathsRatioAverage = float.Parse(snapshot.Child("killsDeathsRatioAverage").Value.ToString());
@@ -89,9 +88,10 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
 
         eloRanking += 0; // LOLITOOOOOO
         damageReceived += RoundData.damageReceived;
+        damageInflicted += RoundData.damageInflicted;
         kills += RoundData.kills;
         deaths += RoundData.deaths;
-        totalShots += RoundData.totalShots;        
+        totalShots += RoundData.totalShots;
 
         switch (winner)
         {
@@ -109,11 +109,13 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
         }
 
         //MEDIAS
-        killsDeathsRatioAverage = kills / deaths;
 
-        int daño = RoundData.damageInflicted;
+        killsDeathsRatioAverage = (deaths > 0)? kills / deaths : kills;
+
+        int danyo = RoundData.damageInflicted;
         float damageInflictedUntilNow = dps * (gamesPlayed - 1);
-        dps = (damageInflictedUntilNow + daño) / (gamesPlayed); //damage per second
+        dps = (damageInflictedUntilNow + danyo) / (gamesPlayed); //damage per second
+       
     }
 
     // METODOSO DE ProtocolToken--------------------------------------------
