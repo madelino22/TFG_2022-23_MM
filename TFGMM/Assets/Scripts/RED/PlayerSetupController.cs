@@ -99,6 +99,8 @@ public class PlayerSetupController : GlobalEventListener
         BoltLog.Warn("CHECK EMPEZAR PARTIDA");
         if (contador == PLAYEROOM)
         {
+
+            //
             BoltLog.Warn("EMPEZAR PARTIDA");
             StartMatchEvent evnt2 = StartMatchEvent.Create(GlobalTargets.OnlyServer);
             evnt2.Send();

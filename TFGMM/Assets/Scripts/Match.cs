@@ -43,6 +43,12 @@ public class Match
     public int pointsBlue = 0;
     public int pointsRed = 0;
 
+
+    //EA should be the chances that the red team win and EB the blue's one
+    private float EA { get; set;}
+    private float EB { get; set;}
+
+
     public Match(int n)
     {
         players = new PlayerMatch[n];
