@@ -5,10 +5,10 @@ using Firebase.Database;
 
 public class PlayerSetupController : GlobalEventListener
 {
-    public static int PLAYEROOM = 2; //TIENE QUE VALER LO MISMO QUE EN INFOROOM
+    private static int PLAYEROOM = 6; //TIENE QUE VALER LO MISMO QUE EN INFOROOM
     private int contador = 0; 
-    private int redIntSpawn = 0; //Team lejos (0,2)
-    private int blueIntSpawn = PLAYEROOM / 2; //Team cerca (3,5)
+    private static int redIntSpawn = 0; //Team lejos (0,2)
+    private static int blueIntSpawn = PLAYEROOM / 2; //Team cerca (3,5)
 
     [SerializeField]
     private Camera _sceneCamera;
@@ -19,19 +19,13 @@ public class PlayerSetupController : GlobalEventListener
     [SerializeField]
     private Canvas canvas;
 
-    [SerializeField]
-    private GameObject[] spawners;
-
     public Camera SceneCamera { get => _sceneCamera; }
-
-
-
-    private BoltEntity[] entities = new BoltEntity[PLAYEROOM];
-
     private BoltEntity entityCanvas;
 
+    [SerializeField]
+    private GameObject[] spawners;
+    private BoltEntity[] entities = new BoltEntity[PLAYEROOM];
     private BoltConnection[] entityConnection = new BoltConnection[PLAYEROOM];
-
     private string[] namePlayers = new string[PLAYEROOM];
 
     //Referencia a Firebase
@@ -39,6 +33,14 @@ public class PlayerSetupController : GlobalEventListener
 
     Match partida;
     nMatches Nmatches = new nMatches();
+
+    public static void setPLAYEROOM(int n)
+    {
+        PLAYEROOM = n;
+        redIntSpawn = 0;
+        blueIntSpawn = PLAYEROOM / 2;
+    }
+
     public void Awake()
     {
         reference = FirebaseDatabase.DefaultInstance.RootReference;
@@ -66,7 +68,7 @@ public class PlayerSetupController : GlobalEventListener
 
     public override void OnEvent(SpawnPlayerEvent evnt)
     {
-        if (evnt.isRed) //RED 0,2,4
+        if (evnt.isRed) //RED 0,1,2
         {
             entities[contador] = BoltNetwork.Instantiate(BoltPrefabs.Player2, spawners[redIntSpawn].transform.position, Quaternion.identity);
             entities[contador].AssignControl(evnt.RaisedBy);
@@ -74,7 +76,7 @@ public class PlayerSetupController : GlobalEventListener
             redIntSpawn++;
             //entity[contador].GetComponent<PlayerCallback>().enabled = true;
         }
-        else //BLUE 1,3,5
+        else //BLUE 3,4,5
         {
             entities[contador] = BoltNetwork.Instantiate(BoltPrefabs.Player1, spawners[blueIntSpawn].transform.position, Quaternion.identity);
             entities[contador].AssignControl(evnt.RaisedBy);
@@ -103,12 +105,11 @@ public class PlayerSetupController : GlobalEventListener
         }
         else BoltLog.Warn("HAN ENTRADO " + contador + "/" + PLAYEROOM);
 
-        if(redIntSpawn + blueIntSpawn == PLAYEROOM)
-        {
-            //reset values
+        //ACTUALIZAR LOS INDICES DE LOS RESPAWN
+        if (redIntSpawn >= PLAYEROOM / 2) // 0, 1, 2
             redIntSpawn = 0;
-            blueIntSpawn = PLAYEROOM / 2;
-        }
+        if (blueIntSpawn >= PLAYEROOM) // 3, 4, 5
+            redIntSpawn = PLAYEROOM / 2;
     }
 
     //Solo lo ejecuta el server
@@ -138,7 +139,6 @@ public class PlayerSetupController : GlobalEventListener
         updatePlayerShots evnt2 = updatePlayerShots.Create(GlobalTargets.OnlyServer);
         evnt2.shooterName = evnt.nameShooter;
         evnt2.Send();
-
     }
 
     public override void OnEvent(StartMatchEvent evnt)
@@ -164,7 +164,8 @@ public class PlayerSetupController : GlobalEventListener
 
         contador--;
         BoltLog.Warn("Contador: " + contador);
-        if (contador == 0) BoltNetwork.Destroy(entityCanvas);
+        if (contador == 0) 
+            BoltNetwork.Destroy(entityCanvas);
     }
 
     //------------------------------------UPDATE INFO FIREBASE MATCH PART------------------------------------------------------
@@ -178,19 +179,22 @@ public class PlayerSetupController : GlobalEventListener
 
             //CHANGE POS IN SCENE
             PlayerMotor playerMotor = entities[evnt.nameKilled].GetComponentInChildren<PlayerMotor>();
-            if (playerMotor && playerMotor.GetTeam() == 1)
+            if (playerMotor && playerMotor.GetTeam() == 1) //ROJO
             {
                 playerMotor.gameObject.transform.position = spawners[redIntSpawn].transform.position;
                 redIntSpawn++;
             }
-            else if (playerMotor && playerMotor.GetTeam() == 0)
+            else if (playerMotor && playerMotor.GetTeam() == 0) //AZUL
             {
                 playerMotor.gameObject.transform.position = spawners[blueIntSpawn].transform.position;
                 blueIntSpawn++;
             }
 
-            if (redIntSpawn >= PLAYEROOM / 2) redIntSpawn = 0;
-            if (blueIntSpawn >= PLAYEROOM) redIntSpawn = PLAYEROOM / 2;
+            //ACTUALIZAR LOS INDICES DE LOS RESPAWN
+            if (redIntSpawn >= PLAYEROOM / 2) // 0, 1, 2
+                redIntSpawn = 0;
+            if (blueIntSpawn >= PLAYEROOM) // 3, 4, 5
+                redIntSpawn = PLAYEROOM / 2;
 
             killerEvent evn = killerEvent.Create(entityConnection[evnt.killedBy]);
             evn.Send();

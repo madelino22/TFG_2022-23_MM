@@ -13,7 +13,7 @@ using System.Linq; //List sort
 
 public class InfoRoom : GlobalEventListener
 {
-    const int PLAYEROOM = 2; //TIENE QUE VALER LO MISMO QUE EN PLAYERSETUPCONTROLLER
+    const int PLAYEROOM = 6; //TIENE QUE VALER LO MISMO QUE EN PLAYERSETUPCONTROLLER
 
     [SerializeField]
     TextMesh textoTotal;
@@ -35,7 +35,7 @@ public class InfoRoom : GlobalEventListener
     //}
     public override void SceneLoadLocalDone(string scene, IProtocolToken token)
     {
-        PlayerSetupController.PLAYEROOM = PLAYEROOM;
+        PlayerSetupController.setPLAYEROOM(PLAYEROOM);
 
         if (!BoltNetwork.IsServer)
         {
@@ -110,9 +110,7 @@ public class InfoRoom : GlobalEventListener
         int n = numPlayers;
         BoltLog.Warn("Hay " + numPlayers + "players.");
 
-        //Crear partida si hay jugadores
-
-        
+        //Crear partida si hay jugadores        
         int map = 0;
         var sortedList = dataOfAllUsers.OrderBy(x => x.Value).ToList(); //ordena el elo en orden ascendente
 
@@ -126,7 +124,8 @@ public class InfoRoom : GlobalEventListener
 
                 // HACEMOS NUESTRO MATCHMAKING Y DETERMINAMOS COMO SE FORMAN LOS EQUIPOS
 
-                evnt.isRed = (contador % 2) == 0;  //PARA QUE SPAWN EVENT SEPA A QUE EQUIPO VA
+                //evnt.isRed = (contador % 2) == 0;  //PARA QUE SPAWN EVENT SEPA A QUE EQUIPO VA
+                evnt.isRed = (contador < PLAYEROOM / 2);
 
                 if (map == 0)
                     evnt.ID = "0";
