@@ -32,6 +32,10 @@ public class MatchManager : GlobalEventListener
     public override void OnEvent(setPlayerEvent evnt)
     {
         nPlayerRoom = (int)evnt.nPlayer;
+        if (evnt.teamRed)
+            myTeam = teams.red;
+        else
+            myTeam = teams.blue;
         BoltLog.Warn("SOY EL JUGADOR: " + nPlayerRoom);
     }
 
@@ -64,7 +68,7 @@ public class MatchManager : GlobalEventListener
             Debug.Log("Empate");
             ComInfo.setGameResult(result.draw);
         }
-
+        
         SceneManager.LoadScene("WinLose", LoadSceneMode.Single);
 
         deletePlayersEvent del = deletePlayersEvent.Create(GlobalTargets.OnlyServer);
@@ -75,7 +79,9 @@ public class MatchManager : GlobalEventListener
     public void UpdateUI(int blueScore, int redScore, int time)
     {
         bluePointsText.text = blueScore.ToString();
+        bluePoints = blueScore;
         redPointsText.text = redScore.ToString();
+        redPoints = redScore;
 
         int coc = time / 60;
         int rest = time % 60;

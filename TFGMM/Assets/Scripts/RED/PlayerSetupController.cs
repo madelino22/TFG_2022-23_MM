@@ -5,7 +5,7 @@ using Firebase.Database;
 
 public class PlayerSetupController : GlobalEventListener
 {
-    private static int PLAYEROOM = 6; //TIENE QUE VALER LO MISMO QUE EN INFOROOM
+    private static int PLAYEROOM = 2; //TIENE QUE VALER LO MISMO QUE EN INFOROOM
     private int contador = 0; 
     private static int redIntSpawn = 0; //Team lejos (0,2)
     private static int blueIntSpawn = 3; //Team cerca (3,5)
@@ -92,6 +92,7 @@ public class PlayerSetupController : GlobalEventListener
         //Establecemos el numero del jugador en la sala
         setPlayerEvent evnts = setPlayerEvent.Create(evnt.RaisedBy, ReliabilityModes.ReliableOrdered);
         evnts.nPlayer = contador;
+        evnts.teamRed = evnt.isRed;
         evnts.Send();
         BoltLog.Warn("ENVIO EVENT PLAYER: " + contador);
         contador++;

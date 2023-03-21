@@ -13,7 +13,7 @@ using System.Linq; //List sort
 
 public class InfoRoom : GlobalEventListener
 {
-    const int PLAYEROOM = 6; //TIENE QUE VALER LO MISMO QUE EN PLAYERSETUPCONTROLLER
+    const int PLAYEROOM = 2; //TIENE QUE VALER LO MISMO QUE EN PLAYERSETUPCONTROLLER
 
     [SerializeField]
     TextMesh textoTotal;
