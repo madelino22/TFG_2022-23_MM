@@ -86,6 +86,8 @@ public class PlayerSetupController : GlobalEventListener
         entityConnection[contador] = evnt.RaisedBy;
         //FIREBASE
         namePlayers[contador] = evnt.playerName;
+
+        Debug.Log("AUX: Se HA SPAWNEADO EL JUGADOR " + evnt.playerName + " con ID: " + motor.getID());
         //id = contador;
         //Establecemos el numero del jugador en la sala
         setPlayerEvent evnts = setPlayerEvent.Create(evnt.RaisedBy, ReliabilityModes.ReliableOrdered);
@@ -225,14 +227,16 @@ public class PlayerSetupController : GlobalEventListener
 
             //Esto no funciona bien
             //damageDoneEvent evn = damageDoneEvent.Create(entityConnection[evnt.damagedBy]);
-            damageDoneEvent evn = damageDoneEvent.Create(GlobalTargets.AllClients);
+            damageDoneEvent evn = damageDoneEvent.Create(entityConnection[evnt.damagedBy]);
             evn.namePlayer = namePlayers[evnt.damagedBy];
             evn.Send();
 
             //damageReceivedEvent evn2 = damageReceivedEvent.Create(entityConnection[evnt.nameDamaged]);
-            damageReceivedEvent evn2 = damageReceivedEvent.Create(GlobalTargets.AllClients);
+            damageReceivedEvent evn2 = damageReceivedEvent.Create(entityConnection[evnt.nameDamaged]);
             evn2.namePlayer = namePlayers[evnt.nameDamaged];
             evn2.Send();
+
+            Debug.Log("Ell jugador -" + namePlayers[evnt.damagedBy] + "- ha hecho daño al jugador -" + namePlayers[evnt.nameDamaged]);
         }
     }
 

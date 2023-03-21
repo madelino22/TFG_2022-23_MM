@@ -58,10 +58,14 @@ public class Bullet : MonoBehaviour
             || !wasFiredByRed && target.CompareTag("Red")) // Azul le da a rojo
         {
             PlayerMotor pMotor = collision.gameObject.GetComponent<PlayerMotor>();
-            int wasHitID = pMotor.getID();
-            bool redWasHit = !wasFiredByRed; //rojo es golpeado si la bala la disparo azul
             if (BoltNetwork.IsServer)
+            {
+                int wasHitID = pMotor.getID();
+                bool redWasHit = !wasFiredByRed; //rojo es golpeado si la bala la disparo azul
+
+                Debug.Log("AUX: Spawneo la bala" + creatorID + " se le dio a " + wasHitID);
                 target.GetComponent<PlayerCallback>().loseLife(redWasHit, creatorID, wasHitID);
+            }
             else
             {
                 pMotor.Hurt();
