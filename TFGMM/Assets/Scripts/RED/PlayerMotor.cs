@@ -44,7 +44,7 @@ public class PlayerMotor : EntityEventListener<IPlayerState>
     private int _timeMatch = 90;
 
     private int team = -1;
-    public static int id = 0;
+    public int id = 0;
     public int getID() { return id; }
     public void setID(int i) { id = i; }
 

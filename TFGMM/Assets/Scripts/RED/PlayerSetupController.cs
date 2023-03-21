@@ -8,7 +8,7 @@ public class PlayerSetupController : GlobalEventListener
     private static int PLAYEROOM = 6; //TIENE QUE VALER LO MISMO QUE EN INFOROOM
     private int contador = 0; 
     private static int redIntSpawn = 0; //Team lejos (0,2)
-    private static int blueIntSpawn = PLAYEROOM / 2; //Team cerca (3,5)
+    private static int blueIntSpawn = 3; //Team cerca (3,5)
 
     [SerializeField]
     private Camera _sceneCamera;
@@ -37,8 +37,6 @@ public class PlayerSetupController : GlobalEventListener
     public static void setPLAYEROOM(int n)
     {
         PLAYEROOM = n;
-        redIntSpawn = 0;
-        blueIntSpawn = PLAYEROOM / 2;
     }
 
     public void Awake()
@@ -88,6 +86,8 @@ public class PlayerSetupController : GlobalEventListener
         entityConnection[contador] = evnt.RaisedBy;
         //FIREBASE
         namePlayers[contador] = evnt.playerName;
+
+        Debug.Log("AUX: Se HA SPAWNEADO EL JUGADOR " + evnt.playerName + " con ID: " + motor.getID());
         //id = contador;
         //Establecemos el numero del jugador en la sala
         setPlayerEvent evnts = setPlayerEvent.Create(evnt.RaisedBy, ReliabilityModes.ReliableOrdered);
@@ -99,17 +99,25 @@ public class PlayerSetupController : GlobalEventListener
         BoltLog.Warn("CHECK EMPEZAR PARTIDA");
         if (contador == PLAYEROOM)
         {
+
+            //
             BoltLog.Warn("EMPEZAR PARTIDA");
             StartMatchEvent evnt2 = StartMatchEvent.Create(GlobalTargets.OnlyServer);
             evnt2.Send();
+
+
+            sendWinningChances evnt3 = sendWinningChances.Create(GlobalTargets.AllClients);
+            evnt3.redChanceToWin = ELO.GetRedChances();
+            evnt3.blueChanceToWin = ELO.GetBlueChances();
+            evnt3.Send();
         }
         else BoltLog.Warn("HAN ENTRADO " + contador + "/" + PLAYEROOM);
 
         //ACTUALIZAR LOS INDICES DE LOS RESPAWN
-        if (redIntSpawn >= PLAYEROOM / 2) // 0, 1, 2
+        if (redIntSpawn >= 3) // 0, 1, 2
             redIntSpawn = 0;
-        if (blueIntSpawn >= PLAYEROOM) // 3, 4, 5
-            redIntSpawn = PLAYEROOM / 2;
+        if (blueIntSpawn >= 6) // 3, 4, 5
+            blueIntSpawn = 3;
     }
 
     //Solo lo ejecuta el server
@@ -154,6 +162,12 @@ public class PlayerSetupController : GlobalEventListener
         entityCanvas = BoltNetwork.Instantiate(BoltPrefabs.Canvas, new Vector3(0, 0, 0), Quaternion.identity);
     }
 
+    public override void OnEvent(sendWinningChances evnt)
+    {
+        ELO.redChances = evnt.redChanceToWin;
+        ELO.blueChances = evnt.blueChanceToWin;
+    }
+
     public override void OnEvent(deletePlayersEvent evnt)
     {
         BoltLog.Warn("SE destruye el jugador " + (int)evnt.numPlayer);
@@ -191,10 +205,10 @@ public class PlayerSetupController : GlobalEventListener
             }
 
             //ACTUALIZAR LOS INDICES DE LOS RESPAWN
-            if (redIntSpawn >= PLAYEROOM / 2) // 0, 1, 2
+            if (redIntSpawn >= 3) // 0, 1, 2
                 redIntSpawn = 0;
-            if (blueIntSpawn >= PLAYEROOM) // 3, 4, 5
-                redIntSpawn = PLAYEROOM / 2;
+            if (blueIntSpawn >= 6) // 3, 4, 5
+                blueIntSpawn = 3;
 
             killerEvent evn = killerEvent.Create(entityConnection[evnt.killedBy]);
             evn.Send();
@@ -213,14 +227,16 @@ public class PlayerSetupController : GlobalEventListener
 
             //Esto no funciona bien
             //damageDoneEvent evn = damageDoneEvent.Create(entityConnection[evnt.damagedBy]);
-            damageDoneEvent evn = damageDoneEvent.Create(GlobalTargets.AllClients);
+            damageDoneEvent evn = damageDoneEvent.Create(entityConnection[evnt.damagedBy]);
             evn.namePlayer = namePlayers[evnt.damagedBy];
             evn.Send();
 
             //damageReceivedEvent evn2 = damageReceivedEvent.Create(entityConnection[evnt.nameDamaged]);
-            damageReceivedEvent evn2 = damageReceivedEvent.Create(GlobalTargets.AllClients);
+            damageReceivedEvent evn2 = damageReceivedEvent.Create(entityConnection[evnt.nameDamaged]);
             evn2.namePlayer = namePlayers[evnt.nameDamaged];
             evn2.Send();
+
+            Debug.Log("Ell jugador -" + namePlayers[evnt.damagedBy] + "- ha hecho daño al jugador -" + namePlayers[evnt.nameDamaged]);
         }
     }
 

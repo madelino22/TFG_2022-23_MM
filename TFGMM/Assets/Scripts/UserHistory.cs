@@ -22,8 +22,10 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
     public int damageInflicted = 0; // NO SE USA
     //
     public int zzlastGameSaved = 0;
-    //MEDIAS
+    //ELO
     public int eloRanking = 1500;
+    public float eloK = 40;
+    //MEDIAS
     public float killsDeathsRatioAverage = 0;
     public float dps = 0;
 
@@ -72,6 +74,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
         dps = float.Parse(snapshot.Child("dps").Value.ToString());
         killsDeathsRatioAverage = float.Parse(snapshot.Child("killsDeathsRatioAverage").Value.ToString());
         eloRanking = int.Parse(snapshot.Child("eloRanking").Value.ToString());
+        eloK = float.Parse(snapshot.Child("eloK").Value.ToString());
         zzlastGameSaved = int.Parse(snapshot.Child("zzlastGameSaved").Value.ToString());
 
         //Load Saved Games
@@ -86,36 +89,67 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
     {
         gamesPlayed++;
 
-        eloRanking += 0; // LOLITOOOOOO
         damageReceived += RoundData.damageReceived;
         damageInflicted += RoundData.damageInflicted;
         kills += RoundData.kills;
         deaths += RoundData.deaths;
         totalShots += RoundData.totalShots;
 
+        float SA = 0;
+        float E = 0.5f;
         switch (winner)
         {
             case team.red:
-                if (RoundData.isRed) wins++;
-                else loses++;
+                if (RoundData.isRed)
+                {
+                    wins++;
+                    eloK++;
+                    SA = 1f;
+                }
+                else
+                {
+                    loses++;
+                    eloK--;
+                    SA = 0f;
+                }
                 break;
             case team.blue:
-                if (!RoundData.isRed) wins++;
-                else loses++;
+                if (!RoundData.isRed)
+                {
+                    wins++;
+                    eloK++;
+                    SA = 1f;
+                }
+                else {
+                    loses++;
+                    eloK--;
+                    SA = 0f;
+                } 
                 break;
             case team.none:
                 draws++;
+                SA = 0.5f;
                 break;
         }
 
+
+
+        if (RoundData.isRed)
+            E = ELO.GetRedChances();
+        else
+            E = ELO.GetBlueChances();
+
+        
+        eloK = Mathf.Clamp(eloK, 0, 60);
+        eloRanking = ELO.CalculteNewElo(eloRanking, eloK, SA, E); // LOLITOOOOOO
         //MEDIAS
 
-        killsDeathsRatioAverage = (deaths > 0)? kills / deaths : kills;
+        killsDeathsRatioAverage = (deaths > 0) ? kills / deaths : kills;
 
         int danyo = RoundData.damageInflicted;
         float damageInflictedUntilNow = dps * (gamesPlayed - 1);
         dps = (damageInflictedUntilNow + danyo) / (gamesPlayed); //damage per second
-       
+
     }
 
     // METODOSO DE ProtocolToken--------------------------------------------
