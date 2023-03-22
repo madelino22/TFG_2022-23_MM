@@ -54,6 +54,7 @@ public class PlayerSetupController : GlobalEventListener
             string name = ComInfo.getPlayerData().userName;
             evnt2.playerName = name;
             evnt2.isRed = RoundData.isRed; //MATCH MAKING YA DETERMINO A QUE EQUIPO PERTENECE
+            evnt2.winningChances = ELO.blueChances;
             evnt2.Send();
         }
     }
@@ -80,6 +81,10 @@ public class PlayerSetupController : GlobalEventListener
             entities[contador].AssignControl(evnt.RaisedBy);
             blueIntSpawn++;
         }
+        //Siempre le pasamos la probaibilidadad de blue
+        RoundData.winningChancesBlue = evnt.winningChances;
+        RoundData.winningChancesRed = 1 - evnt.winningChances;
+
         PlayerMotor motor = entities[contador].GetComponentInChildren<PlayerMotor>();
         motor.setID(contador);
         motor.SetTeam((evnt.isRed) ? 1 : 0);

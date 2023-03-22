@@ -123,41 +123,53 @@ public class InfoRoom : GlobalEventListener
             //UwU descomentar esto
             List<int> blueELOS = new();
             List<int> redELOS = new();
+
+            List<GoGameEvent> evnts = new List<GoGameEvent>();
             while (contador < PLAYEROOM)
             {
                 //GoGameEvent evnt = GoGameEvent.Create(playersConnections[sortedList[0].Key]);
-                GoGameEvent evnt = GoGameEvent.Create(playersConnections[0]);
+                evnts.Add(GoGameEvent.Create(playersConnections[contador]));
 
                 // HACEMOS NUESTRO MATCHMAKING Y DETERMINAMOS COMO SE FORMAN LOS EQUIPOS
 
                 //evnt.isRed = (contador % 2) == 0;  //PARA QUE SPAWN EVENT SEPA A QUE EQUIPO VA
-                evnt.isRed = (contador < PLAYEROOM / 2);
+                evnts[contador].isRed = (contador < PLAYEROOM / 2);
 
-                if (evnt.isRed)
+                if (evnts[contador].isRed)
                     redELOS.Add(sortedList[0].Value);
                 else
                     blueELOS.Add(sortedList[0].Value);
 
-
                 if (map == 0)
-                    evnt.ID = "0";
+                    evnts[contador].ID = "0";
                 else
-                    evnt.ID = "1";
-                evnt.Send();
-                
-                playersConnections.RemoveAt(0);
+                    evnts[contador].ID = "1";
                 //playersConnections.RemoveAt(sortedList[0].Key);
                 //sortedList.RemoveAt(0);
                 //numPlayers--;
-                BoltLog.Warn("Jugador " + contador + ", va a " + evnt.ID);
+                BoltLog.Warn("Jugador " + contador + ", va a " + evnts[contador].ID);
                 contador++;
             }
 
             //UwU calcular media de los dos equipos
             //llamar al m�todo de c�lculo de winning chances de ELO
             //UwU descomentar esto
-            Tuple<int, int> winningChances = ELO.CalculateWinningChances(redELOS, blueELOS);
+            Tuple<float, float> winningChances = ELO.CalculateWinningChances(redELOS, blueELOS);
             //pasar la variable de probabilidad de victoria a cada cliente por evento
+
+            for(int i = 0; i < PLAYEROOM;i++)
+            {
+                if (evnts[i].isRed)
+                {
+                    evnts[i].winningChances = winningChances.Item1;
+                }
+                else evnts[i].winningChances = winningChances.Item2;
+
+                evnts[i].Send();
+
+                playersConnections.RemoveAt(0);
+            }
+
 
 
             numPlayers -= PLAYEROOM;
@@ -248,6 +260,18 @@ public class InfoRoom : GlobalEventListener
     public override void OnEvent(GoGameEvent evnt)
     {
         RoundData.isRed = evnt.isRed; //PARA QUE SPAWN EVENT SEPA A QUE EQUIPO VA
+
+        if(evnt.isRed)
+        {
+            ELO.redChances = evnt.winningChances;
+            ELO.blueChances = 1 - evnt.winningChances;
+        }
+        else
+        {
+            ELO.redChances = 1 - evnt.winningChances;
+            ELO.blueChances = evnt.winningChances;
+        }
+
 
         //SceneManager.LoadScene("BOLTMapa");
         sessionID = evnt.ID;

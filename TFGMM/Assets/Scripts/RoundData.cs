@@ -12,6 +12,9 @@ public static class RoundData
 
     public static int totalShots = 0;
 
+    public static float winningChancesRed = 0;
+    public static float winningChancesBlue = 0;
+
     public static int damageInflicted = 0; //Damage Inflicted on Enemy
     public static int damageReceived = 0; //Damage Received by Player
 

@@ -3194,6 +3194,7 @@ MonoBehaviour:
   joystick: {fileID: 3667495138287540463}
   playerBall: {fileID: 7798226442068077261}
   _totalLife: 2500
+  id: 0
 --- !u!114 &7187359199663330078
 MonoBehaviour:
   m_ObjectHideFlags: 0

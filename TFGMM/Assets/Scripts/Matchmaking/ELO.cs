@@ -23,7 +23,7 @@ public static class ELO
     }
 
 
-    public static Tuple<int, int> CalculateWinningChances(List<int> RA, List<int> RB)
+    public static Tuple<float, float> CalculateWinningChances(List<int> RA, List<int> RB)
     {
         int averageRatingA = 0;
         foreach (int individualRA in RA)
@@ -39,12 +39,12 @@ public static class ELO
         }
         averageRatingB = averageRatingB / RB.Count;
 
-        int EA = (int)(1 / (1 + Math.Pow(10f, (averageRatingB - averageRatingA) / 400)));
-        int EB = (int)(1 / (1 + Math.Pow(10f, (averageRatingA - averageRatingB) / 400)));
+        float EA = (int)(1 / (1 + Math.Pow(10f, (averageRatingB - averageRatingA) / 400)));
+        float EB = (int)(1 / (1 + Math.Pow(10f, (averageRatingA - averageRatingB) / 400)));
 
         redChances = EA;
         blueChances = EB;
-        return new Tuple<int, int>(EA,EB);  
+        return new Tuple<float, float>(EA,EB);  
     }
 
 
