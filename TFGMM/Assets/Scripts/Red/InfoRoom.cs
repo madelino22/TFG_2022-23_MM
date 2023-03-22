@@ -13,7 +13,7 @@ using System.Linq; //List sort
 
 public class InfoRoom : GlobalEventListener
 {
-    const int PLAYEROOM = 6; //TIENE QUE VALER LO MISMO QUE EN PLAYERSETUPCONTROLLER
+    const int PLAYEROOM = 2; //TIENE QUE VALER LO MISMO QUE EN PLAYERSETUPCONTROLLER
 
     [SerializeField]
     TextMesh textoTotal;
@@ -136,9 +136,9 @@ public class InfoRoom : GlobalEventListener
                 evnts[contador].isRed = (contador < PLAYEROOM / 2);
 
                 if (evnts[contador].isRed)
-                    redELOS.Add(sortedList[0].Value);
+                    redELOS.Add(sortedList[contador].Value);
                 else
-                    blueELOS.Add(sortedList[0].Value);
+                    blueELOS.Add(sortedList[contador].Value);
 
                 if (map == 0)
                     evnts[contador].ID = "0";
@@ -272,6 +272,7 @@ public class InfoRoom : GlobalEventListener
             ELO.blueChances = evnt.winningChances;
         }
 
+            Debug.Log("CHANCES IR: las chances de ganar del red son: " + ELO.redChances); 
 
         //SceneManager.LoadScene("BOLTMapa");
         sessionID = evnt.ID;

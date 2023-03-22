@@ -139,8 +139,9 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
         else
             E = ELO.GetBlueChances();
 
-        
-        if(gamesPlayed < 10)
+        Debug.Log("CHANCES UH: las chances de ganar del red son: " + ELO.redChances);
+
+        if (gamesPlayed < 10)
         {
             eloK = 40;
         }

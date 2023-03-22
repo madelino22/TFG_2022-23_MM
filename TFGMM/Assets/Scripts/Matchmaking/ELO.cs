@@ -39,8 +39,8 @@ public static class ELO
         }
         averageRatingB = averageRatingB / RB.Count;
 
-        float EA = (int)(1 / (1 + Math.Pow(10f, (averageRatingB - averageRatingA) / 400)));
-        float EB = (int)(1 / (1 + Math.Pow(10f, (averageRatingA - averageRatingB) / 400)));
+        float EA = (float)(1 / (1 + Math.Pow(10f, (averageRatingB - averageRatingA) / 400)));
+        float EB = (float)(1 / (1 + Math.Pow(10f, (averageRatingA - averageRatingB) / 400)));
 
         redChances = EA;
         blueChances = EB;

@@ -5,7 +5,7 @@ using Firebase.Database;
 
 public class PlayerSetupController : GlobalEventListener
 {
-    private static int PLAYEROOM = 6; //TIENE QUE VALER LO MISMO QUE EN INFOROOM
+    private static int PLAYEROOM = 2; //TIENE QUE VALER LO MISMO QUE EN INFOROOM
     private int contador = 0; 
     private static int redIntSpawn = 0; //Team lejos (0,2)
     private static int blueIntSpawn = 3; //Team cerca (3,5)
@@ -56,6 +56,9 @@ public class PlayerSetupController : GlobalEventListener
             evnt2.isRed = RoundData.isRed; //MATCH MAKING YA DETERMINO A QUE EQUIPO PERTENECE
             evnt2.winningChances = ELO.blueChances;
             evnt2.Send();
+
+            Debug.Log("CHANCES PSC: las chances de ganar del red son: " + ELO.redChances);
+
         }
     }
 
@@ -111,10 +114,6 @@ public class PlayerSetupController : GlobalEventListener
             evnt2.Send();
 
 
-            sendWinningChances evnt3 = sendWinningChances.Create(GlobalTargets.AllClients);
-            evnt3.redChanceToWin = ELO.GetRedChances();
-            evnt3.blueChanceToWin = ELO.GetBlueChances();
-            evnt3.Send();
         }
         else BoltLog.Warn("HAN ENTRADO " + contador + "/" + PLAYEROOM);
 
@@ -167,11 +166,7 @@ public class PlayerSetupController : GlobalEventListener
         entityCanvas = BoltNetwork.Instantiate(BoltPrefabs.Canvas, new Vector3(0, 0, 0), Quaternion.identity);
     }
 
-    public override void OnEvent(sendWinningChances evnt)
-    {
-        ELO.redChances = evnt.redChanceToWin;
-        ELO.blueChances = evnt.blueChanceToWin;
-    }
+   
 
     public override void OnEvent(deletePlayersEvent evnt)
     {
