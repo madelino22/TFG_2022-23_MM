@@ -146,9 +146,9 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
 
         killsDeathsRatioAverage = (deaths > 0) ? kills / deaths : kills;
 
-        int danyo = RoundData.damageInflicted;
+        int danyo_s = RoundData.damageInflicted / 120;
         float damageInflictedUntilNow = dps * (gamesPlayed - 1);
-        dps = (damageInflictedUntilNow + danyo) / (gamesPlayed); //damage per second
+        dps = (damageInflictedUntilNow + danyo_s) / (gamesPlayed); //damage per second
 
     }
 
