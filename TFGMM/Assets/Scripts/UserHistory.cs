@@ -21,6 +21,9 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
     public int damageReceived = 0;
     public int damageInflicted = 0; // NO SE USA
     //
+    public int healedMyLife = 0;
+    public int healedOthersLife = 0;
+    //
     public int zzlastGameSaved = 0;
     //ELO
     public int eloRanking = 1500;
@@ -65,11 +68,15 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
         wins = int.Parse(snapshot.Child("wins").Value.ToString());
         draws = int.Parse(snapshot.Child("draws").Value.ToString());
         loses = int.Parse(snapshot.Child("loses").Value.ToString());
+        //
         kills = int.Parse(snapshot.Child("kills").Value.ToString());
         deaths = int.Parse(snapshot.Child("deaths").Value.ToString());
         totalShots = int.Parse(snapshot.Child("totalShots").Value.ToString());
         damageReceived = int.Parse(snapshot.Child("damageReceived").Value.ToString());
         damageInflicted = int.Parse(snapshot.Child("damageInflicted").Value.ToString());
+        //
+        healedMyLife = int.Parse(snapshot.Child("healedMyLife").Value.ToString());
+        healedOthersLife = int.Parse(snapshot.Child("healedOthersLife").Value.ToString());
         //MEDIAS
         dps = float.Parse(snapshot.Child("dps").Value.ToString());
         killsDeathsRatioAverage = float.Parse(snapshot.Child("killsDeathsRatioAverage").Value.ToString());
@@ -95,6 +102,8 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
         deaths += RoundData.deaths;
         totalShots += RoundData.totalShots;
 
+        healedMyLife = RoundData.healedMyLife;
+        healedOthersLife = RoundData.healedPlayers;
         float SA = 0;
         float E = 0.5f;
         switch (winner)

@@ -52,8 +52,6 @@ public class Bullet : MonoBehaviour
         //COMPROBAR COLISION
         if (target.CompareTag("Muro"))
             BoltNetwork.Destroy(this.gameObject);
-
-
         else if (wasFiredByRed && target.CompareTag("Blue") //Rojo le da a azul
             || !wasFiredByRed && target.CompareTag("Red")) // Azul le da a rojo
         {
@@ -69,6 +67,24 @@ public class Bullet : MonoBehaviour
             else
             {
                 pMotor.Hurt();
+            }
+            BoltNetwork.Destroy(this.gameObject);
+        }
+        else if (wasFiredByRed && target.CompareTag("Red") //Rojo le da a azul
+           || !wasFiredByRed && target.CompareTag("Blue")) // Azul le da a rojo
+        {
+            PlayerMotor pMotor = collision.gameObject.GetComponent<PlayerMotor>();
+            if (BoltNetwork.IsServer)
+            {
+                int wasHitID = pMotor.getID();
+                bool redWasHit = !wasFiredByRed; //rojo es golpeado si la bala la disparo azul
+
+                Debug.Log("AUX: Spawneo la bala" + creatorID + " curo a " + wasHitID);
+                target.GetComponent<PlayerCallback>().loseLife(redWasHit, creatorID, wasHitID);
+            }
+            else
+            {
+                //pMotor.Hurt(); DAÑO DE CURA SI HACE FALTA 
             }
             BoltNetwork.Destroy(this.gameObject);
         }

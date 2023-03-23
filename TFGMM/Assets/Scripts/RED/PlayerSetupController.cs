@@ -84,9 +84,6 @@ public class PlayerSetupController : GlobalEventListener
             entities[contador].AssignControl(evnt.RaisedBy);
             blueIntSpawn++;
         }
-        //Siempre le pasamos la probaibilidadad de blue
-        RoundData.winningChancesBlue = evnt.winningChances;
-        RoundData.winningChancesRed = 1 - evnt.winningChances;
 
         PlayerMotor motor = entities[contador].GetComponentInChildren<PlayerMotor>();
         motor.setID(contador);
@@ -107,13 +104,15 @@ public class PlayerSetupController : GlobalEventListener
         BoltLog.Warn("CHECK EMPEZAR PARTIDA");
         if (contador == PLAYEROOM)
         {
-
-            //
             BoltLog.Warn("EMPEZAR PARTIDA");
             StartMatchEvent evnt2 = StartMatchEvent.Create(GlobalTargets.OnlyServer);
             evnt2.Send();
 
-
+            //Reseteamos los datos de la anterior partida
+            partida.Reset();
+            //Siempre le pasamos la probaibilidadad de blue
+            partida.winningChancesBlue = evnt.winningChances;
+            partida.winningChancesRed = 1 - evnt.winningChances;
         }
         else BoltLog.Warn("HAN ENTRADO " + contador + "/" + PLAYEROOM);
 
@@ -238,6 +237,37 @@ public class PlayerSetupController : GlobalEventListener
 
             Debug.Log("Ell jugador -" + namePlayers[evnt.damagedBy] + "- ha hecho daño al jugador -" + namePlayers[evnt.nameDamaged]);
         }
+    }
+
+
+    public override void OnEvent(healPlayerEvent evnt)
+    {
+        if (BoltNetwork.IsServer)
+        {
+            //esta llamada funciona bien
+            partida.healed(namePlayers[evnt.nameHealed], namePlayers[evnt.healedBy]);
+
+            //Esto no funciona bien
+            //damageDoneEvent evn = damageDoneEvent.Create(entityConnection[evnt.damagedBy]);
+            healingDoneEvent evn = healingDoneEvent.Create(entityConnection[evnt.healedBy]);
+            evn.Send();
+
+            //damageReceivedEvent evn2 = damageReceivedEvent.Create(entityConnection[evnt.nameDamaged]);
+            healingReceivedEvent evn2 = healingReceivedEvent.Create(entityConnection[evnt.nameHealed]);
+            evn2.Send();
+
+            Debug.Log("Ell jugador -" + namePlayers[evnt.healedBy] + "- ha curado al jugador -" + namePlayers[evnt.nameHealed]);
+        }
+    }
+
+    public override void OnEvent(healingReceivedEvent evnt)
+    {
+        RoundData.healedMyLife+= 250;
+    }
+
+    public override void OnEvent(healingDoneEvent evnt)
+    {
+        RoundData.healedPlayers += 250;
     }
 
     public override void OnEvent(killedEvent evnt)

@@ -12,13 +12,11 @@ public static class RoundData
 
     public static int totalShots = 0;
 
-    public static float winningChancesRed = 0;
-    public static float winningChancesBlue = 0;
-
     public static int damageInflicted = 0; //Damage Inflicted on Enemy
     public static int damageReceived = 0; //Damage Received by Player
 
-    public static int healedLife = 0;
+    public static int healedMyLife = 0;
+    public static int healedPlayers = 0;
 
     public static bool isRed = true;
 
@@ -28,7 +26,8 @@ public static class RoundData
         deaths = 0;
         damageInflicted = 0; //Damage Inflicted on Enemy
         damageReceived = 0; //Damage Received by Player
-        healedLife = 0;
+        healedMyLife = 0;
+        healedPlayers = 0;
         totalShots = 0;
     }
 }

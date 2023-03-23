@@ -77,6 +77,24 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
         evnt.TotalLife = _playerMotor.TotalLife;
         evnt.Send();
     }
+
+    public void addLife(bool redWasHit, int healerName, int wasHitName)
+    {
+        this._playerMotor.ActualLife += 250;
+
+        //MANDAR EVENTO DE QUE SE HA HECHO DANYO------------------
+        healPlayerEvent evn = healPlayerEvent.Create(GlobalTargets.OnlyServer);
+        evn.healedBy = healerName;
+        evn.nameHealed = wasHitName;
+        evn.Send();
+
+        // ACTUALIZAR BARRA VIDA
+        HealthEvent evnt = HealthEvent.Create(entity, EntityTargets.Everyone);
+        evnt.ActualLife = _playerMotor.ActualLife;
+        evnt.TotalLife = _playerMotor.TotalLife;
+        evnt.Send();
+    }
+
     public override void OnEvent(HealthEvent evnt)
     {
         if (_guiController != null)

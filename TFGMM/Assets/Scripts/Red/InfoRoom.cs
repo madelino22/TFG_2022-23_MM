@@ -161,9 +161,9 @@ public class InfoRoom : GlobalEventListener
             {
                 if (evnts[i].isRed)
                 {
-                    evnts[i].winningChances = winningChances.Item1;
+                    evnts[i].winningChances = winningChances.Item2;
                 }
-                else evnts[i].winningChances = winningChances.Item2;
+                else evnts[i].winningChances = winningChances.Item1;
 
                 evnts[i].Send();
 
