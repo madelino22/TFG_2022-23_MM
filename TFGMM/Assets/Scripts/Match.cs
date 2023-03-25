@@ -68,7 +68,7 @@ public class Match
     {
         winner = w;
 
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < 4; i++)
         {
             string name = info.Child("Jugador " + i).Child("name").Value.ToString();
             int kills = int.Parse(info.Child("Jugador " + i).Child("kills").Value.ToString().ToString());
