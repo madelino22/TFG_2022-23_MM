@@ -165,8 +165,6 @@ public class PlayerSetupController : GlobalEventListener
         entityCanvas = BoltNetwork.Instantiate(BoltPrefabs.Canvas, new Vector3(0, 0, 0), Quaternion.identity);
     }
 
-   
-
     public override void OnEvent(deletePlayersEvent evnt)
     {
         BoltLog.Warn("SE destruye el jugador " + (int)evnt.numPlayer);
@@ -298,7 +296,6 @@ public class PlayerSetupController : GlobalEventListener
         {
             RoundData.damageReceived += 500; //SE SUPONE QUE EL DAÑO ES 500 SIEMPRE
             Debug.Log("Disparó: daño recibido actual: " + RoundData.damageReceived);
-
         }
     }
 
@@ -330,7 +327,6 @@ public class PlayerSetupController : GlobalEventListener
 
             saveData(userHistory);
         }
-
     }
 
     //------------------------------------SEND MATCH INFO-------------------------------------------------------
@@ -398,6 +394,8 @@ public class PlayerSetupController : GlobalEventListener
                 Nmatches.LoadInfo(snapshot);
 
                 int num = Nmatches.getTotalGames();
+                //if (room1) num++; //ORTEGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
                 //Debug.Log("n matches: "+nMatches);
                 BoltLog.Warn("NMATCHES COGIDO " + num);
 

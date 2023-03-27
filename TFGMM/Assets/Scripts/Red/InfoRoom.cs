@@ -104,8 +104,6 @@ public class InfoRoom : GlobalEventListener
         }
     }
 
-
-
     public void Matchmaking()
     {
         int numPlayers = playersConnections.Count;
@@ -169,8 +167,6 @@ public class InfoRoom : GlobalEventListener
 
                 playersConnections.RemoveAt(0);
             }
-
-
 
             numPlayers -= PLAYEROOM;
             map++;

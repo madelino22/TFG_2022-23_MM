@@ -74,19 +74,17 @@ public class Bullet : MonoBehaviour
            || !wasFiredByRed && target.CompareTag("Blue")) // Azul le da a rojo
         {
             PlayerMotor pMotor = collision.gameObject.GetComponent<PlayerMotor>();
-            if (BoltNetwork.IsServer)
+            int wasHitID = pMotor.getID();
+
+            if (BoltNetwork.IsServer && creatorID != wasHitID) //no me curo a mi mismo
             {
-                int wasHitID = pMotor.getID();
                 bool redWasHit = !wasFiredByRed; //rojo es golpeado si la bala la disparo azul
 
                 Debug.Log("AUX: Spawneo la bala" + creatorID + " curo a " + wasHitID);
-                target.GetComponent<PlayerCallback>().loseLife(redWasHit, creatorID, wasHitID);
+                target.GetComponent<PlayerCallback>().addLife(redWasHit, creatorID, wasHitID);
+                BoltNetwork.Destroy(this.gameObject);   //no se destruye al colisionar con el que la spawnea
             }
-            else
-            {
-                //pMotor.Hurt(); DAÑO DE CURA SI HACE FALTA 
-            }
-            BoltNetwork.Destroy(this.gameObject);
+            
         }
     }
 }
