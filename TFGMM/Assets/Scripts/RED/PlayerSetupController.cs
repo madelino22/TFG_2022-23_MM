@@ -1,12 +1,12 @@
-ï»¿using UnityEngine;
+using UnityEngine;
 using Photon.Bolt;
 using Photon.Bolt.Utils;
 using Firebase.Database;
 
 public class PlayerSetupController : GlobalEventListener
 {
-    private static int PLAYEROOM = 2; //TIENE QUE VALER LO MISMO QUE EN INFOROOM
-    private int contador = 0;
+    private static int PLAYEROOM = 4; //TIENE QUE VALER LO MISMO QUE EN INFOROOM
+    private int contador = 0; 
     private static int redIntSpawn = 0; //Team lejos (0,2)
     private static int blueIntSpawn = 3; //Team cerca (3,5)
 
@@ -165,6 +165,8 @@ public class PlayerSetupController : GlobalEventListener
         entityCanvas = BoltNetwork.Instantiate(BoltPrefabs.Canvas, new Vector3(0, 0, 0), Quaternion.identity);
     }
 
+   
+
     public override void OnEvent(deletePlayersEvent evnt)
     {
         BoltLog.Warn("SE destruye el jugador " + (int)evnt.numPlayer);
@@ -175,7 +177,7 @@ public class PlayerSetupController : GlobalEventListener
 
         contador--;
         BoltLog.Warn("Contador: " + contador);
-        if (contador == 0)
+        if (contador == 0) 
             BoltNetwork.Destroy(entityCanvas);
     }
 
@@ -233,7 +235,7 @@ public class PlayerSetupController : GlobalEventListener
             evn2.namePlayer = namePlayers[evnt.nameDamaged];
             evn2.Send();
 
-            Debug.Log("Ell jugador -" + namePlayers[evnt.damagedBy] + "- ha hecho daï¿½o al jugador -" + namePlayers[evnt.nameDamaged]);
+            Debug.Log("Ell jugador -" + namePlayers[evnt.damagedBy] + "- ha hecho daño al jugador -" + namePlayers[evnt.nameDamaged]);
         }
     }
 
@@ -260,7 +262,7 @@ public class PlayerSetupController : GlobalEventListener
 
     public override void OnEvent(healingReceivedEvent evnt)
     {
-        RoundData.healedMyLife += 250;
+        RoundData.healedMyLife+= 250;
     }
 
     public override void OnEvent(healingDoneEvent evnt)
@@ -278,24 +280,25 @@ public class PlayerSetupController : GlobalEventListener
         RoundData.kills++;
     }
 
-    public override void OnEvent(damageDoneEvent evnt) //Lo recibe el jugador que ha hecho daï¿½o
+    public override void OnEvent(damageDoneEvent evnt) //Lo recibe el jugador que ha hecho daño
     {
-        Debug.Log("Disparï¿½: hizo daï¿½o");
+        Debug.Log("Disparó: hizo daño");
         if (evnt.namePlayer == ComInfo.getPlayerName())
         {
-            RoundData.damageInflicted += 500; //SE SUPONE QUE EL DAï¿½O ES 500 SIEMPRE
-            Debug.Log("Disparï¿½: daï¿½o inflingido actual: " + RoundData.damageInflicted);
+            RoundData.damageInflicted += 500; //SE SUPONE QUE EL DAÑO ES 500 SIEMPRE
+            Debug.Log("Disparó: daño inflingido actual: " + RoundData.damageInflicted);
         }
     }
 
-    public override void OnEvent(damageReceivedEvent evnt) //Lo recibe el jugador que ha hecho daï¿½o
+    public override void OnEvent(damageReceivedEvent evnt) //Lo recibe el jugador que ha hecho daño
     {
-        Debug.Log("Disparï¿½: recibe daï¿½o");
+        Debug.Log("Disparó: recibe daño");
 
         if (evnt.namePlayer == ComInfo.getPlayerName())
         {
-            RoundData.damageReceived += 500; //SE SUPONE QUE EL DAï¿½O ES 500 SIEMPRE
-            Debug.Log("Disparï¿½: daï¿½o recibido actual: " + RoundData.damageReceived);
+            RoundData.damageReceived += 500; //SE SUPONE QUE EL DAÑO ES 500 SIEMPRE
+            Debug.Log("Disparó: daño recibido actual: " + RoundData.damageReceived);
+
         }
     }
 
@@ -327,6 +330,7 @@ public class PlayerSetupController : GlobalEventListener
 
             saveData(userHistory);
         }
+
     }
 
     //------------------------------------SEND MATCH INFO-------------------------------------------------------
@@ -394,8 +398,6 @@ public class PlayerSetupController : GlobalEventListener
                 Nmatches.LoadInfo(snapshot);
 
                 int num = Nmatches.getTotalGames();
-                //if (room1) num++; //ORTEGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-
                 //Debug.Log("n matches: "+nMatches);
                 BoltLog.Warn("NMATCHES COGIDO " + num);
 

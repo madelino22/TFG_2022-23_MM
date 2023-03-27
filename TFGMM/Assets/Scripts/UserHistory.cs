@@ -129,12 +129,11 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                     eloK++;
                     SA = 1f;
                 }
-                else
-                {
+                else {
                     loses++;
                     eloK--;
                     SA = 0f;
-                }
+                } 
                 break;
             case team.none:
                 draws++;
@@ -157,11 +156,11 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
         }
         else
         {
-            if (eloRanking < 2100)
+            if(eloRanking < 2100)
             {
                 eloK = 32;
             }
-            else if (eloRanking > 2400)
+            else if(eloRanking > 2400)
             {
                 eloK = 16;
             }
@@ -175,9 +174,9 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
 
         killsDeathsRatioAverage = (deaths > 0) ? kills / deaths : kills;
 
-        int danyo_s = RoundData.damageInflicted / 120;
+        int danyo = RoundData.damageInflicted;
         float damageInflictedUntilNow = dps * (gamesPlayed - 1);
-        dps = (damageInflictedUntilNow + danyo_s) / (gamesPlayed); //damage per second
+        dps = (damageInflictedUntilNow + danyo) / (gamesPlayed); //damage per second
 
     }
 }

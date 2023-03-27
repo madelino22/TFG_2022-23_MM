@@ -28,7 +28,7 @@ public class Bullet : MonoBehaviour
         shootSound = GetComponent<AudioSource>();
         playerAttacking = GameObject.Find("AttackModule").GetComponent<PlayerAttackTrail>();
         bulletEndDist = transform.position + transform.forward * playerAttacking.getTrailDistance();
-        if (!BoltNetwork.IsServer)
+        if(!BoltNetwork.IsServer)
             shootSound.Play();
         //GetComponent<Rigidbody>().velocity = Vector3.forward * speed;        
     }
@@ -52,7 +52,6 @@ public class Bullet : MonoBehaviour
         //COMPROBAR COLISION
         if (target.CompareTag("Muro"))
             BoltNetwork.Destroy(this.gameObject);
-
         else if (wasFiredByRed && target.CompareTag("Blue") //Rojo le da a azul
             || !wasFiredByRed && target.CompareTag("Red")) // Azul le da a rojo
         {
@@ -76,16 +75,16 @@ public class Bullet : MonoBehaviour
         {
             PlayerMotor pMotor = collision.gameObject.GetComponent<PlayerMotor>();
             int wasHitID = pMotor.getID();
-
-            if (BoltNetwork.IsServer && creatorID != wasHitID) //no me curo a mi mismo
+            bool redWasHit = !wasFiredByRed; //rojo es golpeado si la bala la disparo azul
+            if (BoltNetwork.IsServer && creatorID != wasHitID)
             {
-                bool redWasHit = !wasFiredByRed; //rojo es golpeado si la bala la disparo azul
+
 
                 Debug.Log("AUX: Spawneo la bala" + creatorID + " curo a " + wasHitID);
                 target.GetComponent<PlayerCallback>().addLife(redWasHit, creatorID, wasHitID);
-                BoltNetwork.Destroy(this.gameObject);   //no se destruye al colisionar con el que la spawnea
-            }
 
+                BoltNetwork.Destroy(this.gameObject);
+            }
         }
     }
 }

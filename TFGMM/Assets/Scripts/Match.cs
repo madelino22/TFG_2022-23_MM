@@ -1,4 +1,4 @@
-ï»¿using Firebase.Database;
+using Firebase.Database;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +8,7 @@ public class PlayerMatch
 {
     public PlayerMatch(int n)
     {
-        name = name + n;
+        name = name +n;
     }
     public PlayerMatch(string n, team myTeam)
     {
@@ -36,7 +36,7 @@ public class PlayerMatch
     public int damageReceived = 0;
     public int healOthers = 0;
     public int healMe = 0;
-    public int totalShots = 0; //Para saber el porcentaje de acierto multiplicar por 500(El daï¿½o que recibe un jugador) y dividir con daï¿½o hecho
+    public int totalShots = 0; //Para saber el porcentaje de acierto multiplicar por 500(El daño que recibe un jugador) y dividir con daño hecho
     public team t = team.red;
 }
 
@@ -50,8 +50,8 @@ public class Match
     public float winningChancesBlue = 0;
 
     //EA should be the chances that the red team win and EB the blue's one
-    private float EA { get; set; }
-    private float EB { get; set; }
+    private float EA { get; set;}
+    private float EB { get; set;}
 
 
     public Match(int n)
@@ -78,9 +78,9 @@ public class Match
             int totalShots = int.Parse(info.Child("Jugador " + i).Child("totalShots").Value.ToString().ToString());
             int healOthers = int.Parse(info.Child("Jugador " + i).Child("healOthers").Value.ToString().ToString());
             int healMe = int.Parse(info.Child("Jugador " + i).Child("healMe").Value.ToString().ToString());
-            team t = (team)int.Parse(info.Child("Jugador " + i).Child("t").Value.ToString().ToString());
+            team t =(team) int.Parse(info.Child("Jugador " + i).Child("t").Value.ToString().ToString());
 
-            players[i] = new PlayerMatch(name, kills, deaths, totalDamage, damageReceived, totalShots, t, healOthers, healMe);
+            players[i] = new PlayerMatch(name, kills, deaths, totalDamage, damageReceived, totalShots,  t, healOthers, healMe);
         }
     }
 
@@ -96,7 +96,7 @@ public class Match
     {
         for (int i = 0; i < players.Length; i++)
         {
-            if (players[i].name == killed)
+            if(players[i].name == killed)
             {
                 players[i].deaths++;
             }
@@ -113,7 +113,7 @@ public class Match
         {
             if (players[i].name == healed)
             {
-                players[i].healMe += 250;
+                players[i].healMe+=250;
             }
             else if (players[i].name == healedBy)
             {
@@ -128,7 +128,7 @@ public class Match
         {
             if (players[i].name == damaged)
             {
-                players[i].damageReceived += 500;
+                players[i].damageReceived +=500;
             }
             else if (players[i].name == damagedBy)
             {

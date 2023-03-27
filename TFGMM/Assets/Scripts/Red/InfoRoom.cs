@@ -13,7 +13,7 @@ using System.Linq; //List sort
 
 public class InfoRoom : GlobalEventListener
 {
-    const int PLAYEROOM = 2; //TIENE QUE VALER LO MISMO QUE EN PLAYERSETUPCONTROLLER
+    const int PLAYEROOM = 4; //TIENE QUE VALER LO MISMO QUE EN PLAYERSETUPCONTROLLER
 
     [SerializeField]
     TextMesh textoTotal;
@@ -104,6 +104,8 @@ public class InfoRoom : GlobalEventListener
         }
     }
 
+
+
     public void Matchmaking()
     {
         int numPlayers = playersConnections.Count;
@@ -115,7 +117,7 @@ public class InfoRoom : GlobalEventListener
         var sortedList = dataOfAllUsers.OrderBy(x => x.Value).ToList(); //ordena el elo en orden ascendente
 
         while (numPlayers >= PLAYEROOM)
-        {
+        {           
             int contador = 0;
 
             //UwU descomentar esto
@@ -155,7 +157,7 @@ public class InfoRoom : GlobalEventListener
             Tuple<float, float> winningChances = ELO.CalculateWinningChances(redELOS, blueELOS);
             //pasar la variable de probabilidad de victoria a cada cliente por evento
 
-            for (int i = 0; i < PLAYEROOM; i++)
+            for(int i = 0; i < PLAYEROOM;i++)
             {
                 if (evnts[i].isRed)
                 {
@@ -167,6 +169,8 @@ public class InfoRoom : GlobalEventListener
 
                 playersConnections.RemoveAt(0);
             }
+
+
 
             numPlayers -= PLAYEROOM;
             map++;
@@ -234,7 +238,7 @@ public class InfoRoom : GlobalEventListener
 
         // DATA PLAYER ==> MATCHMAKING
         int elo = evnt.elo;
-        dataOfAllUsers.Add(new KeyValuePair<int, int>(connections, elo));
+        dataOfAllUsers.Add(new KeyValuePair<int,int>(connections, elo));
 
         connections++;
 
@@ -257,7 +261,7 @@ public class InfoRoom : GlobalEventListener
     {
         RoundData.isRed = evnt.isRed; //PARA QUE SPAWN EVENT SEPA A QUE EQUIPO VA
 
-        if (evnt.isRed)
+        if(evnt.isRed)
         {
             ELO.redChances = evnt.winningChances;
             ELO.blueChances = 1 - evnt.winningChances;
@@ -268,7 +272,7 @@ public class InfoRoom : GlobalEventListener
             ELO.blueChances = evnt.winningChances;
         }
 
-        Debug.Log("CHANCES IR: las chances de ganar del red son: " + ELO.redChances);
+            Debug.Log("CHANCES IR: las chances de ganar del red son: " + ELO.redChances); 
 
         //SceneManager.LoadScene("BOLTMapa");
         sessionID = evnt.ID;

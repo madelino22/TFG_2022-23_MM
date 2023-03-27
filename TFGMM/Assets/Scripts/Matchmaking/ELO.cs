@@ -1,4 +1,4 @@
-ï»¿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 public static class ELO
@@ -8,10 +8,10 @@ public static class ELO
     public static float blueChances = 0.5f;
     public static float redChances = 0.5f;
 
+
     public static float GetBlueChances() { return blueChances; }
     public static float GetRedChances() { return redChances; }
     //These two methods return each team E (EA and EB)
-
     public static Tuple<int, int> CalculateWinningChances(int averageEA, int averageEB)
     {
         int EA = (int)(1 / (1 + Math.Pow(10f, (averageEB - averageEA) / 400)));
@@ -21,6 +21,7 @@ public static class ELO
         blueChances = EB;
         return new Tuple<int, int>(EA, EB);
     }
+
 
     public static Tuple<float, float> CalculateWinningChances(List<int> RA, List<int> RB)
     {
@@ -43,15 +44,15 @@ public static class ELO
 
         redChances = EA;
         blueChances = EB;
-        return new Tuple<float, float>(EA, EB);
+        return new Tuple<float, float>(EA,EB);  
     }
 
-    #endregion
 
+    #endregion
     public static int CalculteNewElo(int RA, float K, float SA, float EA)
     {
-        int R = (int)(RA + K * (SA - EA));
-        Math.Clamp(R, 0, 3000);
-        return R;
+        int RÀ = (int)(RA +  K * (SA - EA));
+        Math.Clamp(RÀ, 0, 3000);
+        return RÀ;
     }
 }
