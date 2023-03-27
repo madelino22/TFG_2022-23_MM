@@ -21,6 +21,9 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
     public int damageReceived = 0;
     public int damageInflicted = 0; // NO SE USA
     //
+    public int healedMyLife = 0;
+    public int healedOthersLife = 0;
+    //
     public int zzlastGameSaved = 0;
     //ELO
     public int eloRanking = 1500;
@@ -65,11 +68,15 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
         wins = int.Parse(snapshot.Child("wins").Value.ToString());
         draws = int.Parse(snapshot.Child("draws").Value.ToString());
         loses = int.Parse(snapshot.Child("loses").Value.ToString());
+        //
         kills = int.Parse(snapshot.Child("kills").Value.ToString());
         deaths = int.Parse(snapshot.Child("deaths").Value.ToString());
         totalShots = int.Parse(snapshot.Child("totalShots").Value.ToString());
         damageReceived = int.Parse(snapshot.Child("damageReceived").Value.ToString());
         damageInflicted = int.Parse(snapshot.Child("damageInflicted").Value.ToString());
+        //
+        healedMyLife = int.Parse(snapshot.Child("healedMyLife").Value.ToString());
+        healedOthersLife = int.Parse(snapshot.Child("healedOthersLife").Value.ToString());
         //MEDIAS
         dps = float.Parse(snapshot.Child("dps").Value.ToString());
         killsDeathsRatioAverage = float.Parse(snapshot.Child("killsDeathsRatioAverage").Value.ToString());
@@ -95,6 +102,8 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
         deaths += RoundData.deaths;
         totalShots += RoundData.totalShots;
 
+        healedMyLife = RoundData.healedMyLife;
+        healedOthersLife = RoundData.healedPlayers;
         float SA = 0;
         float E = 0.5f;
         switch (winner)
@@ -139,8 +148,27 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
         else
             E = ELO.GetBlueChances();
 
-        
-        eloK = Mathf.Clamp(eloK, 0, 60);
+        Debug.Log("CHANCES UH: las chances de ganar del red son: " + ELO.redChances);
+
+        if (gamesPlayed < 10)
+        {
+            eloK = 40;
+        }
+        else
+        {
+            if(eloRanking < 2100)
+            {
+                eloK = 32;
+            }
+            else if(eloRanking > 2400)
+            {
+                eloK = 16;
+            }
+            else
+            {
+                eloK = 24;
+            }
+        }
         eloRanking = ELO.CalculteNewElo(eloRanking, eloK, SA, E); // LOLITOOOOOO
         //MEDIAS
 
@@ -151,50 +179,4 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
         dps = (damageInflictedUntilNow + danyo_s) / (gamesPlayed); //damage per second
 
     }
-
-    // METODOSO DE ProtocolToken--------------------------------------------
-    //public override void Read(UdpPacket packet)
-    //{
-    //    // Deserialize Token data
-
-    //    userName = packet.ReadString();
-    //    email = packet.ReadString();
-    //    eloRanking = packet.ReadInt();
-    //    dps = packet.ReadFloat();
-    //    gamesPlayed = packet.ReadInt();
-    //    wins = packet.ReadInt();
-    //    draws = packet.ReadInt();
-    //    loses = packet.ReadInt();
-    //    kills = packet.ReadInt();
-    //    deaths = packet.ReadInt();
-    //    killsDeathsAverage = packet.ReadInt();
-    //    healedLifePerGame = packet.ReadInt();
-    //    damageReceivedPerGame = packet.ReadInt();
-    //    zzlastGameSaved = packet.ReadInt();
-    //    //MATCHES???????????????????????'
-
-    //    for (int i = 0; i < NUM_SAVED_MATCHES; i++)
-    //    {
-    //        string aux = packet.ReadString();
-
-    //        lastMatches[i] = aux;
-    //    }
-
-
-    //}
-
-    //public override void Write(UdpPacket packet)
-    //{
-    //    // Serialize Token Data
-    //    packet.WriteString(userName);
-    //    packet.WriteString(email);
-    //    packet.WriteInt(email);
-    //}
-
-    //public override void Reset()
-    //{
-    //    // Reset Token Data
-    //    SkinId = default(int);
-    //    HatId = default(int);
-    //}
 }

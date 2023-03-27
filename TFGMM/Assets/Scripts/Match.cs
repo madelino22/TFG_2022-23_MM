@@ -16,7 +16,7 @@ public class PlayerMatch
         t = myTeam;
     }
 
-    public PlayerMatch(string n, int k, int d, int tDamage, int damageR, int tshots, team myTeam)
+    public PlayerMatch(string n, int k, int d, int tDamage, int damageR, int tshots, team myTeam, int healM, int healOther)
     {
         name = n;
         kills = k;
@@ -25,6 +25,8 @@ public class PlayerMatch
         damageReceived = damageR;
         totalShots = tshots;
         t = myTeam;
+        healMe = healM;
+        healOthers = healOther;
     }
 
     public string name = "Jugador ";
@@ -32,6 +34,8 @@ public class PlayerMatch
     public int deaths = 0;
     public int damageInflicted = 0;
     public int damageReceived = 0;
+    public int healOthers = 0;
+    public int healMe = 0;
     public int totalShots = 0; //Para saber el porcentaje de acierto multiplicar por 500(El daño que recibe un jugador) y dividir con daño hecho
     public team t = team.red;
 }
@@ -42,7 +46,8 @@ public class Match
     public team winner = team.red;
     public int pointsBlue = 0;
     public int pointsRed = 0;
-
+    public float winningChancesRed = 0;
+    public float winningChancesBlue = 0;
 
     //EA should be the chances that the red team win and EB the blue's one
     private float EA { get; set;}
@@ -63,7 +68,7 @@ public class Match
     {
         winner = w;
 
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < 4; i++)
         {
             string name = info.Child("Jugador " + i).Child("name").Value.ToString();
             int kills = int.Parse(info.Child("Jugador " + i).Child("kills").Value.ToString().ToString());
@@ -71,10 +76,20 @@ public class Match
             int totalDamage = int.Parse(info.Child("Jugador " + i).Child("totalDamage").Value.ToString().ToString());
             int damageReceived = int.Parse(info.Child("Jugador " + i).Child("damageReceived").Value.ToString().ToString());
             int totalShots = int.Parse(info.Child("Jugador " + i).Child("totalShots").Value.ToString().ToString());
+            int healOthers = int.Parse(info.Child("Jugador " + i).Child("healOthers").Value.ToString().ToString());
+            int healMe = int.Parse(info.Child("Jugador " + i).Child("healMe").Value.ToString().ToString());
             team t =(team) int.Parse(info.Child("Jugador " + i).Child("t").Value.ToString().ToString());
 
-            players[i] = new PlayerMatch(name, kills, deaths, totalDamage, damageReceived, totalShots,  t);
+            players[i] = new PlayerMatch(name, kills, deaths, totalDamage, damageReceived, totalShots,  t, healOthers, healMe);
         }
+    }
+
+    public void Reset()
+    {
+        pointsBlue = 0;
+        pointsRed = 0;
+        winningChancesRed = 0;
+        winningChancesBlue = 0;
     }
 
     public void killed(string killed, string killedBy)
@@ -88,6 +103,21 @@ public class Match
             else if (players[i].name == killedBy)
             {
                 players[i].kills++;
+            }
+        }
+    }
+
+    public void healed(string healed, string healedBy)
+    {
+        for (int i = 0; i < players.Length; i++)
+        {
+            if (players[i].name == healed)
+            {
+                players[i].healMe+=250;
+            }
+            else if (players[i].name == healedBy)
+            {
+                players[i].healOthers += 250;
             }
         }
     }
