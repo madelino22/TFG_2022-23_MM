@@ -5,7 +5,7 @@ using Firebase.Database;
 
 public class PlayerSetupController : GlobalEventListener
 {
-    private static int PLAYEROOM = 4; //TIENE QUE VALER LO MISMO QUE EN INFOROOM
+    private static int PLAYEROOM = 6; //TIENE QUE VALER LO MISMO QUE EN INFOROOM
     private int contador = 0; 
     private static int redIntSpawn = 0; //Team lejos (0,2)
     private static int blueIntSpawn = 3; //Team cerca (3,5)
@@ -54,11 +54,7 @@ public class PlayerSetupController : GlobalEventListener
             string name = ComInfo.getPlayerData().userName;
             evnt2.playerName = name;
             evnt2.isRed = RoundData.isRed; //MATCH MAKING YA DETERMINO A QUE EQUIPO PERTENECE
-            evnt2.winningChances = ELO.blueChances;
             evnt2.Send();
-
-            Debug.Log("CHANCES PSC: las chances de ganar del red son: " + ELO.redChances);
-
         }
     }
 
@@ -84,7 +80,6 @@ public class PlayerSetupController : GlobalEventListener
             entities[contador].AssignControl(evnt.RaisedBy);
             blueIntSpawn++;
         }
-
         PlayerMotor motor = entities[contador].GetComponentInChildren<PlayerMotor>();
         motor.setID(contador);
         motor.SetTeam((evnt.isRed) ? 1 : 0);
@@ -105,15 +100,17 @@ public class PlayerSetupController : GlobalEventListener
         BoltLog.Warn("CHECK EMPEZAR PARTIDA");
         if (contador == PLAYEROOM)
         {
+
+            //
             BoltLog.Warn("EMPEZAR PARTIDA");
             StartMatchEvent evnt2 = StartMatchEvent.Create(GlobalTargets.OnlyServer);
             evnt2.Send();
 
-            //Reseteamos los datos de la anterior partida
-            partida.Reset();
-            //Siempre le pasamos la probaibilidadad de blue
-            partida.winningChancesBlue = evnt.winningChances;
-            partida.winningChancesRed = 1 - evnt.winningChances;
+
+            sendWinningChances evnt3 = sendWinningChances.Create(GlobalTargets.AllClients);
+            evnt3.redChanceToWin = ELO.GetRedChances();
+            evnt3.blueChanceToWin = ELO.GetBlueChances();
+            evnt3.Send();
         }
         else BoltLog.Warn("HAN ENTRADO " + contador + "/" + PLAYEROOM);
 
@@ -164,6 +161,12 @@ public class PlayerSetupController : GlobalEventListener
             partida.addPlayer(namePlayers[i], equipo, i);
         }
         entityCanvas = BoltNetwork.Instantiate(BoltPrefabs.Canvas, new Vector3(0, 0, 0), Quaternion.identity);
+    }
+
+    public override void OnEvent(sendWinningChances evnt)
+    {
+        ELO.redChances = evnt.redChanceToWin;
+        ELO.blueChances = evnt.blueChanceToWin;
     }
 
     public override void OnEvent(deletePlayersEvent evnt)
@@ -238,37 +241,6 @@ public class PlayerSetupController : GlobalEventListener
         }
     }
 
-
-    public override void OnEvent(healPlayerEvent evnt)
-    {
-        if (BoltNetwork.IsServer)
-        {
-            //esta llamada funciona bien
-            partida.healed(namePlayers[evnt.nameHealed], namePlayers[evnt.healedBy]);
-
-            //Esto no funciona bien
-            //damageDoneEvent evn = damageDoneEvent.Create(entityConnection[evnt.damagedBy]);
-            healingDoneEvent evn = healingDoneEvent.Create(entityConnection[evnt.healedBy]);
-            evn.Send();
-
-            //damageReceivedEvent evn2 = damageReceivedEvent.Create(entityConnection[evnt.nameDamaged]);
-            healingReceivedEvent evn2 = healingReceivedEvent.Create(entityConnection[evnt.nameHealed]);
-            evn2.Send();
-
-            Debug.Log("Ell jugador -" + namePlayers[evnt.healedBy] + "- ha curado al jugador -" + namePlayers[evnt.nameHealed]);
-        }
-    }
-
-    public override void OnEvent(healingReceivedEvent evnt)
-    {
-        RoundData.healedMyLife+= 250;
-    }
-
-    public override void OnEvent(healingDoneEvent evnt)
-    {
-        RoundData.healedPlayers += 250;
-    }
-
     public override void OnEvent(killedEvent evnt)
     {
         RoundData.deaths++;
@@ -297,6 +269,7 @@ public class PlayerSetupController : GlobalEventListener
         {
             RoundData.damageReceived += 500; //SE SUPONE QUE EL DAÑO ES 500 SIEMPRE
             Debug.Log("Disparó: daño recibido actual: " + RoundData.damageReceived);
+
         }
     }
 
@@ -328,6 +301,7 @@ public class PlayerSetupController : GlobalEventListener
 
             saveData(userHistory);
         }
+
     }
 
     //------------------------------------SEND MATCH INFO-------------------------------------------------------
@@ -395,8 +369,6 @@ public class PlayerSetupController : GlobalEventListener
                 Nmatches.LoadInfo(snapshot);
 
                 int num = Nmatches.getTotalGames();
-                //if (room1) num++; //ORTEGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-
                 //Debug.Log("n matches: "+nMatches);
                 BoltLog.Warn("NMATCHES COGIDO " + num);
 
