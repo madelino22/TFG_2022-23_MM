@@ -4,8 +4,6 @@ using Photon.Bolt.Utils;
 
 public class PlayerCallback : EntityEventListener<IPlayerState>
 {
-
-
     private PlayerMotor _playerMotor;
     private GUI_Controller _guiController;
     private MatchManager _matchManager;
@@ -77,6 +75,29 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
         evnt.TotalLife = _playerMotor.TotalLife;
         evnt.Send();
     }
+
+    public void addLife(bool redWasHit, int healerName, int wasHitName)
+    {
+        this._playerMotor.ActualLife += 250;
+        if (this._playerMotor.ActualLife > 2500)
+            this._playerMotor.ActualLife = 2500;
+
+        else
+        {
+            //MANDAR EVENTO DE QUE SE HA HECHO DANYO------------------
+            healPlayerEvent evn = healPlayerEvent.Create(GlobalTargets.OnlyServer);
+            evn.healedBy = healerName;
+            evn.nameHealed = wasHitName;
+            evn.Send();
+
+            // ACTUALIZAR BARRA VIDA
+            HealthEvent evnt = HealthEvent.Create(entity, EntityTargets.Everyone);
+            evnt.ActualLife = _playerMotor.ActualLife;
+            evnt.TotalLife = _playerMotor.TotalLife;
+            evnt.Send();
+        }
+    }
+
     public override void OnEvent(HealthEvent evnt)
     {
         if (_guiController != null)
