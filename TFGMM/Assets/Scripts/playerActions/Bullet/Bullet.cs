@@ -78,8 +78,6 @@ public class Bullet : MonoBehaviour
             bool redWasHit = !wasFiredByRed; //rojo es golpeado si la bala la disparo azul
             if (BoltNetwork.IsServer && creatorID != wasHitID)
             {
-
-
                 Debug.Log("AUX: Spawneo la bala" + creatorID + " curo a " + wasHitID);
                 target.GetComponent<PlayerCallback>().addLife(redWasHit, creatorID, wasHitID);
 
