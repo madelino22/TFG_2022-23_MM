@@ -97,6 +97,7 @@ public class PlayerSetupController : GlobalEventListener
         //Establecemos el numero del jugador en la sala
         setPlayerEvent evnts = setPlayerEvent.Create(evnt.RaisedBy, ReliabilityModes.ReliableOrdered);
         evnts.nPlayer = contador;
+        evnts.teamRed = evnt.isRed;
         evnts.Send();
         BoltLog.Warn("ENVIO EVENT PLAYER: " + contador);
         contador++;
@@ -398,6 +399,7 @@ public class PlayerSetupController : GlobalEventListener
                 Nmatches.LoadInfo(snapshot);
 
                 int num = Nmatches.getTotalGames();
+                //num = num + 1;
                 //Debug.Log("n matches: "+nMatches);
                 BoltLog.Warn("NMATCHES COGIDO " + num);
 

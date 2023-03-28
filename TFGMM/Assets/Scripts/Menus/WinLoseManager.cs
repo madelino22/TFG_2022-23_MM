@@ -50,7 +50,7 @@ public class WinLoseManager : MonoBehaviour
 
     [Header("Right Player Rank")]
     [SerializeField]
-    public GameObject rightProgress; 
+    public GameObject rightProgress;
 
     [SerializeField]
     public GameObject rightRealRank;
@@ -78,55 +78,57 @@ public class WinLoseManager : MonoBehaviour
     void Awake()
     {
         //Win Lose Text
-        if(ComInfo.getGameResult() == result.win)   winLoseText.GetComponent<TextMeshProUGUI>().text = "Victory!";
-        else if(ComInfo.getGameResult() == result.lose)   winLoseText.GetComponent<TextMeshProUGUI>().text = "Defeat!";
-        else winLoseText.GetComponent<TextMeshProUGUI>().text = "Draw";
+        if (ComInfo.getGameResult() == result.win) 
+            winLoseText.GetComponent<Text>().text = "Victory!";
+        else if (ComInfo.getGameResult() == result.lose) 
+            winLoseText.GetComponent<Text>().text = "Defeat!";
+        else winLoseText.GetComponent<Text>().text = "Draw";
 
-        Debug.Log(ComInfo.getGameResult());
+        // Debug.Log(ComInfo.getGameResult());
 
-        leftPlayer.GetComponent<TextMeshProUGUI>().text = "Izquierdo";
-        rightPlayer.GetComponent<TextMeshProUGUI>().text = "Derecho";
-        midPlayer.GetComponent<TextMeshProUGUI>().text = ComInfo.getPlayerName();
+        // leftPlayer.GetComponent<TextMeshProUGUI>().text = "Izquierdo";
+        // rightPlayer.GetComponent<TextMeshProUGUI>().text = "Derecho";
+        // midPlayer.GetComponent<TextMeshProUGUI>().text = ComInfo.getPlayerName();
 
-        //Modify ranks images when we have them
+        // //Modify ranks images when we have them
 
-        //progressBar.GetComponent<Slider>().value = ComInfo.getRankProgress();
+        // //progressBar.GetComponent<Slider>().value = ComInfo.getRankProgress();
 
-        //Decide with the algorithm the progress
-        amountProgress = 20;
-
-
-       // ComInfo.addRankProgress(amountProgress);
+        // //Decide with the algorithm the progress
+        // amountProgress = 20;
 
 
-        //Set Rank Progresss visual
-        colors = rightProgress.GetComponent<Image>().color;
-        colors.w = 0;
-        rightProgress.GetComponent<Image>().color = colors;
+        //// ComInfo.addRankProgress(amountProgress);
 
-        colors = leftProgress.GetComponent<Image>().color;
-        colors.w = 0;
-        leftProgress.GetComponent<Image>().color = colors;
 
-        colors = leftRealRank.GetComponent<Image>().color;
-        colors.w = 0;
-        leftRealRank.GetComponent<Image>().color = colors;
+        // //Set Rank Progresss visual
+        // colors = rightProgress.GetComponent<Image>().color;
+        // colors.w = 0;
+        // rightProgress.GetComponent<Image>().color = colors;
 
-        colors = rightRealRank.GetComponent<Image>().color;
-        colors.w = 0;
-        rightRealRank.GetComponent<Image>().color = colors;
+        // colors = leftProgress.GetComponent<Image>().color;
+        // colors.w = 0;
+        // leftProgress.GetComponent<Image>().color = colors;
 
-        colors = leftNewRank.GetComponent<Image>().color;
-        colors.w = 0;
-        leftNewRank.GetComponent<Image>().color = colors;
+        // colors = leftRealRank.GetComponent<Image>().color;
+        // colors.w = 0;
+        // leftRealRank.GetComponent<Image>().color = colors;
 
-        colors = rightNewRank.GetComponent<Image>().color;
-        colors.w = 0;
-        rightNewRank.GetComponent<Image>().color = colors;
+        // colors = rightRealRank.GetComponent<Image>().color;
+        // colors.w = 0;
+        // rightRealRank.GetComponent<Image>().color = colors;
 
-        colors = midProgress.GetComponent<Image>().color;
-        colors.w = 0;
-        midProgress.GetComponent<Image>().color = colors;
+        // colors = leftNewRank.GetComponent<Image>().color;
+        // colors.w = 0;
+        // leftNewRank.GetComponent<Image>().color = colors;
+
+        // colors = rightNewRank.GetComponent<Image>().color;
+        // colors.w = 0;
+        // rightNewRank.GetComponent<Image>().color = colors;
+
+        // colors = midProgress.GetComponent<Image>().color;
+        // colors.w = 0;
+        // midProgress.GetComponent<Image>().color = colors;
 
     }
 
@@ -137,7 +139,7 @@ public class WinLoseManager : MonoBehaviour
 
         //midPlayer
         colors = midProgress.GetComponent<Image>().color;
-        if(colors.w < 1)
+        if (colors.w < 1)
         {
             colors.w += Time.deltaTime;
             midProgress.GetComponent<Image>().color = colors;
@@ -145,7 +147,7 @@ public class WinLoseManager : MonoBehaviour
         }
         sidesTimer += Time.deltaTime;
 
-        if(sidesTimer > 0.3f)  UpdateImageAnimation();
+        if (sidesTimer > 0.3f) UpdateImageAnimation();
     }
 
     private void UpdateProgressBar()
