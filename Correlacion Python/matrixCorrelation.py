@@ -28,14 +28,14 @@ def main():
 
     variableNames = []
     for j in data['User']["Este es mi usuario"]: 
-        if(j != "userName"):
+        if(j != "userName" and j != "zzlastGameSaved" and j != "email"):
             dic[j] = []
             variableNames = np.concatenate((variableNames, [j]))
 
 
     for i in data['User']:
         for j in data['User'][i]:
-            if(j != "userName"):
+            if(j != "userName" and j != "zzlastGameSaved" and j != "email"):
                 dic[j] = np.concatenate((dic[j], [data['User'][i][j]]))
         
     # form dataframe
