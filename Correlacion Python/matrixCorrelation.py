@@ -25,14 +25,13 @@ def main():
     dic = { }
 
     #INICIALIZACION DATA: PUEDE DAR ERROR SI NO ESTE EL USUARIO, CAMBIAR POR OTRO QUE ESTE
-
     variableNames = []
     for j in data['User']["Este es mi usuario"]: 
         if(j != "userName" and j != "zzlastGameSaved" and j != "email"):
             dic[j] = []
             variableNames = np.concatenate((variableNames, [j]))
 
-
+    #Pasar el JSON a un diccionario
     for i in data['User']:
         for j in data['User'][i]:
             if(j != "userName" and j != "zzlastGameSaved" and j != "email"):
