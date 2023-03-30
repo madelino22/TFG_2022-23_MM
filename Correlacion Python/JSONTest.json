@@ -1,0 +1,45 @@
+{
+  "User": {
+    "Este es mi usuario": {
+      "damageInflicted": 0,
+      "damageReceived": 0,
+      "deaths": 0,
+      "dps": 0,
+      "draws": 0,
+      "eloK": 40,
+      "eloRanking": 1500,
+      "email": "Este es mi correo",
+      "gamesPlayed": 0,
+      "healedMyLife": 0,
+      "healedOthersLife": 0,
+      "kills": 0,
+      "killsDeathsRatioAverage": 0,
+      "loses": 0,
+      "totalShots": 0,
+      "userName": "Este es mi usuario",
+      "wins": 0,
+      "zzlastGameSaved": 0
+    },
+    "Pablo González Alvarez": {
+      "damageInflicted": 0,
+      "damageReceived": 0,
+      "deaths": 0,
+      "dps": 0,
+      "draws": 0,
+      "eloK": 40,
+      "eloRanking": 1500,
+      "email": "",
+      "gamesPlayed": 0,
+      "healedMyLife": 0,
+      "healedOthersLife": 0,
+      "kills": 0,
+      "killsDeathsRatioAverage": 0,
+      "loses": 0,
+      "totalShots": 0,
+      "userName": "Pablo González Alvarez",
+      "wins": 0,
+      "zzlastGameSaved": 0
+    }
+  },
+  "totalGames": 0
+}
