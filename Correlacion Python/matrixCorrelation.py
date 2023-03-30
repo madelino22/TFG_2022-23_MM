@@ -17,22 +17,32 @@ def main():
     # 'z': [10, 15, 17, 21, 12]
     # }
  
-    with open('JSONTest.json') as user_files:
+    with open('PruebasMM1.json', encoding="utf-8") as user_files:
         file_contents = user_files.read()
 
     data = json.loads(file_contents)
+    
+    dic = { }
+
+    #INICIALIZACION DATA: PUEDE DAR ERROR SI NO ESTE EL USUARIO, CAMBIAR POR OTRO QUE ESTE
+
+    variableNames = []
+    for j in data['User']["Este es mi usuario"]: 
+        if(j != "userName"):
+            dic[j] = []
+            variableNames = np.concatenate((variableNames, [j]))
+
 
     for i in data['User']:
-        for j in data[i]:
-            print(j)
-        print("Siguiejte")
-  
-    
+        for j in data['User'][i]:
+            if(j != "userName"):
+                dic[j] = np.concatenate((dic[j], [data['User'][i][j]]))
+        
     # form dataframe
-    df = pd.DataFrame(df, columns=['x', 'y', 'z'])
+    df = pd.DataFrame(dic, columns=variableNames)
 
     #-------------MATRIZ DE CORRELACION----------------
-    matrix = df.corr(method = 'pearson').round(3)  # The method of correlation
+    matrix = df.corr(method = 'pearson').round(2)  # The method of correlation
     
     #.............VISUALIZACION-----------------------
     sns.heatmap(matrix, annot=True, vmax=1, vmin=-1, center=0, cmap='vlag')
