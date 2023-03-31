@@ -10,6 +10,20 @@ import json
 import csv
 from unidecode import unidecode # acentos
 
+def CorrectString(palabra):
+    "Quita acentos, mayusculas, etc"
+    palabra = palabra.lower() # quitar mayusculas
+    palabra = palabra.replace("á", "a")
+    palabra = palabra.replace("é", "e")
+    palabra = palabra.replace("í", "i")
+    palabra = palabra.replace("ó", "o")
+    palabra = palabra.replace("ú", "u")
+    palabra = palabra.replace("ñ", "n")
+    palabra = palabra.replace("ç", "c")
+    palabra = palabra.replace(" ", "")
+    palabra = palabra.strip() # quitar espacios
+    return palabra
+
 def Firebase(dic, data, user_names):
     for i in data['User']:
         for j in data['User'][i]:
@@ -17,9 +31,7 @@ def Firebase(dic, data, user_names):
                 dic[j] = np.concatenate((dic[j], [data['User'][i][j]]))
             elif (j == "userName"):
                 new_name = data['User'][i][j]
-                new_name = new_name.lower() # quitar mayusculas
-                new_name = unidecode(new_name) # quitar acentos
-                new_name = new_name.strip() # quitar espacios
+                new_name = CorrectString(new_name)
                 user_names = np.concatenate((user_names, [new_name]))
     return dic, user_names
 
@@ -36,9 +48,8 @@ def BigFive(dic, user_names, file_name): #'a.csv'
 
             # BUSCAR FILA EN CSV
             for fila in lector_csv:
-                nombre = fila[1].lower() # minusculas
-                nombre = unidecode(nombre) # quitar acentos
-                nombre = nombre.strip() # quitar espacios 
+                nombre = fila[1]
+                nombre = CorrectString(nombre)
 
                 if nombre == user_name:
                     encontrado = True
