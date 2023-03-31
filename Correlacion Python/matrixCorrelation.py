@@ -26,10 +26,10 @@ def BigFive(dic, user_names, variableNames, file_name): #'a.csv'
     dic["Neuroticismo"] = []
 
     with open(file_name, newline='') as archivo_csv:
-
+        lector_csv = csv.reader(archivo_csv)
+        next(lector_csv)
         for user_name in user_names:
-            lector_csv = csv.reader(archivo_csv)
-            next(lector_csv)
+
             # BUSCAR FILA EN CSV
             for fila in lector_csv:
                 nombre = fila[1].lower() # minusculas
@@ -59,8 +59,11 @@ def BigFive(dic, user_names, variableNames, file_name): #'a.csv'
                     dic["Responsabilidad"] =  np.concatenate((dic["Responsabilidad"], [responsabilidad]))
                     dic["Apertura"] = np.concatenate((dic["Apertura"], [apertura]))
                     dic["Neuroticismo"] = np.concatenate((dic["Neuroticismo"], [neuroticismo]))
+                    archivo_csv.seek(0)
+                    break
                 else:
                     print("Nombre " + nombre + " no existe en Big Five.")
+            archivo_csv.seek(0)
 
 
 def main():
