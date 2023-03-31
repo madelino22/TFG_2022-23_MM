@@ -286,7 +286,7 @@
       "wins": 0,
       "zzlastGameSaved": 0
     },
-    "Este es mi usuario": {
+    "Diego López Balboa": {
       "damageInflicted": 33000,
       "damageReceived": 18000,
       "deaths": 4,
@@ -302,8 +302,28 @@
       "killsDeathsRatioAverage": 2,
       "loses": 2,
       "totalShots": 268,
-      "userName": "Este es mi usuario",
+      "userName": "Diego López Balboa",
       "wins": 2,
+      "zzlastGameSaved": 0
+    },
+    "Este es mi usuario": {
+      "damageInflicted": 0,
+      "damageReceived": 0,
+      "deaths": 0,
+      "dps": 0,
+      "draws": 0,
+      "eloK": 40,
+      "eloRanking": 1500,
+      "email": "",
+      "gamesPlayed": 0,
+      "healedMyLife": 0,
+      "healedOthersLife": 0,
+      "kills": 0,
+      "killsDeathsRatioAverage": 0,
+      "loses": 0,
+      "totalShots": 0,
+      "userName": "Este es mi usuario",
+      "wins": 0,
       "zzlastGameSaved": 0
     },
     "FRANCISCO MOLLÁ ASTRAR": {

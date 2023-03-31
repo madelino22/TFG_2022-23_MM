@@ -26,13 +26,14 @@ def CorrectString(palabra):
 
 def Firebase(dic, data, user_names):
     for i in data['User']:
-        for j in data['User'][i]:
-            if(j != "userName" and j != "zzlastGameSaved" and j != "email"):
-                dic[j] = np.concatenate((dic[j], [data['User'][i][j]]))
-            elif (j == "userName"):
-                new_name = data['User'][i][j]
-                new_name = CorrectString(new_name)
-                user_names = np.concatenate((user_names, [new_name]))
+        if i != "Este es mi usuario": # NO USAMOS ESTE ES MI USUARIO POR DEFECTO
+            for j in data['User'][i]:
+                if(j != "userName" and j != "zzlastGameSaved" and j != "email"):
+                    dic[j] = np.concatenate((dic[j], [data['User'][i][j]]))
+                elif (j == "userName"):
+                    new_name = data['User'][i][j]
+                    new_name = CorrectString(new_name)
+                    user_names = np.concatenate((user_names, [new_name]))
     return dic, user_names
 
 def BigFive(dic, user_names, file_name): #'a.csv'
