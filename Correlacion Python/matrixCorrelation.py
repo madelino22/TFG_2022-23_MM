@@ -10,38 +10,44 @@ import json
 import csv
 from unidecode import unidecode # acentos
 
+def Firebase(dic, data, user_names):
+    for i in data['User']:
+        for j in data['User'][i]:
+            if(j != "userName" and j != "zzlastGameSaved" and j != "email"):
+                dic[j] = np.concatenate((dic[j], [data['User'][i][j]]))
+            elif (j == "userName"):
+                new_name = data['User'][i][j]
+                new_name = new_name.lower() # quitar mayusculas
+                new_name = unidecode(new_name) # quitar acentos
+                new_name = new_name.strip() # quitar espacios
+                user_names = np.concatenate((user_names, [new_name]))
+    return dic, user_names
 
-def BigFive(dic, user_names, variableNames, file_name): #'a.csv'
+def BigFive(dic, user_names, file_name): #'a.csv'
     "PROCESAMOS EL CSV DE BIG FIVE"
-    variableNames = np.concatenate((variableNames, ["Extraversion"]))
-    variableNames = np.concatenate((variableNames, ["Amabilidad"]))
-    variableNames = np.concatenate((variableNames, ["Responsabilidad"]))
-    variableNames = np.concatenate((variableNames, ["Apertura"]))
-    variableNames = np.concatenate((variableNames, ["Neuroticismo"]))
-
-    dic["Extraversion"] = []
-    dic["Amabilidad"] = []
-    dic["Responsabilidad"] = []
-    dic["Apertura"] = []
-    dic["Neuroticismo"] = []
 
     with open(file_name, newline='') as archivo_csv:
         lector_csv = csv.reader(archivo_csv)
         next(lector_csv)
+
+        # RECORREMOS LOS USARIOS DE FIREBASE
         for user_name in user_names:
+            encontrado = False
 
             # BUSCAR FILA EN CSV
             for fila in lector_csv:
                 nombre = fila[1].lower() # minusculas
                 nombre = unidecode(nombre) # quitar acentos
                 nombre = nombre.strip() # quitar espacios 
+
                 if nombre == user_name:
+                    encontrado = True
                     ex = fila[5]
                     ex2=fila[7]
                     ex3=fila[9]
                     ex4=fila[11]
                     ex5=fila[13]
-                    print(nombre, ex, ex2, ex3, ex4, ex5)
+                    #print(nombre, ex, ex2, ex3, ex4, ex5)
                     res=int(ex)
                     res2=int(ex2)
                     res3=int(ex3)
@@ -61,9 +67,12 @@ def BigFive(dic, user_names, variableNames, file_name): #'a.csv'
                     dic["Neuroticismo"] = np.concatenate((dic["Neuroticismo"], [neuroticismo]))
                     archivo_csv.seek(0)
                     break
-                else:
-                    print("Nombre " + nombre + " no existe en Big Five.")
+
+            if encontrado == False:
+                print("Nombre " + user_name + " no existe en Big Five.")
+
             archivo_csv.seek(0)
+    return dic
 
 
 def main():
@@ -90,21 +99,19 @@ def main():
         if(j != "userName" and j != "zzlastGameSaved" and j != "email"):
             dic[j] = []
             variableNames = np.concatenate((variableNames, [j]))
+    variableNames = np.concatenate((variableNames, ["Extraversion", "Amabilidad", "Responsabilidad", "Apertura", "Neuroticismo"]))
+
+    dic["Extraversion"] = []
+    dic["Amabilidad"] = []
+    dic["Responsabilidad"] = []
+    dic["Apertura"] = []
+    dic["Neuroticismo"] = []
 
     #Pasar el JSON a un diccionario
-    new_name = []
-    for i in data['User']:
-        for j in data['User'][i]:
-            if(j != "userName" and j != "zzlastGameSaved" and j != "email"):
-                dic[j] = np.concatenate((dic[j], [data['User'][i][j]]))
-            elif (j == "userName"):
-                new_name = data['User'][i][j]
-                new_name = new_name.lower() # quitar mayusculas
-                new_name = unidecode(new_name) # quitar acentos
-                new_name = new_name.strip() # quitar espacios
-                user_names = np.concatenate((user_names, [new_name]))
-        
-    BigFive(dic, user_names, variableNames, big_five_file)
+    dic, user_names = Firebase(dic, data, user_names)
+    
+    # Añadir los datos de Big Five al dicionario
+    dic = BigFive(dic, user_names, big_five_file)
         
     # form dataframe
     df = pd.DataFrame(dic, columns=variableNames)
