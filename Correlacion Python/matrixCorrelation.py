@@ -39,7 +39,7 @@ def Firebase(dic, data, user_names):
 def BigFive(dic, user_names, file_name): #'a.csv'
     "PROCESAMOS EL CSV DE BIG FIVE"
 
-    with open(file_name, newline='') as archivo_csv:
+    with open(file_name, newline='', encoding='utf-8') as archivo_csv: #sin el utf-8 petaba
         lector_csv = csv.reader(archivo_csv)
         next(lector_csv)
 
@@ -88,8 +88,8 @@ def BigFive(dic, user_names, file_name): #'a.csv'
 
 
 def main():
-    firebase_file = 'PruebasMM1.json'
-    big_five_file = 'big5.csv'
+    firebase_file = 'PruebasMM2.json'
+    big_five_file = 'BigFivePrueba1.csv'
     #-------------RECOGIDA DE DATOS----------------
     # df = {
     # 'x': [45, 37, 42, 35, 39],
