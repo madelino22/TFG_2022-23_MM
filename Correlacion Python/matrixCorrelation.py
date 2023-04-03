@@ -26,10 +26,14 @@ def CorrectString(palabra):
 
 def Firebase(dic, data, user_names):
     for i in data['User']:
-        if i != "Este es mi usuario": # NO USAMOS ESTE ES MI USUARIO POR DEFECTO
+        # NO USAMOS "Este es mi usuario" o Jugadores con 0 partidas jugadas
+        if i != "Este es mi usuario" and data['User'][i]['gamesPlayed'] != 0:
+            # Recorremos atributos del user
             for j in data['User'][i]:
+                # Guardamos los atributos que nos interesan
                 if(j != "userName" and j != "zzlastGameSaved" and j != "email"):
                     dic[j] = np.concatenate((dic[j], [data['User'][i][j]]))
+                # Guardamos los nombres en un array extra
                 elif (j == "userName"):
                     new_name = data['User'][i][j]
                     new_name = CorrectString(new_name)
@@ -77,18 +81,18 @@ def BigFive(dic, user_names, file_name): #'a.csv'
                     dic["Responsabilidad"] =  np.concatenate((dic["Responsabilidad"], [responsabilidad]))
                     dic["Apertura"] = np.concatenate((dic["Apertura"], [apertura]))
                     dic["Neuroticismo"] = np.concatenate((dic["Neuroticismo"], [neuroticismo]))
-                    archivo_csv.seek(0)
+                    archivo_csv.seek(0) # Volvemos al principio del archivo
                     break
 
             if encontrado == False:
                 print("Nombre " + user_name + " no existe en Big Five.")
 
-            archivo_csv.seek(0)
+            archivo_csv.seek(0) # Volvemos al principio del archivo
     return dic
 
 
 def main():
-    firebase_file = 'PruebasMM2.json'
+    firebase_file = 'PruebasMM1.json'
     big_five_file = 'BigFivePrueba1.csv'
     #-------------RECOGIDA DE DATOS----------------
     # df = {
