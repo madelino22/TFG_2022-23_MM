@@ -20,6 +20,8 @@ public static class RoundData
 
     public static bool isRed = true;
 
+    public static team winner = team.none;
+
     public static void ResetData()
     {
         kills = 0;

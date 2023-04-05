@@ -362,17 +362,6 @@ public class PlayerSetupController : GlobalEventListener
             ev2.winnerTeam = (int)partida.winner;
             ev2.Send();
         }
-        //else //Los clientes actualizan su resultado
-        //{
-        //    if (partida.pointsRed > partida.pointsBlue)
-        //    {
-        //        partida.winner = team.none;
-        //    }
-        //    else if (partida.pointsRed > partida.pointsBlue)
-        //    {
-        //        partida.winner = team.red;
-        //    }
-        //}
     }
 
     public void saveMatch()

@@ -1,3 +1,5 @@
+
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,35 +33,15 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
     //MEDIAS
     public float killsDeathsRatioAverage = 0;
     public float dps = 0;
+    //VALORACION EXPERIENCIA JUGADOR
+    public int numPartidasRated = 0;
+    public float mediaPartidasGanadas = 0;
+    public float mediaPartidasPerdidas = 0;
+    public float mediaPartidasEmpatadas = 0;
+    public float mediaGeneralRating = 0;
+
 
     public int totalShots = 0;
-    //private string[] lastMatches = new string[NUM_SAVED_MATCHES];
-
-    //public string saveGames(int index)
-    //{
-    //    return JsonUtility.ToJson(lastMatches[index]);
-    //}
-
-    //public string initLastMatchesAtNull(int i)
-    //{
-    //    lastMatches[i] = "Partida Null";
-    //    return JsonUtility.ToJson(lastMatches[i]);
-    //}
-
-    //public string lastGameNotSaved(string newGame)
-    //{
-    //    lastMatches[zzlastGameSaved] = newGame;
-    //    zzlastGameSaved++;
-    //    zzlastGameSaved %= NUM_SAVED_MATCHES;
-
-    //    return JsonUtility.ToJson(newGame);
-    //}
-
-    //public string saveGamePlayer(int indexGame, int nPlayer)
-    //{
-    //    return JsonUtility.ToJson(lastMatches[indexGame].players[nPlayer]);
-    //}
-
     public void loadInfo(DataSnapshot snapshot)
     {
         userName = snapshot.Child("userName").Value.ToString();
@@ -84,6 +66,13 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
         eloK = float.Parse(snapshot.Child("eloK").Value.ToString());
         zzlastGameSaved = int.Parse(snapshot.Child("zzlastGameSaved").Value.ToString());
 
+        //VALORACION EXPERIENCIA JUGADOR
+        numPartidasRated = int.Parse(snapshot.Child("numPartidasRated").Value.ToString());
+        mediaPartidasGanadas = float.Parse(snapshot.Child("mediaPartidasGanadas").Value.ToString());
+        mediaPartidasPerdidas = float.Parse(snapshot.Child("mediaPartidasPerdidas").Value.ToString());
+        mediaPartidasEmpatadas = float.Parse(snapshot.Child("mediaPartidasEmpatadas").Value.ToString());
+        mediaGeneralRating = float.Parse(snapshot.Child("mediaGeneralRating").Value.ToString());
+
         //Load Saved Games
         //for (int i = 0; i < NUM_SAVED_MATCHES; i++)
         //{
@@ -106,6 +95,9 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
         healedOthersLife = RoundData.healedPlayers;
         float SA = 0;
         float E = 0.5f;
+
+        RoundData.winner = winner;
+
         switch (winner)
         {
             case team.red:
