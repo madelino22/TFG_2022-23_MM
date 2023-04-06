@@ -24,6 +24,7 @@ def CorrectString(palabra):
     palabra = palabra.strip() # quitar espacios
     return palabra
 
+# PARTE 1:==============================================================================
 def Firebase(dic, data, user_names):
     for i in data['User']:
         # NO USAMOS "Este es mi usuario" o Jugadores con 0 partidas jugadas
@@ -40,8 +41,16 @@ def Firebase(dic, data, user_names):
                     user_names = np.concatenate((user_names, [new_name]))
     return dic, user_names
 
-def BigFive(dic, user_names, file_name): #'a.csv'
+# PARTE 2:==============================================================================
+def BigFive(dic, user_names, file_name, variableNames): #'a.csv'
     "PROCESAMOS EL CSV DE BIG FIVE"
+
+    variableNames = np.concatenate((variableNames, ["Extraversion", "Amabilidad", "Responsabilidad", "Apertura", "Neuroticismo"]))
+    dic["Extraversion"] = []
+    dic["Amabilidad"] = []
+    dic["Responsabilidad"] = []
+    dic["Apertura"] = []
+    dic["Neuroticismo"] = []
 
     with open(file_name, newline='', encoding='utf-8') as archivo_csv: #sin el utf-8 petaba
         lector_csv = csv.reader(archivo_csv)
@@ -85,15 +94,80 @@ def BigFive(dic, user_names, file_name): #'a.csv'
                     break
 
             if encontrado == False:
-                print("Nombre " + user_name + " no existe en Big Five.")
+                print("ERROR: Nombre " + user_name + " no existe en Big Five.")
 
             archivo_csv.seek(0) # Volvemos al principio del archivo
-    return dic
+    return dic, variableNames
 
+# PARTE 3:==============================================================================
+def Satisfaccion(dic, user_names, file_name, variableNames):
+    "PROCESAMOS EL CSV DE BIG FIVE"
 
+    variableNames = np.concatenate((variableNames, ["1ª vez jugando", "Familiaridad", "Objetivo juego", "Disfrute", "Mejor q team", "Mejor q rivals"]))
+    dic["1ª vez jugando"] = []
+    dic["Familiaridad"] = []
+    dic["Objetivo juego"] = []
+    dic["Disfrute"] = []
+    dic["Mejor q team"] = []
+    dic["Mejor q rivals"] = []
+
+    with open(file_name, newline='', encoding='utf-8') as archivo_csv: #sin el utf-8 petaba
+        lector_csv = csv.reader(archivo_csv)
+        next(lector_csv)
+
+        # RECORREMOS LOS USARIOS DE FIREBASE
+        for user_name in user_names:
+            encontrado = False
+
+            # BUSCAR FILA EN CSV
+            for fila in lector_csv:
+                nombre = fila[2]
+                nombre = CorrectString(nombre)
+
+                if nombre == user_name:
+                    encontrado = True
+                    first_time = fila[5] #Sí, No
+                    familiar_control=fila[6] # Sí, No
+                    understands_goal=fila[7] # Sí, No
+                    fun=fila[8] # 1, 2, 3, 4, 5
+                    best_in_team=fila[9] # 1, 2, 3, 4, 5
+                    better_team=fila[10] # 1, 2, 3, 4, 5
+
+                    res0 = 0
+                    res1 = 0
+                    res2 = 0
+                    res3 = int(fun)
+                    res4 = int(best_in_team)
+                    res5 = int(better_team)
+
+                    if first_time == 'Sí':
+                        res0 = 1
+                    if familiar_control == 'Sí':
+                        res1 = 1
+                    if understands_goal == 'Sí':
+                        res2 = 1
+
+                    dic["1ª vez jugando"] = np.concatenate((dic["1ª vez jugando"], [res0]))
+                    dic["Familiaridad"] = np.concatenate((dic["Familiaridad"], [res1]))
+                    dic["Objetivo juego"] = np.concatenate((dic["Objetivo juego"], [res2]))
+                    dic["Disfrute"] = np.concatenate((dic["Disfrute"], [res3]))
+                    dic["Mejor q team"] = np.concatenate((dic["Mejor q team"], [res4]))
+                    dic["Mejor q rivals"] = np.concatenate((dic["Mejor q rivals"], [res5]))
+
+                    archivo_csv.seek(0) # Volvemos al principio del archivo
+                    break
+
+            if encontrado == False:
+                print("ERROR: Nombre " + user_name + " no existe en Satisfacción.")
+
+            archivo_csv.seek(0) # Volvemos al principio del archivo
+    return dic, variableNames
+
+# MAIN==================================================================================
 def main():
-    firebase_file = 'PruebasMM1.json'
+    firebase_file = 'Firebase/PruebasMM3.json'
     big_five_file = 'BigFivePrueba1.csv'
+    satisfaccion_file = 'Satisfaccion.csv'
     #-------------RECOGIDA DE DATOS----------------
     # df = {
     # 'x': [45, 37, 42, 35, 39],
@@ -115,20 +189,19 @@ def main():
         if(j != "userName" and j != "zzlastGameSaved" and j != "email"):
             dic[j] = []
             variableNames = np.concatenate((variableNames, [j]))
-    variableNames = np.concatenate((variableNames, ["Extraversion", "Amabilidad", "Responsabilidad", "Apertura", "Neuroticismo"]))
 
-    dic["Extraversion"] = []
-    dic["Amabilidad"] = []
-    dic["Responsabilidad"] = []
-    dic["Apertura"] = []
-    dic["Neuroticismo"] = []
-
+    # PARTE 1:==============================================================================
     #Pasar el JSON a un diccionario
     dic, user_names = Firebase(dic, data, user_names)
     
+    # PARTE 2:==============================================================================
     # Añadir los datos de Big Five al dicionario
-    dic = BigFive(dic, user_names, big_five_file)
-        
+    dic, variableNames = BigFive(dic, user_names, big_five_file, variableNames)
+
+    # PARTE 3:============================================================================== 
+    # Añadir los datos de satisfaccion
+    dic, variableNames = Satisfaccion(dic, user_names, satisfaccion_file, variableNames)
+
     # form dataframe
     df = pd.DataFrame(dic, columns=variableNames)
 
