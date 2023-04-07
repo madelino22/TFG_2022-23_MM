@@ -25,7 +25,14 @@ def CorrectString(palabra):
     return palabra
 
 # PARTE 1:==============================================================================
-def Firebase(dic, data, user_names):
+def Firebase(dic, data, variableNames):
+    # Guardamos el nombre de las variables
+    for j in data['User']["Este es mi usuario"]: 
+        if(j != "userName" and j != "zzlastGameSaved" and j != "email"):
+            dic[j] = []
+            variableNames = np.concatenate((variableNames, [j]))
+
+    # Guardamos los datos
     for i in data['User']:
         # NO USAMOS "Este es mi usuario" o Jugadores con 0 partidas jugadas
         if i != "Este es mi usuario" and data['User'][i]['gamesPlayed'] != 0:
@@ -34,17 +41,14 @@ def Firebase(dic, data, user_names):
                 # Guardamos los atributos que nos interesan
                 if(j != "userName" and j != "zzlastGameSaved" and j != "email"):
                     dic[j] = np.concatenate((dic[j], [data['User'][i][j]]))
-                # Guardamos los nombres en un array extra
-                elif (j == "userName"):
-                    new_name = data['User'][i][j]
-                    new_name = CorrectString(new_name)
-                    user_names = np.concatenate((user_names, [new_name]))
-    return dic, user_names
+
+    return dic, variableNames
 
 # PARTE 2:==============================================================================
 def BigFive(dic, user_names, file_name, variableNames): #'a.csv'
     "PROCESAMOS EL CSV DE BIG FIVE"
 
+    # Guardamos el nombre de las variables
     variableNames = np.concatenate((variableNames, ["Extraversion", "Amabilidad", "Responsabilidad", "Apertura", "Neuroticismo"]))
     dic["Extraversion"] = []
     dic["Amabilidad"] = []
@@ -102,7 +106,7 @@ def BigFive(dic, user_names, file_name, variableNames): #'a.csv'
 # PARTE 3:==============================================================================
 def Satisfaccion(dic, user_names, file_name, variableNames):
     "PROCESAMOS EL CSV DE BIG FIVE"
-
+    # Guardamos el nombre de las variables
     variableNames = np.concatenate((variableNames, ["1ª vez jugando", "Familiaridad", "Objetivo juego", "Disfrute", "Mejor q team", "Mejor q rivals"]))
     dic["1ª vez jugando"] = []
     dic["Familiaridad"] = []
@@ -129,23 +133,28 @@ def Satisfaccion(dic, user_names, file_name, variableNames):
                     first_time = fila[5] #Sí, No
                     familiar_control=fila[6] # Sí, No
                     understands_goal=fila[7] # Sí, No
-                    fun=fila[8] # 1, 2, 3, 4, 5
-                    best_in_team=fila[9] # 1, 2, 3, 4, 5
-                    better_team=fila[10] # 1, 2, 3, 4, 5
-
+                    
                     res0 = 0
                     res1 = 0
                     res2 = 0
+                    
+                    desfase = 0
+                    if first_time == 'Sí':
+                        res0 = 1
+                    else:
+                        desfase = 3
+                    if familiar_control != "No":
+                        res1 = 1
+                    if understands_goal != "No":
+                        res2 = 1
+
+                    fun=fila[8 + desfase] # 1, 2, 3, 4, 5
+                    best_in_team=fila[9 + desfase] # 1, 2, 3, 4, 5
+                    better_team=fila[10 + desfase] # 1, 2, 3, 4, 5
+
                     res3 = int(fun)
                     res4 = int(best_in_team)
                     res5 = int(better_team)
-
-                    if first_time == 'Sí':
-                        res0 = 1
-                    if familiar_control == 'Sí':
-                        res1 = 1
-                    if understands_goal == 'Sí':
-                        res2 = 1
 
                     dic["1ª vez jugando"] = np.concatenate((dic["1ª vez jugando"], [res0]))
                     dic["Familiaridad"] = np.concatenate((dic["Familiaridad"], [res1]))
@@ -181,18 +190,21 @@ def main():
     data = json.loads(file_contents)
     
     dic = { } # cada fila es un usuario, cada columna una variable dic[usario] = [deaths, kills, ...]
+    #GUARDAR NOMBRES DE USERS===============================================0
     user_names = []
 
-    #INICIALIZACION DATA: PUEDE DAR ERROR SI NO ESTE EL USUARIO, CAMBIAR POR OTRO QUE ESTE
-    variableNames = []
-    for j in data['User']["Este es mi usuario"]: 
-        if(j != "userName" and j != "zzlastGameSaved" and j != "email"):
-            dic[j] = []
-            variableNames = np.concatenate((variableNames, [j]))
+    for i in data['User']:
+        # NO USAMOS "Este es mi usuario" o Jugadores con 0 partidas jugadas
+        if i != "Este es mi usuario" and data['User'][i]['gamesPlayed'] != 0:
+            new_name = data['User'][i]["userName"]
+            new_name = CorrectString(new_name)
+            user_names = np.concatenate((user_names, [new_name]))
+
+    variableNames = [] # Guardamos los nombres de las variables de la tabla (RESPETAR EL ORDEN!!!!) 
 
     # PARTE 1:==============================================================================
-    #Pasar el JSON a un diccionario
-    dic, user_names = Firebase(dic, data, user_names)
+    #Añadir datos del Firebase al diccionario
+    dic, variableNames = Firebase(dic, data, variableNames)
     
     # PARTE 2:==============================================================================
     # Añadir los datos de Big Five al dicionario
