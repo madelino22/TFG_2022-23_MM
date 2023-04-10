@@ -388,7 +388,7 @@ public class PlayerSetupController : GlobalEventListener
                 Nmatches.LoadInfo(snapshot);
 
                 int num = Nmatches.getTotalGames();
-                num = num + 1;
+                //num = num + 1; // COMENTADO EN ROOM 0
                 //Debug.Log("n matches: "+nMatches);
                 BoltLog.Warn("NMATCHES COGIDO " + num);
 

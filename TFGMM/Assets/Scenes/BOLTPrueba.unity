@@ -168,7 +168,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _headlessServerManager: {fileID: 631379956}
-  _map: Lobby
+  _map: Login
 --- !u!1 &631379951
 GameObject:
   m_ObjectHideFlags: 0
@@ -213,5 +213,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69b2e7a42788d8b4eaa4ee25bec35b12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serverMode: 2
+  serverMode: 0
   _isServer: 1

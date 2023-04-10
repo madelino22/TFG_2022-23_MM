@@ -91,8 +91,8 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
         deaths += RoundData.deaths;
         totalShots += RoundData.totalShots;
 
-        healedMyLife = RoundData.healedMyLife;
-        healedOthersLife = RoundData.healedPlayers;
+        healedMyLife += RoundData.healedMyLife;
+        healedOthersLife += RoundData.healedPlayers;
         float SA = 0;
         float E = 0.5f;
 
@@ -133,8 +133,6 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                 break;
         }
 
-
-
         if (RoundData.isRed)
             E = ELO.GetRedChances();
         else
@@ -164,11 +162,11 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
         eloRanking = ELO.CalculteNewElo(eloRanking, eloK, SA, E); // LOLITOOOOOO
         //MEDIAS
 
-        killsDeathsRatioAverage = (deaths > 0) ? kills / deaths : kills;
+        killsDeathsRatioAverage = kills;
+        if (deaths > 0)
+            killsDeathsRatioAverage = ((float)kills) / (float)deaths;
 
-        int danyo = RoundData.damageInflicted;
-        float damageInflictedUntilNow = dps * (gamesPlayed - 1);
-        dps = (damageInflictedUntilNow + danyo) / (gamesPlayed); //damage per second
+        dps = (damageReceived) / (gamesPlayed * 120); //damage per second
 
     }
 }
