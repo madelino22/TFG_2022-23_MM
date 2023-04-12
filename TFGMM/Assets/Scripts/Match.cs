@@ -38,6 +38,9 @@ public class PlayerMatch
     public int healMe = 0;
     public int totalShots = 0; //Para saber el porcentaje de acierto multiplicar por 500(El daño que recibe un jugador) y dividir con daño hecho
     public team t = team.red;
+
+    public string rolePlayer = "none";
+    public int gameRating = -1;
 }
 
 public class Match
@@ -90,6 +93,11 @@ public class Match
         pointsRed = 0;
         winningChancesRed = 0;
         winningChancesBlue = 0;
+    }
+
+    public void setPlayerRole(int id, string role)
+    {
+        players[id].rolePlayer = role;   
     }
 
     public void killed(string killed, string killedBy)

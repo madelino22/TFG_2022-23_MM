@@ -55,18 +55,13 @@ public class PlayerSetupController : GlobalEventListener
             evnt2.playerName = name;
             evnt2.isRed = RoundData.isRed; //MATCH MAKING YA DETERMINO A QUE EQUIPO PERTENECE
             evnt2.winningChances = ELO.blueChances;
+            evnt2.playerRole = ComInfo.getPlayerData().playerRole;
             evnt2.Send();
 
             Debug.Log("CHANCES PSC: las chances de ganar del red son: " + ELO.redChances);
 
         }
     }
-
-    //public void SpawnPlayer()
-    //{
-    //    SpawnPlayerEvent evnt = SpawnPlayerEvent.Create(GlobalTargets.OnlyServer);
-    //    evnt.Send();
-    //}
 
     public override void OnEvent(SpawnPlayerEvent evnt)
     {
@@ -109,8 +104,6 @@ public class PlayerSetupController : GlobalEventListener
             StartMatchEvent evnt2 = StartMatchEvent.Create(GlobalTargets.OnlyServer);
             evnt2.Send();
 
-            //Reseteamos los datos de la anterior partida
-            partida.Reset();
             //Siempre le pasamos la probaibilidadad de blue
             partida.winningChancesBlue = evnt.winningChances;
             partida.winningChancesRed = 1 - evnt.winningChances;
@@ -122,6 +115,19 @@ public class PlayerSetupController : GlobalEventListener
             redIntSpawn = 0;
         if (blueIntSpawn >= 6) // 3, 4, 5
             blueIntSpawn = 3;
+
+        //Guardar el tipo de jugador que es 
+
+        if(contador == 1) //Cuando se vuelve a llenar al empezar reseteamos los datos
+        {
+            partida = new Match(PLAYEROOM); //Creamos donde se va a guardar toda la info
+        }
+
+        team equipo = team.blue;
+        if (entities[contador - 1].gameObject.transform.CompareTag("Red"))
+            equipo = team.red;
+        partida.addPlayer(namePlayers[contador - 1], equipo, contador - 1);
+        partida.setPlayerRole(contador - 1, evnt.playerRole);
     }
 
     //Solo lo ejecuta el server
@@ -155,14 +161,6 @@ public class PlayerSetupController : GlobalEventListener
 
     public override void OnEvent(StartMatchEvent evnt)
     {
-        partida = new Match(PLAYEROOM); //Creamos donde se va a guardar toda la info
-        for (int i = 0; i < PLAYEROOM; i++)
-        {
-            team equipo = team.blue;
-            if (entities[i].gameObject.transform.CompareTag("Red"))
-                equipo = team.red;
-            partida.addPlayer(namePlayers[i], equipo, i);
-        }
         entityCanvas = BoltNetwork.Instantiate(BoltPrefabs.Canvas, new Vector3(0, 0, 0), Quaternion.identity);
     }
 
@@ -364,6 +362,15 @@ public class PlayerSetupController : GlobalEventListener
         }
     }
 
+    public override void OnEvent(lastGamePlayedEvent evnt)
+    {
+        UserHistory userHistory = ComInfo.getPlayerData();
+
+        userHistory.nameLastGamePlayed = evnt.gameName;
+  
+        ComInfo.setPlayerData(userHistory);
+    }
+
     public void saveMatch()
     {
         string json2 = JsonUtility.ToJson(partida); //Cambiar el new Match por los datos reales de la partida
@@ -391,6 +398,29 @@ public class PlayerSetupController : GlobalEventListener
                 //num = num + 1; // COMENTADO EN ROOM 0
                 //Debug.Log("n matches: "+nMatches);
                 BoltLog.Warn("NMATCHES COGIDO " + num);
+
+
+                //AVANZAR UNA PARTIDA NUMMATCHES HAY QUE TESTEAR ANTES DE PRUEBAS SI NO COMENTAR
+
+                reference.Child("totalGames").SetValueAsync(num + 1).ContinueWith(task =>
+                {
+                    if (task.IsCompleted)
+                    {
+                        Debug.Log("actualizado valor nmatches");
+                    }
+                    else
+                    {
+                        Debug.Log("No se han enviado los datos");
+                    }
+                });
+
+                //---EVENTO DECIRLE AL PLAYER QUE PARTIDA HA JUGADO------------
+
+                lastGamePlayedEvent ev2 = lastGamePlayedEvent.Create(GlobalTargets.AllClients);
+                ev2.gameName = "Partida " + num.ToString();
+                ev2.Send();
+
+                //-------------------------------------------
 
                 //Crear la partida en la base de datos
                 reference.Child("Matches").Child("Partida " + num.ToString()).SetRawJsonValueAsync(json2).ContinueWith(task =>
@@ -494,47 +524,6 @@ public class PlayerSetupController : GlobalEventListener
             }
         }
         );
-
-        //int nMatches = 0;
-        //reference.Child("Matches").Child("nMatches").GetValueAsync().ContinueWith(task =>
-        //{
-        //    if (task.IsCompleted)
-        //    {
-        //        DataSnapshot snapshot = task.Result;
-
-        //        nMatches = int.Parse(snapshot.Value.ToString());
-        //        //Debug.Log("n matches: "+nMatches);
-        //    }
-        //    else
-        //    {
-        //        Debug.Log("No se han encontrado el numero de partidas totales");
-        //    }
-        //});
-
-        //json = userHistory.lastGameNotSaved("Partida "+ nMatches);
-        ////Debug.Log(i);
-        //Debug.Log(json);
-
-        //for (int i = 0; i < 5; i++)
-        //{
-        //    json = userHistory.saveGames(i);
-        //    Debug.Log(i);
-        //    Debug.Log(json);
-
-        //    reference.Child("User").Child(userHistory.userName).Child("zzzLastGames").Child("Partida" + i).SetRawJsonValueAsync(json).ContinueWith(task =>
-        //    {
-        //        if (task.IsCompleted)
-        //        {
-        //            Debug.Log("saved games");
-        //        }
-        //        else
-        //        {
-        //            Debug.Log("No se ha guardado la partida");
-        //        }
-        //    }
-        //    );
-        //}
-
     }
 
 }

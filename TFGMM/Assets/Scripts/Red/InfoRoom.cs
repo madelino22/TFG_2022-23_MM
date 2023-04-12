@@ -11,8 +11,21 @@ using UdpKit;
 
 using System.Linq; //List sort
 
+
 public class InfoRoom : GlobalEventListener
 {
+    private struct infoMatchmaking
+    {
+        public infoMatchmaking(int e, string role)
+        {
+            elo = e;
+            playerRole = role;
+        }
+
+        public int elo { get; }
+        public string playerRole { get; }
+    }
+
     const int PLAYEROOM = 4; //TIENE QUE VALER LO MISMO QUE EN PLAYERSETUPCONTROLLER
 
     [SerializeField]
@@ -26,13 +39,10 @@ public class InfoRoom : GlobalEventListener
     private int connections = 0;
 
     private List<BoltConnection> playersConnections = new List<BoltConnection>();
-    private List<KeyValuePair<int, int>> dataOfAllUsers = new List<KeyValuePair<int, int>>(); //esto sera UserHistory mas tarde
+    private List<KeyValuePair<int, infoMatchmaking>> dataOfAllUsers = new List<KeyValuePair<int, infoMatchmaking>>();
 
-    //private Use
-    //public override void BoltStartBegin()
-    //{
-    //    BoltNetwork.RegisterTokenClass<UserHistory>();
-    //}
+
+
     public override void SceneLoadLocalDone(string scene, IProtocolToken token)
     {
         PlayerSetupController.setPLAYEROOM(PLAYEROOM);
@@ -44,6 +54,7 @@ public class InfoRoom : GlobalEventListener
             JoinPlayerEvent evnt = JoinPlayerEvent.Create(GlobalTargets.OnlyServer);
             evnt.name = user.userName;
             evnt.elo = user.eloRanking;
+            evnt.playerRol = user.playerRole;
             evnt.Send();
         }
     }
@@ -114,7 +125,7 @@ public class InfoRoom : GlobalEventListener
 
         //Crear partida si hay jugadores        
         int map = 0;
-        var sortedList = dataOfAllUsers.OrderBy(x => x.Value).ToList(); //ordena el elo en orden ascendente
+        var sortedList = dataOfAllUsers.OrderBy(x => x.Value.elo).ToList(); //ordena el elo en orden ascendente
 
         while (numPlayers >= PLAYEROOM)
         {           
@@ -136,9 +147,9 @@ public class InfoRoom : GlobalEventListener
                 evnts[contador].isRed = (contador < PLAYEROOM / 2);
 
                 if (evnts[contador].isRed)
-                    redELOS.Add(sortedList[contador].Value);
+                    redELOS.Add(sortedList[contador].Value.elo);
                 else
-                    blueELOS.Add(sortedList[contador].Value);
+                    blueELOS.Add(sortedList[contador].Value.elo);
 
                 if (map == 0)
                     evnts[contador].ID = "0";
@@ -237,8 +248,9 @@ public class InfoRoom : GlobalEventListener
         playersConnections.Add(evnt.RaisedBy);
 
         // DATA PLAYER ==> MATCHMAKING
-        int elo = evnt.elo;
-        dataOfAllUsers.Add(new KeyValuePair<int,int>(connections, elo));
+        infoMatchmaking playerData = new infoMatchmaking(evnt.elo, evnt.playerRol);
+
+        dataOfAllUsers.Add(new KeyValuePair<int,infoMatchmaking>(connections, playerData));
 
         connections++;
 

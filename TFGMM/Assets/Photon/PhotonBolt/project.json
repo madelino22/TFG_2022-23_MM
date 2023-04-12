@@ -212,6 +212,20 @@
           "AssetSettings": {
             "$type": "Photon.Bolt.Compiler.PropertyEventSettings, bolt.compiler"
           }
+        },
+        {
+          "Name": "playerRole",
+          "Enabled": true,
+          "Expanded": true,
+          "ReplicationMode": 1,
+          "Priority": 1,
+          "PropertyType": {
+            "$type": "Photon.Bolt.Compiler.PropertyTypeString, bolt.compiler",
+            "MaxLength": 1
+          },
+          "AssetSettings": {
+            "$type": "Photon.Bolt.Compiler.PropertyEventSettings, bolt.compiler"
+          }
         }
       ],
       "EntitySenders": 3,
@@ -806,6 +820,20 @@
           "AssetSettings": {
             "$type": "Photon.Bolt.Compiler.PropertyEventSettings, bolt.compiler"
           }
+        },
+        {
+          "Name": "playerRol",
+          "Enabled": true,
+          "Expanded": true,
+          "ReplicationMode": 1,
+          "Priority": 1,
+          "PropertyType": {
+            "$type": "Photon.Bolt.Compiler.PropertyTypeString, bolt.compiler",
+            "MaxLength": 1
+          },
+          "AssetSettings": {
+            "$type": "Photon.Bolt.Compiler.PropertyEventSettings, bolt.compiler"
+          }
         }
       ],
       "GlobalSenders": 2,
@@ -1309,6 +1337,28 @@
       "Properties": [],
       "Name": "healingDoneEvent",
       "Guid": "10b60e2d-6808-4d94-87e0-51cdb51482d5",
+      "Groups": []
+    },
+    {
+      "$type": "Photon.Bolt.Compiler.EventDefinition, bolt.compiler",
+      "Properties": [
+        {
+          "Name": "gameName",
+          "Enabled": true,
+          "Expanded": true,
+          "ReplicationMode": 1,
+          "Priority": 1,
+          "PropertyType": {
+            "$type": "Photon.Bolt.Compiler.PropertyTypeString, bolt.compiler",
+            "MaxLength": 1
+          },
+          "AssetSettings": {
+            "$type": "Photon.Bolt.Compiler.PropertyEventSettings, bolt.compiler"
+          }
+        }
+      ],
+      "Name": "lastGamePlayedEvent",
+      "Guid": "aca38d15-5ab4-4c4c-842d-2d746f094d79",
       "Groups": []
     }
   ],
