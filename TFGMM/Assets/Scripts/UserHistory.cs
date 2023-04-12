@@ -33,13 +33,50 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
     //MEDIAS
     public float killsDeathsRatioAverage = 0;
     public float dps = 0;
+
+
+    public string nameLastGamePlayed = "none";
+
+    //ESTILO DEL JUGADOR none, healer, francotirador, duelista
+    public string playerRole = "none"; //Rol maytoritario
+    public string lastRole = "none"; //Rol de la ultima partida (ayuda para saber donde colocar la valoracion)
+    public int numFranc = 0;
+    public int numHeal= 0;
+    public int numDuel = 0;
+
     //VALORACION EXPERIENCIA JUGADOR
     public int numPartidasRated = 0;
-    public float mediaPartidasGanadas = 0;
-    public float mediaPartidasPerdidas = 0;
-    public float mediaPartidasEmpatadas = 0;
+    public float mediaRatingGanadas = 0;
+    public float mediaRatingPerdidas = 0;
+    public float mediaRatingEmpatadas = 0;
     public float mediaGeneralRating = 0;
-
+    //Francotirador
+    public int numPartidasRatedFra = 0;
+    public float mediaRatingGanadasFra = 0;
+    public float mediaRatingPerdidasFra = 0;
+    public float mediaRatingEmpatadasFra = 0;
+    public float mediaGeneralRatingFra = 0;
+    public int winsFra = 0;
+    public int drawsFra = 0;
+    public int losesFra = 0;
+    //Healer
+    public int numPartidasRatedHeal = 0;
+    public float mediaRatingGanadasHeal = 0;
+    public float mediaRatingPerdidasHeal = 0;
+    public float mediaRatingEmpatadasHeal = 0;
+    public float mediaGeneralRatingHeal = 0;
+    public int winsHeal = 0;
+    public int drawsHeal = 0;
+    public int losesHeal = 0;
+    //Duelista
+    public int numPartidasRatedDuel = 0;
+    public float mediaRatingGanadasDuel = 0;
+    public float mediaRatingPerdidasDuel = 0;
+    public float mediaRatingEmpatadasDuel = 0;
+    public float mediaGeneralRatingDuel = 0;
+    public int winsDuel = 0;
+    public int drawsDuel = 0;
+    public int losesDuel = 0;
 
     public int totalShots = 0;
     public void loadInfo(DataSnapshot snapshot)
@@ -66,12 +103,48 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
         eloK = float.Parse(snapshot.Child("eloK").Value.ToString());
         zzlastGameSaved = int.Parse(snapshot.Child("zzlastGameSaved").Value.ToString());
 
+
+        nameLastGamePlayed = snapshot.Child("nameLastGamePlayed").Value.ToString();
+        //PLAYER ROLE
+        playerRole = snapshot.Child("playerRole").Value.ToString();
+        lastRole = snapshot.Child("lastRole").Value.ToString();
+        numFranc = int.Parse(snapshot.Child("numFranc").Value.ToString());
+        numHeal = int.Parse(snapshot.Child("numHeal").Value.ToString());
+        numDuel = int.Parse(snapshot.Child("numDuel").Value.ToString());
+
         //VALORACION EXPERIENCIA JUGADOR
         numPartidasRated = int.Parse(snapshot.Child("numPartidasRated").Value.ToString());
-        mediaPartidasGanadas = float.Parse(snapshot.Child("mediaPartidasGanadas").Value.ToString());
-        mediaPartidasPerdidas = float.Parse(snapshot.Child("mediaPartidasPerdidas").Value.ToString());
-        mediaPartidasEmpatadas = float.Parse(snapshot.Child("mediaPartidasEmpatadas").Value.ToString());
+        mediaRatingGanadas = float.Parse(snapshot.Child("mediaRatingGanadas").Value.ToString());
+        mediaRatingPerdidas = float.Parse(snapshot.Child("mediaRatingPerdidas").Value.ToString());
+        mediaRatingEmpatadas = float.Parse(snapshot.Child("mediaRatingEmpatadas").Value.ToString());
         mediaGeneralRating = float.Parse(snapshot.Child("mediaGeneralRating").Value.ToString());
+
+        numPartidasRatedFra = int.Parse(snapshot.Child("numPartidasRatedFra").Value.ToString());
+        mediaRatingGanadas = float.Parse(snapshot.Child("mediaRatingGanadasFra").Value.ToString());
+        mediaRatingPerdidasFra = float.Parse(snapshot.Child("mediaRatingPerdidasFra").Value.ToString());
+        mediaRatingEmpatadasFra = float.Parse(snapshot.Child("mediaRatingEmpatadasFra").Value.ToString());
+        mediaGeneralRatingFra = float.Parse(snapshot.Child("mediaGeneralRatingFra").Value.ToString());
+        winsFra = int.Parse(snapshot.Child("winsFra").Value.ToString());
+        drawsFra = int.Parse(snapshot.Child("drawsFra").Value.ToString());
+        losesFra = int.Parse(snapshot.Child("losesFra").Value.ToString());
+
+        numPartidasRatedHeal = int.Parse(snapshot.Child("numPartidasRatedHeal").Value.ToString());
+        mediaRatingGanadasHeal = float.Parse(snapshot.Child("mediaRatingGanadasHeal").Value.ToString());
+        mediaRatingPerdidasHeal = float.Parse(snapshot.Child("mediaRatingPerdidasHeal").Value.ToString());
+        mediaRatingEmpatadasHeal = float.Parse(snapshot.Child("mediaRatingEmpatadasHeal").Value.ToString());
+        mediaGeneralRatingHeal = float.Parse(snapshot.Child("mediaGeneralRatingHeal").Value.ToString());
+        winsHeal = int.Parse(snapshot.Child("winsHeal").Value.ToString());
+        drawsHeal = int.Parse(snapshot.Child("drawsHeal").Value.ToString());
+        losesHeal = int.Parse(snapshot.Child("losesHeal").Value.ToString());
+
+        numPartidasRatedDuel = int.Parse(snapshot.Child("numPartidasRatedDuel").Value.ToString());
+        mediaRatingGanadasDuel = float.Parse(snapshot.Child("mediaRatingGanadasDuel").Value.ToString());
+        mediaRatingPerdidasDuel = float.Parse(snapshot.Child("mediaRatingPerdidasDuel").Value.ToString());
+        mediaRatingEmpatadasDuel = float.Parse(snapshot.Child("mediaRatingEmpatadasDuel").Value.ToString());
+        mediaGeneralRatingDuel = float.Parse(snapshot.Child("mediaGeneralRatingDuel").Value.ToString());
+        winsDuel = int.Parse(snapshot.Child("wins").Value.ToString());
+        drawsDuel = int.Parse(snapshot.Child("draws").Value.ToString());
+        losesDuel = int.Parse(snapshot.Child("loses").Value.ToString());
 
         //Load Saved Games
         //for (int i = 0; i < NUM_SAVED_MATCHES; i++)
