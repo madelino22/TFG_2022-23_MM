@@ -9,9 +9,9 @@ using Photon.Bolt.Utils;
 enum ServerMode {DEFAULT, ROOM0, ROOM1};
 public class HeadlessServerManager : GlobalEventListener
 {
-
-
     [SerializeField] ServerMode serverMode = ServerMode.DEFAULT;
+
+    public static int roomNumber = -1;
 
     private string _map = "";
     private static string s_map;
@@ -75,10 +75,12 @@ public class HeadlessServerManager : GlobalEventListener
             case ServerMode.ROOM0:
                 _map = "BOLTMapa";
                 _roomID = "0";
+                roomNumber = 0;
                 break;
             case ServerMode.ROOM1:
                 _map = "BOLTMapa";
                 _roomID = "1";
+                roomNumber = 1;
                 break;
         }
 

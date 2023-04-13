@@ -19,6 +19,7 @@ public class PlayerSetupController : GlobalEventListener
     [SerializeField]
     private Canvas canvas;
 
+
     public Camera SceneCamera { get => _sceneCamera; }
     private BoltEntity entityCanvas;
 
@@ -33,6 +34,7 @@ public class PlayerSetupController : GlobalEventListener
 
     Match partida;
     nMatches Nmatches = new nMatches();
+    private int numPartida = -1;
 
     public static void setPLAYEROOM(int n)
     {
@@ -163,7 +165,57 @@ public class PlayerSetupController : GlobalEventListener
     public override void OnEvent(StartMatchEvent evnt)
     {
         entityCanvas = BoltNetwork.Instantiate(BoltPrefabs.Canvas, new Vector3(0, 0, 0), Quaternion.identity);
+
+        //Saber que partida es
+
+        reference.GetValueAsync().ContinueWith(task =>
+        {
+            if (task.IsCompleted)
+            {
+                BoltLog.Warn("COGIENDO NMATCHES---------------------");
+                DataSnapshot snapshot = task.Result;
+
+                Nmatches.LoadInfo(snapshot);
+
+                int firstGame  = Nmatches.getTotalGames();
+
+                numPartida = firstGame;
+
+                //Cuando empieza la partida avisar al jugador de uqe partida esta jugando
+                if (HeadlessServerManager.roomNumber == 0) // Si es room0 se coge el valor por defecto
+                {
+                    lastGamePlayedEvent ev2 = lastGamePlayedEvent.Create(GlobalTargets.AllClients);
+                    ev2.gameName = "Partida " + numPartida.ToString();
+                    ev2.Send();
+                }
+                else if(HeadlessServerManager.roomNumber == 1) // Si es room1 se le añade uno para diferenciar ambas salas
+                {
+                    numPartida++; //Una partida mas
+                    lastGamePlayedEvent ev2 = lastGamePlayedEvent.Create(GlobalTargets.AllClients);
+                    ev2.gameName = "Partida " + numPartida.ToString();
+                    ev2.Send();
+                }
+
+
+                reference.Child("totalGames").SetValueAsync(firstGame + 2).ContinueWith(task =>
+                {
+                    if (task.IsCompleted)
+                    {
+                        Debug.Log("actualizado valor nmatches");
+                    }
+                    else
+                    {
+                        Debug.Log("No se han enviado los datos");
+                    }
+                });
+            }
+            else
+            {
+                Debug.Log("No se han encontrado el numero de partidas totales");
+            }
+        });
     }
+
 
    
 
@@ -384,53 +436,12 @@ public class PlayerSetupController : GlobalEventListener
         BoltLog.Warn("---------------------");
         BoltLog.Warn("---------------------");
 
-        //Nmatches.setTotalGames(7);
-
-        //Saber que numero de partida es la siguiente
-        //int num = 0;
-        reference.GetValueAsync().ContinueWith(task =>
-        {
-            if (task.IsCompleted)
-            {
-                BoltLog.Warn("COGIENDO NMATCHES---------------------");
-                DataSnapshot snapshot = task.Result;
-
-                Nmatches.LoadInfo(snapshot);
-
-                int num = Nmatches.getTotalGames();
-                //num = num + 1; // COMENTADO EN ROOM 0
-                //Debug.Log("n matches: "+nMatches);
-                BoltLog.Warn("NMATCHES COGIDO " + num);
-
-
-                //AVANZAR UNA PARTIDA NUMMATCHES HAY QUE TESTEAR ANTES DE PRUEBAS SI NO COMENTAR
-
-                reference.Child("totalGames").SetValueAsync(num + 1).ContinueWith(task =>
-                {
-                    if (task.IsCompleted)
-                    {
-                        Debug.Log("actualizado valor nmatches");
-                    }
-                    else
-                    {
-                        Debug.Log("No se han enviado los datos");
-                    }
-                });
-
-                //---EVENTO DECIRLE AL PLAYER QUE PARTIDA HA JUGADO------------
-
-                lastGamePlayedEvent ev2 = lastGamePlayedEvent.Create(GlobalTargets.AllClients);
-                ev2.gameName = "Partida " + num.ToString();
-                ev2.Send();
-
-                //-------------------------------------------
-
                 //Crear la partida en la base de datos
-                reference.Child("Matches").Child("Partida " + num.ToString()).SetRawJsonValueAsync(json2).ContinueWith(task =>
+                reference.Child("Matches").Child("Partida " + numPartida.ToString()).SetRawJsonValueAsync(json2).ContinueWith(task =>
                 {
                     if (task.IsCompleted)
                     {
-                        BoltLog.Warn("PARTIDA GUARDADA " + num);
+                        BoltLog.Warn("PARTIDA GUARDADA " + numPartida);
                         //Guardar que ha hecho cada jugador en la partida
                         for (int j = 0; j < PLAYEROOM; j++)
                         {
@@ -439,34 +450,33 @@ public class PlayerSetupController : GlobalEventListener
 
                             Debug.Log(json);
 
-                            reference.Child("Matches").Child("Partida " + num.ToString()).Child(partida.players[j].name).SetRawJsonValueAsync(json).ContinueWith(task =>
+                            reference.Child("Matches").Child("Partida " + numPartida.ToString()).Child(partida.players[j].name).SetRawJsonValueAsync(json).ContinueWith(task =>
                             {
                                 if (task.IsCompleted && j + 1 == PLAYEROOM)
                                 {
                                     BoltLog.Warn("VAMOS A ACTUALIZAR AL JUGADOR " + j);
-                                    num = Nmatches.getTotalGames();
-                                    num++; // WTF???????????????????????????'''''
-                                    BoltLog.Warn("NMATCHES ACTUALIZADO " + num);
+                                    numPartida = Nmatches.getTotalGames();
+                                    BoltLog.Warn("NMATCHES ACTUALIZADO " + numPartida);
                                     //nMatches aux = new nMatches();
-                                    Nmatches.setTotalGames(num);
+                                    Nmatches.setTotalGames(numPartida);
 
-                                    string json3 = JsonUtility.ToJson(Nmatches); //JSON VACIO
-                                    BoltLog.Warn("JSON3  " + json3);
-                                    //string json3 = "{\"totalGames\":" + num + "}";
+                                    //string json3 = JsonUtility.ToJson(Nmatches); //JSON VACIO
+                                    //BoltLog.Warn("JSON3  " + json3);
+                                    ////string json3 = "{\"totalGames\":" + num + "}";
 
-                                    reference.SetRawJsonValueAsync(json3).ContinueWith(task =>
-                                    {
-                                        if (task.IsCompleted)
-                                        {
-                                            BoltLog.Warn("YA SE HA GUARDADO jSON3  " + json3);
+                                    //reference.SetRawJsonValueAsync(json3).ContinueWith(task =>
+                                    //{
+                                    //    if (task.IsCompleted)
+                                    //    {
+                                    //        BoltLog.Warn("YA SE HA GUARDADO jSON3  " + json3);
 
-                                            //Debug.Log("saved the match");
-                                        }
-                                        else
-                                        {
-                                            //Debug.Log("No se han enviado los datos");
-                                        }
-                                    });
+                                    //        //Debug.Log("saved the match");
+                                    //    }
+                                    //    else
+                                    //    {
+                                    //        //Debug.Log("No se han enviado los datos");
+                                    //    }
+                                    //});
                                 }
                                 else if (task.IsCompleted)
                                 {
@@ -490,21 +500,6 @@ public class PlayerSetupController : GlobalEventListener
 
                 }
                );
-
-
-            }
-            else
-            {
-                Debug.Log("No se han encontrado el numero de partidas totales");
-            }
-        });
-
-
-
-
-        //Guardar que se ha jugado una partida mas
-
-
 
     }
 
