@@ -256,13 +256,13 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
 
 
         // SET LAST ROLE:
-        float aux = ((float)RoundData.damageInflicted) / ((float)RoundData.damageReceived);
-        float dps_in_match = ((float)RoundData.damageInflicted) / 120.0f;
+        float aux = ((float)RoundData.damageInflicted) / ((float)RoundData.damageReceived); //0.7272
+        float dps_in_match = ((float)RoundData.damageInflicted) / 120.0f;   //33.3
 
         //PUEDE SER FRANCOTIRADOR O HEALER
         if (aux > 1.3f && RoundData.healedPlayers > 2500)
         {
-            if (aux / 1.3f > RoundData.healedPlayers / 2500)
+            if (aux / 1.3f > ((float)RoundData.healedPlayers) / 2500.0f)
             {
                 lastRole = "Sniper";
             }
@@ -273,7 +273,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
         }
         else if (aux < 1.3f && RoundData.healedPlayers > 2500)
         {
-            if (dps_in_match / 30 > RoundData.healedPlayers / 2500)
+            if (dps_in_match / 30 > ((float) RoundData.healedPlayers) / 2500.0f)
             {
                 lastRole = "Duelist";
             }
@@ -288,7 +288,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
         }
         else if (aux != 0 && RoundData.healedPlayers != 0)
         {
-            if (dps_in_match / 30 > RoundData.healedPlayers / 2500)
+            if (dps_in_match / 30 > ((float)RoundData.healedPlayers) / 2500.0f)
             {
                 lastRole = "Duelist";
             }
@@ -299,7 +299,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
         }
         else
         {
-            lastRole = "Jose Antonio";
+            lastRole = "None";
         }
 
         // SET GLOBAL ROLE
