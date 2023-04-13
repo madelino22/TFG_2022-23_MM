@@ -26,7 +26,7 @@ public class InfoRoom : GlobalEventListener
         public string playerRole { get; }
     }
 
-    const int PLAYEROOM = 2; //TIENE QUE VALER LO MISMO QUE EN PLAYERSETUPCONTROLLER
+    const int PLAYEROOM = 4; //TIENE QUE VALER LO MISMO QUE EN PLAYERSETUPCONTROLLER
 
     [SerializeField]
     TextMesh textoTotal;

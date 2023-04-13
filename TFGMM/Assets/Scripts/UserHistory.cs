@@ -252,17 +252,17 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
         if (deaths > 0)
             killsDeathsRatioAverage = ((float)kills) / (float)deaths;
 
-        dps = (damageInflicted) / (gamesPlayed * 120); //damage per second
+        dps = ((float)damageInflicted) / ((float)gamesPlayed * 120.0f); //damage per second
 
 
         // SET LAST ROLE:
-        float aux = RoundData.damageInflicted / RoundData.damageReceived;
-        float dps_in_match = RoundData.damageInflicted / 120;
+        float aux = ((float)RoundData.damageInflicted) / ((float)RoundData.damageReceived);
+        float dps_in_match = ((float)RoundData.damageInflicted) / 120.0f;
 
         //PUEDE SER FRANCOTIRADOR O HEALER
-        if (aux > 1.3 && RoundData.healedPlayers > 2500)
+        if (aux > 1.3f && RoundData.healedPlayers > 2500)
         {
-            if (aux / 1.3 > RoundData.healedPlayers / 2500)
+            if (aux / 1.3f > RoundData.healedPlayers / 2500)
             {
                 lastRole = "Sniper";
             }
@@ -271,9 +271,9 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                 lastRole = "Healer";
             }
         }
-        else if (aux < 1.3 && RoundData.healedPlayers > 2500)
+        else if (aux < 1.3f && RoundData.healedPlayers > 2500)
         {
-            if (dps_in_match  / 30 > RoundData.healedPlayers / 2500)
+            if (dps_in_match / 30 > RoundData.healedPlayers / 2500)
             {
                 lastRole = "Duelist";
             }
@@ -282,7 +282,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                 lastRole = "Healer";
             }
         }
-        else if (aux > 1.3 && RoundData.healedPlayers < 2500)
+        else if (aux > 1.3f && RoundData.healedPlayers < 2500)
         {
             lastRole = "Sniper";
         }
@@ -299,7 +299,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
         }
         else
         {
-            lastRole = "None";
+            lastRole = "Jose Antonio";
         }
 
         // SET GLOBAL ROLE
