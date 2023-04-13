@@ -26,7 +26,7 @@ public class InfoRoom : GlobalEventListener
         public string playerRole { get; }
     }
 
-    const int PLAYEROOM = 4; //TIENE QUE VALER LO MISMO QUE EN PLAYERSETUPCONTROLLER
+    const int PLAYEROOM = 2; //TIENE QUE VALER LO MISMO QUE EN PLAYERSETUPCONTROLLER
 
     [SerializeField]
     TextMesh textoTotal;
@@ -40,8 +40,6 @@ public class InfoRoom : GlobalEventListener
 
     private List<BoltConnection> playersConnections = new List<BoltConnection>();
     private List<KeyValuePair<int, infoMatchmaking>> dataOfAllUsers = new List<KeyValuePair<int, infoMatchmaking>>();
-
-
 
     public override void SceneLoadLocalDone(string scene, IProtocolToken token)
     {

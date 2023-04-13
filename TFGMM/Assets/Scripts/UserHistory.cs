@@ -34,15 +34,15 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
     public float killsDeathsRatioAverage = 0;
     public float dps = 0;
 
-
     public string nameLastGamePlayed = "none";
 
     //ESTILO DEL JUGADOR none, healer, francotirador, duelista
-    public string playerRole = "none"; //Rol maytoritario
-    public string lastRole = "none"; //Rol de la ultima partida (ayuda para saber donde colocar la valoracion)
+    public string playerRole = "None"; //Rol maytoritario
+    public string lastRole = "None"; //Rol de la ultima partida (ayuda para saber donde colocar la valoracion)
     public int numFranc = 0;
     public int numHeal= 0;
     public int numDuel = 0;
+    public int numNone = 0;
 
     //VALORACION EXPERIENCIA JUGADOR
     public int numPartidasRated = 0;
@@ -51,7 +51,6 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
     public float mediaRatingEmpatadas = 0;
     public float mediaGeneralRating = 0;
     //Francotirador
-    public int numPartidasRatedFra = 0;
     public float mediaRatingGanadasFra = 0;
     public float mediaRatingPerdidasFra = 0;
     public float mediaRatingEmpatadasFra = 0;
@@ -60,7 +59,6 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
     public int drawsFra = 0;
     public int losesFra = 0;
     //Healer
-    public int numPartidasRatedHeal = 0;
     public float mediaRatingGanadasHeal = 0;
     public float mediaRatingPerdidasHeal = 0;
     public float mediaRatingEmpatadasHeal = 0;
@@ -69,7 +67,6 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
     public int drawsHeal = 0;
     public int losesHeal = 0;
     //Duelista
-    public int numPartidasRatedDuel = 0;
     public float mediaRatingGanadasDuel = 0;
     public float mediaRatingPerdidasDuel = 0;
     public float mediaRatingEmpatadasDuel = 0;
@@ -77,6 +74,14 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
     public int winsDuel = 0;
     public int drawsDuel = 0;
     public int losesDuel = 0;
+    //None
+    public float mediaRatingGanadasNone = 0;
+    public float mediaRatingPerdidasNone = 0;
+    public float mediaRatingEmpatadasNone = 0;
+    public float mediaGeneralRatingNone = 0;
+    public int winsNone = 0;
+    public int drawsNone = 0;
+    public int losesNone = 0;
 
     public int totalShots = 0;
     public void loadInfo(DataSnapshot snapshot)
@@ -111,15 +116,14 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
         numFranc = int.Parse(snapshot.Child("numFranc").Value.ToString());
         numHeal = int.Parse(snapshot.Child("numHeal").Value.ToString());
         numDuel = int.Parse(snapshot.Child("numDuel").Value.ToString());
+        numNone = int.Parse(snapshot.Child("numNone").Value.ToString());
 
         //VALORACION EXPERIENCIA JUGADOR
-        numPartidasRated = int.Parse(snapshot.Child("numPartidasRated").Value.ToString());
         mediaRatingGanadas = float.Parse(snapshot.Child("mediaRatingGanadas").Value.ToString());
         mediaRatingPerdidas = float.Parse(snapshot.Child("mediaRatingPerdidas").Value.ToString());
         mediaRatingEmpatadas = float.Parse(snapshot.Child("mediaRatingEmpatadas").Value.ToString());
         mediaGeneralRating = float.Parse(snapshot.Child("mediaGeneralRating").Value.ToString());
 
-        numPartidasRatedFra = int.Parse(snapshot.Child("numPartidasRatedFra").Value.ToString());
         mediaRatingGanadas = float.Parse(snapshot.Child("mediaRatingGanadasFra").Value.ToString());
         mediaRatingPerdidasFra = float.Parse(snapshot.Child("mediaRatingPerdidasFra").Value.ToString());
         mediaRatingEmpatadasFra = float.Parse(snapshot.Child("mediaRatingEmpatadasFra").Value.ToString());
@@ -128,7 +132,6 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
         drawsFra = int.Parse(snapshot.Child("drawsFra").Value.ToString());
         losesFra = int.Parse(snapshot.Child("losesFra").Value.ToString());
 
-        numPartidasRatedHeal = int.Parse(snapshot.Child("numPartidasRatedHeal").Value.ToString());
         mediaRatingGanadasHeal = float.Parse(snapshot.Child("mediaRatingGanadasHeal").Value.ToString());
         mediaRatingPerdidasHeal = float.Parse(snapshot.Child("mediaRatingPerdidasHeal").Value.ToString());
         mediaRatingEmpatadasHeal = float.Parse(snapshot.Child("mediaRatingEmpatadasHeal").Value.ToString());
@@ -137,14 +140,21 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
         drawsHeal = int.Parse(snapshot.Child("drawsHeal").Value.ToString());
         losesHeal = int.Parse(snapshot.Child("losesHeal").Value.ToString());
 
-        numPartidasRatedDuel = int.Parse(snapshot.Child("numPartidasRatedDuel").Value.ToString());
         mediaRatingGanadasDuel = float.Parse(snapshot.Child("mediaRatingGanadasDuel").Value.ToString());
         mediaRatingPerdidasDuel = float.Parse(snapshot.Child("mediaRatingPerdidasDuel").Value.ToString());
         mediaRatingEmpatadasDuel = float.Parse(snapshot.Child("mediaRatingEmpatadasDuel").Value.ToString());
         mediaGeneralRatingDuel = float.Parse(snapshot.Child("mediaGeneralRatingDuel").Value.ToString());
-        winsDuel = int.Parse(snapshot.Child("wins").Value.ToString());
-        drawsDuel = int.Parse(snapshot.Child("draws").Value.ToString());
-        losesDuel = int.Parse(snapshot.Child("loses").Value.ToString());
+        winsDuel = int.Parse(snapshot.Child("winsDuel").Value.ToString());
+        drawsDuel = int.Parse(snapshot.Child("drawsDuel").Value.ToString());
+        losesDuel = int.Parse(snapshot.Child("losesDuel").Value.ToString());
+
+        mediaRatingGanadasNone = float.Parse(snapshot.Child("mediaRatingGanadasNone").Value.ToString());
+        mediaRatingPerdidasNone = float.Parse(snapshot.Child("mediaRatingPerdidasNone").Value.ToString());
+        mediaRatingEmpatadasNone = float.Parse(snapshot.Child("mediaRatingEmpatadasNone").Value.ToString());
+        mediaGeneralRatingNone = float.Parse(snapshot.Child("mediaGeneralRatingNone").Value.ToString());
+        winsNone = int.Parse(snapshot.Child("winsNone").Value.ToString());
+        drawsNone = int.Parse(snapshot.Child("drawsNone").Value.ToString());
+        losesNone = int.Parse(snapshot.Child("losesNone").Value.ToString());
 
         //Load Saved Games
         //for (int i = 0; i < NUM_SAVED_MATCHES; i++)
@@ -170,7 +180,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
         float E = 0.5f;
 
         RoundData.winner = winner;
-
+        string resultLastMatch = "Win";
         switch (winner)
         {
             case team.red:
@@ -182,6 +192,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                 }
                 else
                 {
+                    resultLastMatch = "Lost";
                     loses++;
                     eloK--;
                     SA = 0f;
@@ -195,12 +206,14 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                     SA = 1f;
                 }
                 else {
+                    resultLastMatch = "Lost";
                     loses++;
                     eloK--;
                     SA = 0f;
                 } 
                 break;
             case team.none:
+                resultLastMatch = "Draw";
                 draws++;
                 SA = 0.5f;
                 break;
@@ -239,7 +252,111 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
         if (deaths > 0)
             killsDeathsRatioAverage = ((float)kills) / (float)deaths;
 
-        dps = (damageReceived) / (gamesPlayed * 120); //damage per second
+        dps = (damageInflicted) / (gamesPlayed * 120); //damage per second
+
+
+        // SET LAST ROLE:
+        float aux = RoundData.damageInflicted / RoundData.damageReceived;
+        float dps_in_match = RoundData.damageInflicted / 120;
+
+        //PUEDE SER FRANCOTIRADOR O HEALER
+        if (aux > 1.3 && RoundData.healedPlayers > 2500)
+        {
+            if (aux / 1.3 > RoundData.healedPlayers / 2500)
+            {
+                lastRole = "Sniper";
+            }
+            else
+            {
+                lastRole = "Healer";
+            }
+        }
+        else if (aux < 1.3 && RoundData.healedPlayers > 2500)
+        {
+            if (dps_in_match  / 30 > RoundData.healedPlayers / 2500)
+            {
+                lastRole = "Duelist";
+            }
+            else
+            {
+                lastRole = "Healer";
+            }
+        }
+        else if (aux > 1.3 && RoundData.healedPlayers < 2500)
+        {
+            lastRole = "Sniper";
+        }
+        else if (aux != 0 && RoundData.healedPlayers != 0)
+        {
+            if (dps_in_match / 30 > RoundData.healedPlayers / 2500)
+            {
+                lastRole = "Duelist";
+            }
+            else
+            {
+                lastRole = "Healer";
+            }
+        }
+        else
+        {
+            lastRole = "None";
+        }
+
+        // SET GLOBAL ROLE
+        switch (lastRole)
+        {
+            case "Sniper":
+                numFranc++;
+                if (resultLastMatch == "Win")
+                    winsFra++;
+                else if (resultLastMatch == "Lost")
+                    losesFra++;
+                else drawsFra++;
+
+                break;
+            case "Healer":
+                numHeal++;
+                if (resultLastMatch == "Win")
+                    winsHeal++;
+                else if (resultLastMatch == "Lost")
+                    losesHeal++;
+                else drawsHeal++;
+                break;
+            case "Duelist":
+                numDuel++;
+                if (resultLastMatch == "Win")
+                    winsDuel++;
+                else if (resultLastMatch == "Lost")
+                    losesDuel++;
+                else drawsDuel++;
+                break;
+            default:
+                numNone++;
+                if (resultLastMatch == "Win")
+                    winsNone++;
+                else if (resultLastMatch == "Lost")
+                    losesNone++;
+                else drawsNone++;
+                break;
+        }
+
+        if (numFranc >= numHeal && numFranc >= numDuel && numFranc >= numNone)
+        {
+            playerRole = "Sniper";
+        }
+        else if (numHeal >= numFranc && numHeal >= numDuel && numHeal >= numNone)
+        {
+            playerRole = "Healer";
+        }
+        else if (numDuel >= numFranc && numDuel >= numHeal && numDuel >= numNone)
+        {
+            playerRole = "Duelist";
+        }
+        else
+        {
+            playerRole = "None";
+        }
+
 
     }
 }

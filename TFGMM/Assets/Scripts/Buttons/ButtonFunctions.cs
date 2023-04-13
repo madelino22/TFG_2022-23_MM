@@ -59,8 +59,7 @@ public class ButtonFunctions : MonoBehaviour
         //Solo tenemos en cuenta los clicks si ha jugado partida
         if(ComInfo.getPlayerData().gamesPlayed > ComInfo.getPlayerData().numPartidasRated)
         {
-            //VALORACION GENERAL DE LA PARTIDA
-            
+            //VALORACION GENERAL DE LA PARTIDA====================================================================================================            
             if(RoundData.winner == team.red && RoundData.isRed) //Ha ganado el jugador
             {
                 Debug.Log("RATING: El jugador ha ganado");
@@ -83,9 +82,9 @@ public class ButtonFunctions : MonoBehaviour
 
             Debug.Log("RATING: El jugador ha valorado " + ComInfo.getPlayerData().numPartidasRated + "partidas");
 
-            //VALORACION DE ROL ESPECIFICO
+            //VALORACION DE ROL ESPECIFICO ========================================================================================================
 
-            if (ComInfo.getPlayerData().lastRole == "healer")
+            if (ComInfo.getPlayerData().lastRole == "Healer")
             {
                 if (RoundData.winner == team.red && RoundData.isRed) //Ha ganado el jugador
                 {
@@ -103,11 +102,12 @@ public class ButtonFunctions : MonoBehaviour
                     ComInfo.getPlayerData().mediaRatingPerdidasHeal = ((ComInfo.getPlayerData().mediaRatingPerdidasHeal * (ComInfo.getPlayerData().losesHeal - 1)) + gameRating) / (ComInfo.getPlayerData().losesHeal);
                 }
 
-                ComInfo.getPlayerData().mediaGeneralRatingHeal = ((ComInfo.getPlayerData().mediaGeneralRatingHeal * ComInfo.getPlayerData().numPartidasRatedHeal) + gameRating) / (ComInfo.getPlayerData().numPartidasRatedHeal + 1);
+                ComInfo.getPlayerData().mediaGeneralRatingHeal = 
+                    ((ComInfo.getPlayerData().mediaGeneralRatingHeal * ComInfo.getPlayerData().numHeal) + gameRating) 
+                    / (ComInfo.getPlayerData().numHeal + 1);
 
-                ComInfo.getPlayerData().numPartidasRatedHeal++;
             }
-            else if (ComInfo.getPlayerData().lastRole == "francotirador")
+            else if (ComInfo.getPlayerData().lastRole == "Sniper")
             {
                 if (RoundData.winner == team.red && RoundData.isRed) //Ha ganado el jugador
                 {
@@ -125,11 +125,11 @@ public class ButtonFunctions : MonoBehaviour
                     ComInfo.getPlayerData().mediaRatingPerdidasFra = ((ComInfo.getPlayerData().mediaRatingPerdidasFra * (ComInfo.getPlayerData().losesFra - 1)) + gameRating) / (ComInfo.getPlayerData().losesFra);
                 }
 
-                ComInfo.getPlayerData().mediaGeneralRatingFra = ((ComInfo.getPlayerData().mediaGeneralRatingFra * ComInfo.getPlayerData().numPartidasRatedFra) + gameRating) / (ComInfo.getPlayerData().numPartidasRatedFra + 1);
-
-                ComInfo.getPlayerData().numPartidasRatedFra++;
+                ComInfo.getPlayerData().mediaGeneralRatingFra = 
+                    ((ComInfo.getPlayerData().mediaGeneralRatingFra * ComInfo.getPlayerData().numFranc) + gameRating) 
+                    / (ComInfo.getPlayerData().numFranc + 1);
             }
-            else if (ComInfo.getPlayerData().lastRole == "duelista")
+            else if (ComInfo.getPlayerData().lastRole == "Duelist")
             {
                 if (RoundData.winner == team.red && RoundData.isRed) //Ha ganado el jugador
                 {
@@ -139,7 +139,8 @@ public class ButtonFunctions : MonoBehaviour
                 else if (RoundData.winner == team.none) //Ha empatado el jugador
                 {
                     Debug.Log("RATING: El jugador ha empatado");
-                    ComInfo.getPlayerData().mediaRatingEmpatadasDuel = ((ComInfo.getPlayerData().mediaRatingEmpatadasDuel * (ComInfo.getPlayerData().drawsDuel - 1)) + gameRating) / (ComInfo.getPlayerData().drawsDuel);
+                    ComInfo.getPlayerData().mediaRatingEmpatadasDuel = 
+                        ((ComInfo.getPlayerData().mediaRatingEmpatadasDuel * (ComInfo.getPlayerData().drawsDuel - 1)) + gameRating) / (ComInfo.getPlayerData().drawsDuel);
                 }
                 else //HA PERDIDO
                 {
@@ -147,14 +148,26 @@ public class ButtonFunctions : MonoBehaviour
                     ComInfo.getPlayerData().mediaRatingPerdidasDuel = ((ComInfo.getPlayerData().mediaRatingPerdidasDuel * (ComInfo.getPlayerData().losesDuel - 1)) + gameRating) / (ComInfo.getPlayerData().losesDuel);
                 }
 
-                ComInfo.getPlayerData().mediaGeneralRatingDuel = ((ComInfo.getPlayerData().mediaGeneralRatingDuel * ComInfo.getPlayerData().numPartidasRatedDuel) + gameRating) / (ComInfo.getPlayerData().numPartidasRatedDuel + 1);
-
-                ComInfo.getPlayerData().numPartidasRatedDuel++;
+                ComInfo.getPlayerData().mediaGeneralRatingDuel = 
+                    ((ComInfo.getPlayerData().mediaGeneralRatingDuel * ComInfo.getPlayerData().numDuel) + gameRating)
+                    / 
+                    (ComInfo.getPlayerData().numDuel + 1);
             }
 
             UserHistory userHistory = ComInfo.getPlayerData();
 
             reference.Child("Matches").Child(userHistory.nameLastGamePlayed).Child(userHistory.userName).Child("gameRating").SetValueAsync(gameRating).ContinueWith(task =>
+            {
+                if (task.IsCompleted)
+                {
+                    Debug.Log("saved Data Profile");
+                }
+                else
+                {
+                    Debug.Log("No se han enviado los datos");
+                }
+            });
+            reference.Child("Matches").Child(userHistory.nameLastGamePlayed).Child(userHistory.userName).Child("lastRole").SetValueAsync(userHistory.lastRole).ContinueWith(task =>
             {
                 if (task.IsCompleted)
                 {

@@ -5,7 +5,7 @@ using Firebase.Database;
 
 public class PlayerSetupController : GlobalEventListener
 {
-    private static int PLAYEROOM = 4; //TIENE QUE VALER LO MISMO QUE EN INFOROOM
+    private static int PLAYEROOM = 2; //TIENE QUE VALER LO MISMO QUE EN INFOROOM
     private int contador = 0; 
     private static int redIntSpawn = 0; //Team lejos (0,2)
     private static int blueIntSpawn = 3; //Team cerca (3,5)
@@ -127,7 +127,8 @@ public class PlayerSetupController : GlobalEventListener
         if (entities[contador - 1].gameObject.transform.CompareTag("Red"))
             equipo = team.red;
         partida.addPlayer(namePlayers[contador - 1], equipo, contador - 1);
-        partida.setPlayerRole(contador - 1, evnt.playerRole);
+        //???????????
+        //partida.setPlayerRole(contador - 1, evnt.playerRole);
     }
 
     //Solo lo ejecuta el server
@@ -350,7 +351,8 @@ public class PlayerSetupController : GlobalEventListener
             }
             else partida.winner = team.blue;
 
-            saveMatch();
+            //GUARDAMOS LA PARTIDA EN FIREBASE
+            saveMatch(); //actualiza el nombre de partida en user history
 
             // MANDAMOS A LOS PLAYERS A OTRA ESCENA
             SendPlayersToFinalScene ev = SendPlayersToFinalScene.Create(GlobalTargets.AllClients);
@@ -365,6 +367,7 @@ public class PlayerSetupController : GlobalEventListener
     public override void OnEvent(lastGamePlayedEvent evnt)
     {
         UserHistory userHistory = ComInfo.getPlayerData();
+        Debug.Log("ESKERRRRRRRRRRRRRRRRRRR");
 
         userHistory.nameLastGamePlayed = evnt.gameName;
   
@@ -442,7 +445,7 @@ public class PlayerSetupController : GlobalEventListener
                                 {
                                     BoltLog.Warn("VAMOS A ACTUALIZAR AL JUGADOR " + j);
                                     num = Nmatches.getTotalGames();
-                                    num++;
+                                    num++; // WTF???????????????????????????'''''
                                     BoltLog.Warn("NMATCHES ACTUALIZADO " + num);
                                     //nMatches aux = new nMatches();
                                     Nmatches.setTotalGames(num);
