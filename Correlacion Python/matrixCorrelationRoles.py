@@ -28,7 +28,8 @@ def CorrectString(palabra):
 def Firebase(dic, data, variableNames):
     # Guardamos el nombre de las variables
     variableNames = ["None", "Duelist", "Sniper", "Healer", "NonePartner", "DuelistPartner", "SniperPartner", "HealerPartner", "Won", "Fun"]
-   
+    won_i = 8
+    fun_i = 9
     index = 0
 
     # Guardamos los datos
@@ -45,42 +46,43 @@ def Firebase(dic, data, variableNames):
 
         # Guardamos nombres de integrantes en cada equipo
         for u in data['Matches'][p]:
-            if data['Matches'][p][u]['t'] == 0:
-                team0 = np.concatenate((team0, [data['Matches'][p][u]['name']]))
-            else:
-                team1 = np.concatenate((team1, [data['Matches'][p][u]['name']]))
+            if u != 'pointsBlue' and u != 'pointsRed' and u != 'winningChancesBlue' and u != 'winningChancesRed' and u != 'winner':
+                if data['Matches'][p][u]['t'] == 0:
+                    team0 = np.concatenate((team0, [data['Matches'][p][u]['name']]))
+                else:
+                    team1 = np.concatenate((team1, [data['Matches'][p][u]['name']]))
  
         team_mate = 0
         for u in team0:
-            dic[u] = []
+            dic[index] = []
             for v in variableNames:
-                dic[index] = np.concatenate((dic[u], [0]))
+                dic[index] = np.concatenate((dic[index], [0]))
             
-            role = data['Matches'][p][u]['lastRole']
+            role = variableNames.index(data['Matches'][p][u]['lastRole'])
             dic[index][role] = 1
-            other = team0[team_mate % 2]
-            partner_role = data['Matches'][p][other]['lastRole'] + 'Partner'
+            other = team0[(team_mate + 1) % 2]
+            partner_role = variableNames.index(data['Matches'][p][other]['lastRole'] + 'Partner')
             dic[index][partner_role] = 1
-            dic[index]["Fun"] = data['Matches'][p][u]['gameRating'] 
+            dic[index][fun_i] = data['Matches'][p][u]['gameRating'] 
             if winner_team == data['Matches'][p][u]['t']:
-                dic[index]["Won"] = 1
+                dic[index][won_i] = 1
             team_mate += 1
             index += 1
 
         team_mate = 0
         for u in team1:
-            dic[u] = []
+            dic[index] = []
             for v in variableNames:
-                dic[index] = np.concatenate((dic[u], [0]))
+                dic[index] = np.concatenate((dic[index], [0]))
             
-            role = data['Matches'][p][u]['lastRole']
+            role = variableNames.index(data['Matches'][p][u]['lastRole'])
             dic[index][role] = 1
-            other = team1[team_mate % 2]
-            partner_role = data['Matches'][p][other]['lastRole'] + 'Partner'
+            other = team1[(team_mate + 1) % 2]
+            partner_role = variableNames.index(data['Matches'][p][other]['lastRole'] + 'Partner')
             dic[index][partner_role] = 1
-            dic[index]["Fun"] = data['Matches'][p][u]['gameRating'] 
+            dic[index][fun_i] = data['Matches'][p][u]['gameRating'] 
             if winner_team == data['Matches'][p][u]['t']:
-                dic[index]["Won"] = 1
+                dic[index][won_i] = 1
             team_mate += 1
             index += 1
 
@@ -111,7 +113,7 @@ def main():
     dic, variableNames = Firebase(dic, data, variableNames)
 
     # form dataframe
-    df = pd.DataFrame(dic, columns=variableNames)
+    df = pd.DataFrame(dic, columns=variableNames) # EMPTY DATAFRAME???????????'
 
     #-------------MATRIZ DE CORRELACION----------------
     matrix = df.corr(method = 'pearson').round(2)  # The method of correlation
