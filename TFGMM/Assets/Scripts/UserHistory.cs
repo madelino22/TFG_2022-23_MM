@@ -84,6 +84,8 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
     public int losesNone = 0;
 
     public int totalShots = 0;
+    public float distanceMedia = 0;
+
     public void loadInfo(DataSnapshot snapshot)
     {
         userName = snapshot.Child("userName").Value.ToString();
@@ -107,7 +109,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
         eloRanking = int.Parse(snapshot.Child("eloRanking").Value.ToString());
         eloK = float.Parse(snapshot.Child("eloK").Value.ToString());
         zzlastGameSaved = int.Parse(snapshot.Child("zzlastGameSaved").Value.ToString());
-
+        distanceMedia = float.Parse(snapshot.Child("distanceMedia").Value.ToString());
 
         nameLastGamePlayed = snapshot.Child("nameLastGamePlayed").Value.ToString();
         //PLAYER ROLE
@@ -167,6 +169,10 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
     public void UpdateUserHistory(team winner)
     {
         gamesPlayed++;
+
+        float distanciaMediaPartida = RoundData.totalDistance / RoundData.hitEnemyShoots;
+        distanceMedia = (distanceMedia * gamesPlayed - 1) / gamesPlayed;
+
 
         damageReceived += RoundData.damageReceived;
         damageInflicted += RoundData.damageInflicted;

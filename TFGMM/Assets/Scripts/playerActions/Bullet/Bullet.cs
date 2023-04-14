@@ -22,6 +22,8 @@ public class Bullet : MonoBehaviour
 
     int creatorID = 0;
 
+    Vector3 positionInit;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,8 +32,11 @@ public class Bullet : MonoBehaviour
         bulletEndDist = transform.position + transform.forward * playerAttacking.getTrailDistance();
         if(!BoltNetwork.IsServer)
             shootSound.Play();
-        //GetComponent<Rigidbody>().velocity = Vector3.forward * speed;        
+
+        positionInit = transform.position;
     }
+
+
 
     // Update is called once per frame
     void FixedUpdate()
@@ -62,7 +67,10 @@ public class Bullet : MonoBehaviour
                 bool redWasHit = !wasFiredByRed; //rojo es golpeado si la bala la disparo azul
 
                 Debug.Log("AUX: Spawneo la bala" + creatorID + " se le dio a " + wasHitID);
-                target.GetComponent<PlayerCallback>().loseLife(redWasHit, creatorID, wasHitID);
+
+                float distance = Vector3.Distance(transform.position, positionInit);
+
+                target.GetComponent<PlayerCallback>().loseLife(redWasHit, creatorID, wasHitID, distance);
             }
             else
             {

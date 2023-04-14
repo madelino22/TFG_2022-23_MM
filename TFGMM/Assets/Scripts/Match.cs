@@ -37,6 +37,8 @@ public class PlayerMatch
     public int healOthers = 0;
     public int healMe = 0;
     public int totalShots = 0; //Para saber el porcentaje de acierto multiplicar por 500(El daño que recibe un jugador) y dividir con daño hecho
+    public int totalShotsEnemy = 0;
+    public float hitDistance = 0;
     public team t = team.red;
 
     //public string rolePlayer = "none"; //NO SE USA DE MOMEMTNO
@@ -130,7 +132,7 @@ public class Match
         }
     }
 
-    public void damaged(string damaged, string damagedBy)
+    public void damaged(string damaged, string damagedBy, float distance)
     {
         for (int i = 0; i < players.Length; i++)
         {
@@ -140,7 +142,10 @@ public class Match
             }
             else if (players[i].name == damagedBy)
             {
+                players[i].totalShotsEnemy++;
                 players[i].damageInflicted += 500;
+
+                players[i].hitDistance = (players[i].hitDistance * (players[i].totalShotsEnemy - 1) + distance  / players[i].totalShotsEnemy);
             }
         }
     }

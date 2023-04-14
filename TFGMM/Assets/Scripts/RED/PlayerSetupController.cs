@@ -274,12 +274,13 @@ public class PlayerSetupController : GlobalEventListener
         if (BoltNetwork.IsServer)
         {
             //esta llamada funciona bien
-            partida.damaged(namePlayers[evnt.nameDamaged], namePlayers[evnt.damagedBy]);
+            partida.damaged(namePlayers[evnt.nameDamaged], namePlayers[evnt.damagedBy], evnt.distance);
 
             //Esto no funciona bien
             //damageDoneEvent evn = damageDoneEvent.Create(entityConnection[evnt.damagedBy]);
             damageDoneEvent evn = damageDoneEvent.Create(entityConnection[evnt.damagedBy]);
             evn.namePlayer = namePlayers[evnt.damagedBy];
+            evn.distance = evnt.distance;
             evn.Send();
 
             //damageReceivedEvent evn2 = damageReceivedEvent.Create(entityConnection[evnt.nameDamaged]);
@@ -338,7 +339,9 @@ public class PlayerSetupController : GlobalEventListener
         if (evnt.namePlayer == ComInfo.getPlayerName())
         {
             RoundData.damageInflicted += 500; //SE SUPONE QUE EL DAÑO ES 500 SIEMPRE
-            Debug.Log("Disparó: daño inflingido actual: " + RoundData.damageInflicted);
+            RoundData.hitEnemyShoots++;
+
+            RoundData.totalDistance += evnt.distance;
         }
     }
 

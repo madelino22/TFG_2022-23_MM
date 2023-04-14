@@ -47,7 +47,7 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
     }
 
     // SOLO SE EJECUTA EN EL SERVER (OnlyServer)
-    public void loseLife(bool redWasHit, int shooterName, int wasHitName)
+    public void loseLife(bool redWasHit, int shooterName, int wasHitName, float shootDistance)
     {
         this._playerMotor.ActualLife -= 500;
 
@@ -55,6 +55,7 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
         takeDamageEvent evn = takeDamageEvent.Create(GlobalTargets.OnlyServer);
         evn.damagedBy = shooterName;
         evn.nameDamaged = wasHitName;
+        evn.distance = shootDistance;
         evn.Send();
 
         if (this._playerMotor.ActualLife <= 0)

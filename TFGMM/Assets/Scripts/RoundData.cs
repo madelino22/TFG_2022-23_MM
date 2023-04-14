@@ -11,6 +11,8 @@ public static class RoundData
     public static int deaths = 0;
 
     public static int totalShots = 0;
+    public static int hitEnemyShoots = 0;
+    public static float totalDistance = 0;
 
     public static int damageInflicted = 0; //Damage Inflicted on Enemy
     public static int damageReceived = 0; //Damage Received by Player
