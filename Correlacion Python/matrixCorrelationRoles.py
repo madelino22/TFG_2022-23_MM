@@ -28,8 +28,8 @@ def CorrectString(palabra):
 def Firebase(dic, data, variableNames):
     # Guardamos el nombre de las variables
     variableNames = ["None", "Duelist", "Sniper", "Healer", "NonePartner", "DuelistPartner", "SniperPartner", "HealerPartner", "Won", "Fun"]
-    won_i = 8
-    fun_i = 9
+    for v in variableNames:
+        dic[v] = []
     index = 0
 
     # Guardamos los datos
@@ -54,35 +54,33 @@ def Firebase(dic, data, variableNames):
  
         team_mate = 0
         for u in team0:
-            dic[index] = []
             for v in variableNames:
-                dic[index] = np.concatenate((dic[index], [0]))
+                dic[v] = np.concatenate((dic[v], [0]))
             
-            role = variableNames.index(data['Matches'][p][u]['lastRole'])
-            dic[index][role] = 1
+            role = data['Matches'][p][u]['lastRole']
+            dic[role][index] = 1
             other = team0[(team_mate + 1) % 2]
-            partner_role = variableNames.index(data['Matches'][p][other]['lastRole'] + 'Partner')
-            dic[index][partner_role] = 1
-            dic[index][fun_i] = data['Matches'][p][u]['gameRating'] 
+            partner_role = data['Matches'][p][other]['lastRole'] + 'Partner'
+            dic[partner_role][index] = 1
+            dic['Fun'][index] = data['Matches'][p][u]['gameRating'] 
             if winner_team == data['Matches'][p][u]['t']:
-                dic[index][won_i] = 1
+                dic['Won'][index] = 1
             team_mate += 1
             index += 1
 
         team_mate = 0
         for u in team1:
-            dic[index] = []
             for v in variableNames:
-                dic[index] = np.concatenate((dic[index], [0]))
+                dic[v] = np.concatenate((dic[v], [0]))
             
-            role = variableNames.index(data['Matches'][p][u]['lastRole'])
-            dic[index][role] = 1
+            role = data['Matches'][p][u]['lastRole']
+            dic[role][index] = 1
             other = team1[(team_mate + 1) % 2]
-            partner_role = variableNames.index(data['Matches'][p][other]['lastRole'] + 'Partner')
-            dic[index][partner_role] = 1
-            dic[index][fun_i] = data['Matches'][p][u]['gameRating'] 
+            partner_role = data['Matches'][p][other]['lastRole'] + 'Partner'
+            dic[partner_role][index] = 1
+            dic['Fun'][index] = data['Matches'][p][u]['gameRating'] 
             if winner_team == data['Matches'][p][u]['t']:
-                dic[index][won_i] = 1
+                dic['Won'][index] = 1
             team_mate += 1
             index += 1
 
