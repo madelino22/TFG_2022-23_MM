@@ -363,6 +363,6 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
             playerRole = "None";
         }
 
-
+        Debug.Log("Expectativa contribucion: " + RoundData.expectedContribution);
     }
 }

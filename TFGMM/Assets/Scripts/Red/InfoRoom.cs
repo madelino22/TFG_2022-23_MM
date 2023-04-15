@@ -16,17 +16,21 @@ public class InfoRoom : GlobalEventListener
 {
     private struct infoMatchmaking
     {
-        public infoMatchmaking(int e, string role)
+        public infoMatchmaking(int e, string role, BoltConnection connection)
         {
             elo = e;
             playerRole = role;
+            playerConnection = connection;
         }
 
         public int elo { get; }
         public string playerRole { get; }
+
+        public BoltConnection playerConnection { get; }
     }
 
     const int PLAYEROOM = 4; //TIENE QUE VALER LO MISMO QUE EN PLAYERSETUPCONTROLLER
+    const int ELODIFF = 300;
 
     [SerializeField]
     TextMesh textoTotal;
@@ -38,7 +42,7 @@ public class InfoRoom : GlobalEventListener
 
     private int connections = 0;
 
-    private List<BoltConnection> playersConnections = new List<BoltConnection>();
+    //private List<BoltConnection> playersConnections = new List<BoltConnection>();
     private List<KeyValuePair<int, infoMatchmaking>> dataOfAllUsers = new List<KeyValuePair<int, infoMatchmaking>>();
 
     public override void SceneLoadLocalDone(string scene, IProtocolToken token)
@@ -117,7 +121,7 @@ public class InfoRoom : GlobalEventListener
 
     public void Matchmaking()
     {
-        int numPlayers = playersConnections.Count;
+        int numPlayers = dataOfAllUsers.Count;
         int n = numPlayers;
         BoltLog.Warn("Hay " + numPlayers + "players.");
 
@@ -126,7 +130,7 @@ public class InfoRoom : GlobalEventListener
         var sortedList = dataOfAllUsers.OrderBy(x => x.Value.elo).ToList(); //ordena el elo en orden ascendente
 
         while (numPlayers >= PLAYEROOM)
-        {           
+        {
             int contador = 0;
 
             //UwU descomentar esto
@@ -134,101 +138,118 @@ public class InfoRoom : GlobalEventListener
             List<int> redELOS = new();
 
             List<GoGameEvent> evnts = new List<GoGameEvent>();
-            while (contador < PLAYEROOM)
+
+            //Comprobamos diferencia de elo entre jugadores
+            int a = sortedList[contador].Value.elo - sortedList[contador + PLAYEROOM - 1].Value.elo;
+            a = Math.Abs(a);
+            while (a > ELODIFF && numPlayers > PLAYEROOM) //Si es mayor al limite o ya no hay otra combinacion posible
             {
-                //GoGameEvent evnt = GoGameEvent.Create(playersConnections[sortedList[0].Key]);
-                evnts.Add(GoGameEvent.Create(playersConnections[contador]));
-
-                // HACEMOS NUESTRO MATCHMAKING Y DETERMINAMOS COMO SE FORMAN LOS EQUIPOS
-
-                //evnt.isRed = (contador % 2) == 0;  //PARA QUE SPAWN EVENT SEPA A QUE EQUIPO VA
-                evnts[contador].isRed = (contador < PLAYEROOM / 2);
-
-                if (evnts[contador].isRed)
-                    redELOS.Add(sortedList[contador].Value.elo);
-                else
-                    blueELOS.Add(sortedList[contador].Value.elo);
-
-                if (map == 0)
-                    evnts[contador].ID = "0";
-                else
-                    evnts[contador].ID = "1";
-                //playersConnections.RemoveAt(sortedList[0].Key);
-                //sortedList.RemoveAt(0);
-                //numPlayers--;
-                BoltLog.Warn("Jugador " + contador + ", va a " + evnts[contador].ID);
                 contador++;
+                numPlayers--;
+                a = sortedList[contador].Value.elo - sortedList[contador + PLAYEROOM - 1].Value.elo;
+                a = Math.Abs(a);
             }
 
-            //UwU calcular media de los dos equipos
-            //llamar al m�todo de c�lculo de winning chances de ELO
-            //UwU descomentar esto
-            Tuple<float, float> winningChances = ELO.CalculateWinningChances(redELOS, blueELOS);
-            //pasar la variable de probabilidad de victoria a cada cliente por evento
-
-            for(int i = 0; i < PLAYEROOM;i++)
+            if (numPlayers < PLAYEROOM || a > ELODIFF) //No hay jugadores suficientes o ultima combinacion de elo no es posible.
             {
-                if (evnts[i].isRed)
-                {
-                    evnts[i].winningChances = winningChances.Item2;
-                }
-                else evnts[i].winningChances = winningChances.Item1;
-
-                evnts[i].Send();
-
-                playersConnections.RemoveAt(0);
+                break;
             }
+            else
+            {
+                int jugadoresJoin = 0;
+                int first = contador;
+                while (jugadoresJoin < PLAYEROOM)
+                {
+                    //GoGameEvent evnt = GoGameEvent.Create(playersConnections[sortedList[0].Key]);
+                    evnts.Add(GoGameEvent.Create(sortedList[contador].Value.playerConnection));
+
+                    // HACEMOS NUESTRO MATCHMAKING Y DETERMINAMOS COMO SE FORMAN LOS EQUIPOS
+
+                    //evnt.isRed = (contador % 2) == 0;  //PARA QUE SPAWN EVENT SEPA A QUE EQUIPO VA
+                    evnts[jugadoresJoin].isRed = (jugadoresJoin < PLAYEROOM / 2);
+
+                    if (evnts[jugadoresJoin].isRed)
+                        redELOS.Add(sortedList[contador].Value.elo);
+                    else
+                        blueELOS.Add(sortedList[contador].Value.elo);
+
+                    if (map == 0)
+                        evnts[jugadoresJoin].ID = "0";
+                    else
+                        evnts[jugadoresJoin].ID = "1";
+                    //playersConnections.RemoveAt(sortedList[0].Key);
+                    //sortedList.RemoveAt(0);
+                    //numPlayers--;
+                    BoltLog.Warn("Jugador " + jugadoresJoin + ", va a " + evnts[jugadoresJoin].ID);
+                    jugadoresJoin++;
+                    contador++;
+                }
+
+                int difRed;
+                difRed = redELOS[0] - redELOS[1];
+                difRed = Math.Abs(difRed);
+
+                int difBlue;
+                difBlue = blueELOS[0] - blueELOS[1];
+                difBlue = Math.Abs(difBlue);
+
+                float predRed = 0;
+                float predBlue = 0;
+
+                if (difRed != 0)
+                    predRed = (float)Math.Pow(1.015, difRed);
+
+                if (difBlue != 0)
+                    predBlue = (float)Math.Pow(1.015, difBlue);
 
 
+                //UwU calcular media de los dos equipos
+                //llamar al m�todo de c�lculo de winning chances de ELO
+                //UwU descomentar esto
+                Tuple<float, float> winningChances = ELO.CalculateWinningChances(redELOS, blueELOS);
+                //pasar la variable de probabilidad de victoria a cada cliente por evento
 
-            numPlayers -= PLAYEROOM;
-            map++;
+                for (int i = 0; i < PLAYEROOM; i++)
+                {
+                    if (evnts[i].isRed)
+                    {
+                        if (i == 0 || i == 1) //Los primeros jugadores de la partida son los de menor ELO
+                            evnts[i].ExpectedContribution = 50 - (predRed / 2);
+                        else evnts[i].ExpectedContribution = 50 + (predRed / 2);
+                        evnts[i].winningChances = winningChances.Item2;
+                    }
+                    else
+                    {
+                        if (i == 0 || i == 1) //Los primeros jugadores de la partida son los de menor ELO
+                            evnts[i].ExpectedContribution = 50 - (predBlue / 2);
+                        else evnts[i].ExpectedContribution = 50 + (predBlue / 2);
+                        evnts[i].winningChances = winningChances.Item1;
+                    }
+
+                    evnts[i].Send();
+
+                    sortedList.RemoveAt(first);
+                }
+
+                numPlayers -= PLAYEROOM;
+                map++;
+            }
         }
-
-        //while (numPlayers >= PLAYEROOM && ((numPlayers - contador) >= PLAYEROOM))
-        //{
-        //    GoGameEvent evnt = GoGameEvent.Create(playersConnections[0]);
-        //    if (contador < PLAYEROOM)
-        //        evnt.ID = "0";
-        //    else
-        //        evnt.ID = "1";
-        //    evnt.Send();
-
-        //    playersConnections.RemoveAt(0);
-        //    contador++;
-        //    //numPlayers--;
-        //    BoltLog.Warn("Jugador " + contador + ", va a " + evnt.ID);
-        //}
 
         //Devolver al menu a los jugadores que no hacen falta
-        foreach (BoltConnection conection in playersConnections)
+        foreach (KeyValuePair<int, infoMatchmaking> conection in sortedList)
         {
-            NoGameFoundEvent evnt = NoGameFoundEvent.Create(conection);
+            NoGameFoundEvent evnt = NoGameFoundEvent.Create(conection.Value.playerConnection);
             evnt.Send();
         }
-        playersConnections.Clear();
+        sortedList.Clear();
+        dataOfAllUsers.Clear();
 
         //SceneManager.LoadScene("BOLTMapa");
     }
 
     public override void Disconnected(BoltConnection connection)
     {
-        //BoltLauncher.Shutdown();
-        //BoltNetwork.Shutdown();
-        //BoltLog.Warn("Me desconecte");
-        //if (sessionID == "0")
-        //{
-        //    var session = BoltMatchmaking.CurrentSession;
-        //    BoltLog.Warn(session.HostName);
-
-        //    BoltLauncher.StartClient();      
-        //}
-        //else if (sessionID == "1")
-        //{
-        //    BoltLog.Warn("Esperando sala 1");
-        //    BoltLauncher.StartClient();
-
-        //}
         BoltLauncher.StartClient();
 
         BoltMatchmaking.JoinSession(sessionID);
@@ -242,13 +263,10 @@ public class InfoRoom : GlobalEventListener
 
     public override void OnEvent(JoinPlayerEvent evnt) //LO RECIBE EL SERVER
     {
-        //Guardamos conexion del player
-        playersConnections.Add(evnt.RaisedBy);
-
         // DATA PLAYER ==> MATCHMAKING
-        infoMatchmaking playerData = new infoMatchmaking(evnt.elo, evnt.playerRol);
+        infoMatchmaking playerData = new infoMatchmaking(evnt.elo, evnt.playerRol, evnt.RaisedBy);
 
-        dataOfAllUsers.Add(new KeyValuePair<int,infoMatchmaking>(connections, playerData));
+        dataOfAllUsers.Add(new KeyValuePair<int, infoMatchmaking>(connections, playerData));
 
         connections++;
 
@@ -270,8 +288,9 @@ public class InfoRoom : GlobalEventListener
     public override void OnEvent(GoGameEvent evnt)
     {
         RoundData.isRed = evnt.isRed; //PARA QUE SPAWN EVENT SEPA A QUE EQUIPO VA
+        RoundData.expectedContribution = evnt.ExpectedContribution;
 
-        if(evnt.isRed)
+        if (evnt.isRed)
         {
             ELO.redChances = evnt.winningChances;
             ELO.blueChances = 1 - evnt.winningChances;
@@ -282,13 +301,14 @@ public class InfoRoom : GlobalEventListener
             ELO.blueChances = evnt.winningChances;
         }
 
-            Debug.Log("CHANCES IR: las chances de ganar del red son: " + ELO.redChances); 
+        Debug.Log("CHANCES IR: las chances de ganar del red son: " + ELO.redChances);
 
         //SceneManager.LoadScene("BOLTMapa");
         sessionID = evnt.ID;
         BoltLog.Warn("Guardo ID: " + sessionID);
 
         startTimer = true;
+
 
         DisconectPlayerEvent evnt2 = DisconectPlayerEvent.Create(GlobalTargets.OnlyServer);
         evnt2.Send();

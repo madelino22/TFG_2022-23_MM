@@ -22,6 +22,8 @@ public static class RoundData
 
     public static bool isRed = true;
 
+    public static float expectedContribution = -1;
+
     public static team winner = team.none;
 
     public static void ResetData()
