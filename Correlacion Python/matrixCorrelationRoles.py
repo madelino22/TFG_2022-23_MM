@@ -27,7 +27,7 @@ def CorrectString(palabra):
 # PARTE 1:==============================================================================
 def Firebase(dic, data, variableNames):
     # Guardamos el nombre de las variables
-    variableNames = ["None", "Duelist", "Sniper", "Healer", "NonePartner", "DuelistPartner", "SniperPartner", "HealerPartner", "Won", "Fun"]
+    variableNames = ["None", "Duelist", "Sniper", "Healer", "NonePartner", "DuelistPartner", "SniperPartner", "HealerPartner", "Won","Lost", "Draw", "Fun"]
     for v in variableNames:
         dic[v] = []
     index = 0
@@ -65,6 +65,10 @@ def Firebase(dic, data, variableNames):
             dic['Fun'][index] = data['Matches'][p][u]['gameRating'] 
             if winner_team == data['Matches'][p][u]['t']:
                 dic['Won'][index] = 1
+            elif winner_team == -1:
+                dic['Draw'][index] = 1
+            else:
+                dic['Lost'][index] = 1
             team_mate += 1
             index += 1
 
@@ -88,7 +92,7 @@ def Firebase(dic, data, variableNames):
 
 # MAIN==================================================================================
 def main():
-    firebase_file = 'Firebase/PruebasMM4.json'
+    firebase_file = 'Firebase/PruebasMM5.json'
     
     #-------------RECOGIDA DE DATOS----------------
     # df = {
