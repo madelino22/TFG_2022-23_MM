@@ -27,7 +27,11 @@ def CorrectString(palabra):
 # PARTE 1:==============================================================================
 def Firebase(dic, data, variableNames):
     # Guardamos el nombre de las variables
-    variableNames = ["None", "Duelist", "Sniper", "Healer", "NonePartner", "DuelistPartner", "SniperPartner", "HealerPartner", "Won","Lost", "Draw", "Fun"]
+    variableNames = ["DuelistNone", "DuelistDuelist", "DuelistSniper", "DuelistHealer", 
+                     "HealerNone", "HealerSniper", "HealerHealer",
+                     "NoneNone", "NoneSniper",
+                     "SniperSniper",
+                     "Won", "Lost", "Draw", "Fun"]
     for v in variableNames:
         dic[v] = []
     index = 0
@@ -52,41 +56,56 @@ def Firebase(dic, data, variableNames):
                 else:
                     team1 = np.concatenate((team1, [data['Matches'][p][u]['name']]))
  
-        team_mate = 0
-        for u in team0:
-            for v in variableNames:
-                dic[v] = np.concatenate((dic[v], [0]))
-            
-            role = data['Matches'][p][u]['lastRole']
-            dic[role][index] = 1
-            other = team0[(team_mate + 1) % 2]
-            partner_role = data['Matches'][p][other]['lastRole'] + 'Partner'
-            dic[partner_role][index] = 1
-            dic['Fun'][index] = data['Matches'][p][u]['gameRating'] 
-            if winner_team == data['Matches'][p][u]['t']:
-                dic['Won'][index] = 1
-            elif winner_team == -1:
-                dic['Draw'][index] = 1
-            else:
-                dic['Lost'][index] = 1
-            team_mate += 1
-            index += 1
+        # TEAM 0====================
+        # Default value
+        for v in variableNames:
+            dic[v] = np.concatenate((dic[v], [0])) # anyadimos una columna/team mas al diccionario
+        # que rol tiene cada uno en el team
+        u = team0[0]
+        role = data['Matches'][p][u]['lastRole']
+        other = team0[1]
+        partner_role = data['Matches'][p][other]['lastRole']
 
-        team_mate = 0
-        for u in team1:
-            for v in variableNames:
-                dic[v] = np.concatenate((dic[v], [0]))
+        # calculamos key en el diccionario
+        combo = role + partner_role
+        if role[0] > partner_role[0]:
+            combo = partner_role + role
+
+        dic[combo][index] = 1
+
+        dic['Fun'][index] = (data['Matches'][p][u]['gameRating'] + data['Matches'][p][other]['gameRating'] ) / 2
+        if winner_team == data['Matches'][p][u]['t']:
+            dic['Won'][index] = 1
+        elif winner_team == -1:
+            dic['Draw'][index] = 1
+        else:
+            dic['Lost'][index] = 1
+
+        index += 1 # siguiente team
             
-            role = data['Matches'][p][u]['lastRole']
-            dic[role][index] = 1
-            other = team1[(team_mate + 1) % 2]
-            partner_role = data['Matches'][p][other]['lastRole'] + 'Partner'
-            dic[partner_role][index] = 1
-            dic['Fun'][index] = data['Matches'][p][u]['gameRating'] 
-            if winner_team == data['Matches'][p][u]['t']:
-                dic['Won'][index] = 1
-            team_mate += 1
-            index += 1
+        # TEAM 1======================================
+        for v in variableNames:
+            dic[v] = np.concatenate((dic[v], [0]))# anyadimos una columna/team mas al diccionario
+        u = team1[0]
+        role = data['Matches'][p][u]['lastRole']
+        other = team1[1]
+        partner_role = data['Matches'][p][other]['lastRole']
+
+        combo = role + partner_role
+        if role[0] > partner_role[0]:
+            combo = partner_role + role
+
+        dic[combo][index] = 1
+
+        dic['Fun'][index] = (data['Matches'][p][u]['gameRating'] + data['Matches'][p][other]['gameRating'] ) / 2
+        if winner_team == data['Matches'][p][u]['t']:
+            dic['Won'][index] = 1
+        elif winner_team == -1:
+            dic['Draw'][index] = 1
+        else:
+            dic['Lost'][index] = 1
+
+        index += 1 # siguiente team
 
     return dic, variableNames
 
