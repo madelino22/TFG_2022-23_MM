@@ -40,7 +40,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
     public string playerRole = "None"; //Rol maytoritario
     public string lastRole = "None"; //Rol de la ultima partida (ayuda para saber donde colocar la valoracion)
     public int numFranc = 0;
-    public int numHeal= 0;
+    public int numHeal = 0;
     public int numDuel = 0;
     public int numNone = 0;
 
@@ -166,7 +166,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
         //}
     }
 
-    public void UpdateUserHistory(team winner)
+    public void UpdateUserHistory(team winner, int redDamage, int blueDamage, string partnerRole)
     {
         gamesPlayed++;
 
@@ -211,12 +211,13 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                     eloK++;
                     SA = 1f;
                 }
-                else {
+                else
+                {
                     resultLastMatch = "Lost";
                     loses++;
                     eloK--;
                     SA = 0f;
-                } 
+                }
                 break;
             case team.none:
                 resultLastMatch = "Draw";
@@ -279,7 +280,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
         }
         else if (aux < 1.3f && RoundData.healedPlayers > 4000)
         {
-            if (dps_in_match / 30 > ((float) RoundData.healedPlayers) / 4000.0f)
+            if (dps_in_match / 30 > ((float)RoundData.healedPlayers) / 4000.0f)
             {
                 lastRole = "Duelist";
             }
@@ -363,9 +364,26 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
             playerRole = "None";
         }
 
-        float realContribution = calculateContribution();
+        float realContribution;
+
+        if (RoundData.isRed)
+            realContribution = calculateContribution(redDamage, blueDamage, partnerRole);
+        else
+            realContribution = calculateContribution(blueDamage, redDamage, partnerRole);
 
         float eloMultiplayer = realContribution / RoundData.expectedContribution; //Multiplicador de Elo
+
+        float x = eloMultiplayer * 1.5f; //Para llegar a los margenes de la campana de Gauss
+
+        float mu = 1.5f;
+        float sigma = 0.4f;
+        float yGauss = calculateGauss(x, mu, sigma);
+
+        if (eloMultiplayer > 1)
+        {
+            eloMultiplayer = 2 - yGauss;
+        }
+        else eloMultiplayer = yGauss;
 
         float oldElo = eloRanking;
         eloRanking = ELO.CalculteNewElo(eloRanking, eloK, SA, E); // LOLITOOOOOO
@@ -373,7 +391,6 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
         float diffElo = Mathf.Abs(oldElo - eloRanking); //Elo conseguido en esta partida
 
         eloRanking = oldElo;
-
 
         float diffContr = Mathf.Abs(diffElo - (float)(diffElo * eloMultiplayer));
 
@@ -402,7 +419,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                 }
                 break;
             case team.none:
-                if(E > 0.5)
+                if (E > 0.5)
                 {
                     eloRanking -= diffElo - diffContr;
                 }
@@ -410,13 +427,13 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                 {
                     eloRanking += diffElo + diffContr;
                 }
-                else 
+                else
                 {
-                    if(eloMultiplayer > 1)
+                    if (eloMultiplayer > 1)
                     {
                         eloRanking += diffElo + diffContr;
                     }
-                    else if(eloMultiplayer < 1) //Sio es igual a 1 es que ha hecho lo que deberia y nos da igual
+                    else if (eloMultiplayer < 1) //Sio es igual a 1 es que ha hecho lo que deberia y nos da igual
                     {
                         eloRanking -= diffElo - diffContr;
                     }
@@ -428,8 +445,41 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
         Debug.Log("Expectativa contribucion: " + RoundData.expectedContribution);
     }
 
-    private float calculateContribution()//Parte del 100% del hecho por el grupo del jugador
+    private float calculateContribution(int myTeamDamage, int enemyTeamDamage, string partnerRole)//Parte del 100% del hecho por el grupo del jugador
     {
-        return 0;
+        float contribution = 0;
+        switch (playerRole)
+        {
+            case "Sniper":
+
+                break;
+            case "Healer":
+
+                break;
+            case "Duelist":
+                // Vida 50
+                if (enemyTeamDamage == 0)
+                    contribution += (RoundData.expectedContribution / 2);
+                else
+                {
+                    int ratioLife = RoundData.damageReceived / enemyTeamDamage;
+                    ratioLife *= 100;
+                    float a = ratioLife / (RoundData.expectedContribution / 2);
+                }
+                // Ataque 50
+
+                break;
+            default: //Error el rol none no deberia existir
+                lastRole = "UserHistory linea x este rol no deberia existir ERROR";
+                break;
+        }
+        return contribution;
+    }
+
+    private float calculateGauss(float x, float mu, float sigma)
+    {
+        float y = 1.0f / (sigma * Mathf.Sqrt(2.0f * Mathf.PI)) * Mathf.Exp(-(Mathf.Pow((x - mu) / sigma, 2f) / 2.0f));
+        if (y > 0.99) y = 1;
+        return y;
     }
 }

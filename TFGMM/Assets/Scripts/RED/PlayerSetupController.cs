@@ -57,6 +57,7 @@ public class PlayerSetupController : GlobalEventListener
             evnt2.playerName = name;
             evnt2.isRed = RoundData.isRed; //MATCH MAKING YA DETERMINO A QUE EQUIPO PERTENECE
             evnt2.winningChances = ELO.blueChances;
+            evnt2.winningChances = ELO.blueChances;
             evnt2.playerRole = ComInfo.getPlayerData().playerRole;
             evnt2.Send();
 
@@ -128,9 +129,7 @@ public class PlayerSetupController : GlobalEventListener
         team equipo = team.blue;
         if (entities[contador - 1].gameObject.transform.CompareTag("Red"))
             equipo = team.red;
-        partida.addPlayer(namePlayers[contador - 1], equipo, contador - 1);
-        //???????????
-        //partida.setPlayerRole(contador - 1, evnt.playerRole);
+        partida.addPlayer(namePlayers[contador - 1], equipo, contador - 1, evnt.playerRole);
     }
 
     //Solo lo ejecuta el server
@@ -276,7 +275,9 @@ public class PlayerSetupController : GlobalEventListener
             //esta llamada funciona bien
             partida.damaged(namePlayers[evnt.nameDamaged], namePlayers[evnt.damagedBy], evnt.distance);
 
-            //Esto no funciona bien
+            if (partida.GetPlayerTeam(evnt.damagedBy.ToString()) == team.red) partida.damageDealtRed += 500;
+            else if (partida.GetPlayerTeam(evnt.damagedBy.ToString()) == team.blue) partida.damageDealtBlue += 500;
+
             //damageDoneEvent evn = damageDoneEvent.Create(entityConnection[evnt.damagedBy]);
             damageDoneEvent evn = damageDoneEvent.Create(entityConnection[evnt.damagedBy]);
             evn.namePlayer = namePlayers[evnt.damagedBy];
@@ -378,7 +379,7 @@ public class PlayerSetupController : GlobalEventListener
             UserHistory userHistory = ComInfo.getPlayerData();
 
             //Actualizamos con lo hecho en la partida
-            userHistory.UpdateUserHistory((team)evnt.winnerTeam);
+            userHistory.UpdateUserHistory((team)evnt.winnerTeam, (int)evnt.DamageRed, (int)evnt.DamageBlue, evnt.partnerRole);
 
             //Guardamos la info con la partida actualizada
             ComInfo.setPlayerData(userHistory);
@@ -413,9 +414,15 @@ public class PlayerSetupController : GlobalEventListener
             SendPlayersToFinalScene ev = SendPlayersToFinalScene.Create(GlobalTargets.AllClients);
             ev.Send();
 
-            updatePlayerStatsEvent ev2 = updatePlayerStatsEvent.Create(GlobalTargets.AllClients);
-            ev2.winnerTeam = (int)partida.winner;
-            ev2.Send();
+            for (int i = 0; i < PLAYEROOM; i++)
+            {
+                updatePlayerStatsEvent ev2 = updatePlayerStatsEvent.Create(entityConnection[i]);
+                ev2.winnerTeam = (int)partida.winner;
+                ev2.partnerRole = partida.getPartnerRole(partida.players[i].name);
+                ev2.DamageRed = partida.damageDealtRed;
+                ev2.DamageBlue = partida.damageDealtBlue;
+                ev2.Send();
+            }
         }
     }
 

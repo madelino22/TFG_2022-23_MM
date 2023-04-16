@@ -16,9 +16,10 @@ public class PlayerMatch
         t = myTeam;
     }
 
-    public PlayerMatch(string n, int k, int d, int tDamage, int damageR, int tshots, team myTeam, int healM, int healOther)
+    public PlayerMatch(string n, string r, int k, int d, int tDamage, int damageR, int tshots, team myTeam, int healM, int healOther)
     {
         name = n;
+        role = r;
         kills = k;
         deaths = d;
         damageInflicted = tDamage;
@@ -30,6 +31,7 @@ public class PlayerMatch
     }
 
     public string name = "Jugador ";
+    public string role = "None";
     public int kills = 0;
     public int deaths = 0;
     public int damageInflicted = 0;
@@ -51,6 +53,8 @@ public class Match
     public team winner = team.red;
     public int pointsBlue = 0;
     public int pointsRed = 0;
+    public int damageDealtRed = 0;
+    public int damageDealtBlue = 0;
     public float winningChancesRed = 0;
     public float winningChancesBlue = 0;
 
@@ -64,9 +68,10 @@ public class Match
         players = new PlayerMatch[n];
     }
 
-    public void addPlayer(string name, team t, int i)
+    public void addPlayer(string name, team t, int i, string role_)
     {
         players[i] = new PlayerMatch(name, t);
+        players[i].role = role_;
     }
 
     public Match(team w, DataSnapshot info)
@@ -76,6 +81,7 @@ public class Match
         for (int i = 0; i < 4; i++)
         {
             string name = info.Child("Jugador " + i).Child("name").Value.ToString();
+            string role = info.Child("Jugador " + i).Child("role").Value.ToString();
             int kills = int.Parse(info.Child("Jugador " + i).Child("kills").Value.ToString().ToString());
             int deaths = int.Parse(info.Child("Jugador " + i).Child("deaths").Value.ToString().ToString());
             int totalDamage = int.Parse(info.Child("Jugador " + i).Child("totalDamage").Value.ToString().ToString());
@@ -85,7 +91,7 @@ public class Match
             int healMe = int.Parse(info.Child("Jugador " + i).Child("healMe").Value.ToString().ToString());
             team t =(team) int.Parse(info.Child("Jugador " + i).Child("t").Value.ToString().ToString());
 
-            players[i] = new PlayerMatch(name, kills, deaths, totalDamage, damageReceived, totalShots,  t, healOthers, healMe);
+            players[i] = new PlayerMatch(name, role, kills, deaths, totalDamage, damageReceived, totalShots,  t, healOthers, healMe);
         }
     }
 
@@ -97,9 +103,26 @@ public class Match
         winningChancesBlue = 0;
     }
 
-    public void setPlayerRole(int id, string role)
+    public string getPartnerRole(string myName)
     {
-       // players[id].rolePlayer = role;   
+        team t_ = team.none;
+        for (int i = 0; i < players.Length; i++)
+        {
+            if (players[i].name == myName)
+            {
+                t_ = players[i].t;
+                break;
+            }
+        }
+
+        for (int i = 0; i < players.Length; i++)
+        {
+            if (players[i].name != myName && players[i].t == t_)
+            {
+                return players[i].role;
+            }
+        }
+        return "None";
     }
 
     public void killed(string killed, string killedBy)
@@ -167,5 +190,17 @@ public class Match
     {
         string s = JsonUtility.ToJson(players[i]);
         return s;
+    }
+
+    public team GetPlayerTeam(string playerName)
+    {
+        for (int i = 0; i < players.Length; i++)
+        {
+            if (players[i].name == playerName)
+            {
+                return players[i].t;
+            }
+        }
+        return team.none;
     }
 }
