@@ -55,7 +55,7 @@ public class InfoRoom : GlobalEventListener
 
             JoinPlayerEvent evnt = JoinPlayerEvent.Create(GlobalTargets.OnlyServer);
             evnt.name = user.userName;
-            evnt.elo = user.eloRanking;
+            evnt.elo = (int)user.eloRanking;
             evnt.playerRol = user.playerRole;
             evnt.Send();
         }

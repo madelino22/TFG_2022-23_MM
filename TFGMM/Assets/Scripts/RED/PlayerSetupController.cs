@@ -315,12 +315,12 @@ public class PlayerSetupController : GlobalEventListener
 
     public override void OnEvent(healingReceivedEvent evnt)
     {
-        RoundData.healedMyLife+= 250;
+        RoundData.healedMyLife+= 400;
     }
 
     public override void OnEvent(healingDoneEvent evnt)
     {
-        RoundData.healedPlayers += 250;
+        RoundData.healedPlayers += 400;
     }
 
     public override void OnEvent(killedEvent evnt)

@@ -28,7 +28,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
     //
     public int zzlastGameSaved = 0;
     //ELO
-    public int eloRanking = 1500;
+    public float eloRanking = 1500;
     public float eloK = 40;
     //MEDIAS
     public float killsDeathsRatioAverage = 0;
@@ -225,12 +225,6 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                 break;
         }
 
-        if (RoundData.isRed)
-            E = ELO.GetRedChances();
-        else
-            E = ELO.GetBlueChances();
-
-        Debug.Log("CHANCES UH: las chances de ganar del red son: " + ELO.redChances);
 
         if (gamesPlayed < 10)
         {
@@ -238,11 +232,11 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
         }
         else
         {
-            if(eloRanking < 2100)
+            if (eloRanking < 2100)
             {
                 eloK = 32;
             }
-            else if(eloRanking > 2400)
+            else if (eloRanking > 2400)
             {
                 eloK = 16;
             }
@@ -251,7 +245,13 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                 eloK = 24;
             }
         }
-        eloRanking = ELO.CalculteNewElo(eloRanking, eloK, SA, E); // LOLITOOOOOO
+
+        if (RoundData.isRed)
+            E = ELO.GetRedChances();
+        else
+            E = ELO.GetBlueChances();
+
+        Debug.Log("CHANCES UH: las chances de ganar del red son: " + ELO.redChances);
         //MEDIAS
 
         killsDeathsRatioAverage = kills;
@@ -277,9 +277,9 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                 lastRole = "Healer";
             }
         }
-        else if (aux < 1.3f && RoundData.healedPlayers > 2500)
+        else if (aux < 1.3f && RoundData.healedPlayers > 4000)
         {
-            if (dps_in_match / 30 > ((float) RoundData.healedPlayers) / 2500.0f)
+            if (dps_in_match / 30 > ((float) RoundData.healedPlayers) / 4000.0f)
             {
                 lastRole = "Duelist";
             }
@@ -288,13 +288,13 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                 lastRole = "Healer";
             }
         }
-        else if (aux > 1.3f && RoundData.healedPlayers < 2500)
+        else if (aux > 1.3f && RoundData.healedPlayers < 4000)
         {
             lastRole = "Sniper";
         }
         else if (aux != 0 && RoundData.healedPlayers != 0)
         {
-            if (dps_in_match / 30 > ((float)RoundData.healedPlayers) / 2500.0f)
+            if (dps_in_match / 30 > ((float)RoundData.healedPlayers) / 4000.0f)
             {
                 lastRole = "Duelist";
             }
@@ -363,6 +363,73 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
             playerRole = "None";
         }
 
+        float realContribution = calculateContribution();
+
+        float eloMultiplayer = realContribution / RoundData.expectedContribution; //Multiplicador de Elo
+
+        float oldElo = eloRanking;
+        eloRanking = ELO.CalculteNewElo(eloRanking, eloK, SA, E); // LOLITOOOOOO
+
+        float diffElo = Mathf.Abs(oldElo - eloRanking); //Elo conseguido en esta partida
+
+        eloRanking = oldElo;
+
+
+        float diffContr = Mathf.Abs(diffElo - (float)(diffElo * eloMultiplayer));
+
+        if (diffElo < 1) diffElo = 1;
+
+        switch (winner)
+        {
+            case team.red:
+                if (RoundData.isRed)
+                {
+                    eloRanking += diffElo + diffContr;
+                }
+                else
+                {
+                    eloRanking -= diffElo - diffContr;
+                }
+                break;
+            case team.blue:
+                if (!RoundData.isRed)
+                {
+                    eloRanking -= diffElo - diffContr;
+                }
+                else
+                {
+                    eloRanking += diffElo + diffContr;
+                }
+                break;
+            case team.none:
+                if(E > 0.5)
+                {
+                    eloRanking -= diffElo - diffContr;
+                }
+                else if (E < 0.5)
+                {
+                    eloRanking += diffElo + diffContr;
+                }
+                else 
+                {
+                    if(eloMultiplayer > 1)
+                    {
+                        eloRanking += diffElo + diffContr;
+                    }
+                    else if(eloMultiplayer < 1) //Sio es igual a 1 es que ha hecho lo que deberia y nos da igual
+                    {
+                        eloRanking -= diffElo - diffContr;
+                    }
+                }
+                break;
+        }
+
+
         Debug.Log("Expectativa contribucion: " + RoundData.expectedContribution);
+    }
+
+    private float calculateContribution()//Parte del 100% del hecho por el grupo del jugador
+    {
+        return 0;
     }
 }

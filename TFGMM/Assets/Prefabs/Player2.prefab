@@ -3078,7 +3078,7 @@ MonoBehaviour:
   movementLimit: 0.05
   joystick: {fileID: 5037748387783944850}
   playerBall: {fileID: 3350997221010102679}
-  _totalLife: 2500
+  _totalLife: 1500
   id: 0
 --- !u!114 &5589480993132292906
 MonoBehaviour:

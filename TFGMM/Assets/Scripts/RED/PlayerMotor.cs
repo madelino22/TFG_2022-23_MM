@@ -34,8 +34,8 @@ public class PlayerMotor : EntityEventListener<IPlayerState>
     private bool _firstState = true;
 
     [SerializeField]
-    private int _totalLife = 2500;
-    private int _actualLife = 2500;
+    private int _totalLife = 1500;
+    private int _actualLife = 1500;
     private Vector3 _spawnPos;
     public Vector3 SpawnPos { get => _spawnPos; set => _spawnPos = value; }
 

@@ -49,9 +49,9 @@ public static class ELO
 
 
     #endregion
-    public static int CalculteNewElo(int RA, float K, float SA, float EA)
+    public static float CalculteNewElo(float RA, float K, float SA, float EA)
     {
-        int RÀ = (int)(RA +  K * (SA - EA));
+        float RÀ = (RA +  K * (SA - EA));
         Math.Clamp(RÀ, 0, 3000);
         return RÀ;
     }

@@ -81,10 +81,10 @@ public class PlayerCallback : EntityEventListener<IPlayerState>
 
     public void addLife(bool redWasHit, int healerName, int wasHitName)
     {
-        this._playerMotor.ActualLife += 250;
+        this._playerMotor.ActualLife += 400;
 
-        if (this._playerMotor.ActualLife >= 2500)
-            this._playerMotor.ActualLife = 2500;
+        if (this._playerMotor.ActualLife >= 1500)
+            this._playerMotor.ActualLife = 1500;
         else
         {
             //MANDAR EVENTO DE QUE SE HA HECHO DANYO------------------
