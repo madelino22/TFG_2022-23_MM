@@ -169,6 +169,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
     public void UpdateUserHistory(team winner, int redDamage, int blueDamage, string partnerRole)
     {
         gamesPlayed++;
+        Debug.Log("MI compañero es: " + partnerRole);
 
         float distanciaMediaPartida = RoundData.totalDistance / RoundData.hitEnemyShoots;
         distanceMedia = (distanceMedia * gamesPlayed - 1) / gamesPlayed;
@@ -447,27 +448,466 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
 
     private float calculateContribution(int myTeamDamage, int enemyTeamDamage, string partnerRole)//Parte del 100% del hecho por el grupo del jugador
     {
+        int lifeContribution;
+        int damageContribution;
+        int healContribution;
+        int totalHeal = healedMyLife + healedOthersLife;
+
         float contribution = 0;
         switch (playerRole)
         {
             case "Sniper":
+                switch (partnerRole)
+                {
+                    case "Sniper":
+                        lifeContribution = 45;
+                        damageContribution = 50;
+                        healContribution = 5;
 
+                        // Vida
+                        if (enemyTeamDamage == 0)
+                            contribution += lifeContribution / 2;
+                        else
+                        {
+                            float ratioLife = 1 - (RoundData.damageReceived / enemyTeamDamage);
+
+                            contribution += lifeContribution * ratioLife;
+                        }
+                        // Ataque
+                        if (myTeamDamage == 0)
+                            contribution += damageContribution / 2;
+                        else
+                        {
+                            float ratioLife = (RoundData.damageInflicted / myTeamDamage);
+
+                            contribution += damageContribution * ratioLife;
+                        }
+                        //Heal
+                        if (totalHeal == 0)
+                            contribution += healContribution / 2;
+                        else
+                        {
+                            float ratioLife = (healedOthersLife / totalHeal);
+
+                            contribution += healContribution * ratioLife;
+                        }
+                        break;
+                    case "Healer":
+                        lifeContribution = 30;
+                        damageContribution = 70;
+                        healContribution = 0;
+
+                        // Vida
+                        if (enemyTeamDamage == 0)
+                            contribution += lifeContribution / 2;
+                        else
+                        {
+                            float ratioLife = 1 - (RoundData.damageReceived / enemyTeamDamage);
+
+                            contribution += lifeContribution * ratioLife;
+                        }
+                        // Ataque
+                        if (myTeamDamage == 0)
+                            contribution += damageContribution / 2;
+                        else
+                        {
+                            float ratioLife = (RoundData.damageInflicted / myTeamDamage);
+
+                            contribution += damageContribution * ratioLife;
+                        }
+                        //Heal
+                        if (totalHeal == 0)
+                            contribution += healContribution / 2;
+                        else
+                        {
+                            float ratioLife = (healedOthersLife / totalHeal);
+
+                            contribution += healContribution * ratioLife;
+                        }
+                        break;
+                    case "Duelist":
+                        lifeContribution = 25;
+                        damageContribution = 50;
+                        healContribution = 25;
+
+                        // Vida
+                        if (enemyTeamDamage == 0)
+                            contribution += lifeContribution / 2;
+                        else
+                        {
+                            float ratioLife = 1 - (RoundData.damageReceived / enemyTeamDamage);
+
+                            contribution += lifeContribution * ratioLife;
+                        }
+                        // Ataque
+                        if (myTeamDamage == 0)
+                            contribution += damageContribution / 2;
+                        else
+                        {
+                            float ratioLife = (RoundData.damageInflicted / myTeamDamage);
+
+                            contribution += damageContribution * ratioLife;
+                        }
+                        //Heal
+                        if (totalHeal == 0)
+                            contribution += healContribution / 2;
+                        else
+                        {
+                            float ratioLife = (healedOthersLife / totalHeal);
+
+                            contribution += healContribution * ratioLife;
+                        }
+                        break;
+                    case "None":
+                        lifeContribution = 40;
+                        damageContribution = 40;
+                        healContribution = 20;
+
+                        // Vida
+                        if (enemyTeamDamage == 0)
+                            contribution += lifeContribution / 2;
+                        else
+                        {
+                            float ratioLife = 1 - (RoundData.damageReceived / enemyTeamDamage);
+
+                            contribution += lifeContribution * ratioLife;
+                        }
+                        // Ataque
+                        if (myTeamDamage == 0)
+                            contribution += damageContribution / 2;
+                        else
+                        {
+                            float ratioLife = (RoundData.damageInflicted / myTeamDamage);
+
+                            contribution += damageContribution * ratioLife;
+                        }
+                        //Heal
+                        if (totalHeal == 0)
+                            contribution += healContribution / 2;
+                        else
+                        {
+                            float ratioLife = (healedOthersLife / totalHeal);
+
+                            contribution += healContribution * ratioLife;
+                        }
+                        break;
+                    default: //Error el rol none no deberia existir
+                        lastRole = "UserHistory linea x este rol no deberia existir ERROR";
+                        break;
+                }
                 break;
             case "Healer":
+                switch (partnerRole)
+                {
+                    case "Sniper":
+                        lifeContribution = 40;
+                        damageContribution = 10;
+                        healContribution = 50;
 
+                        // Vida
+                        if (enemyTeamDamage == 0)
+                            contribution += lifeContribution / 2;
+                        else
+                        {
+                            float ratioLife = 1 - (RoundData.damageReceived / enemyTeamDamage);
+
+                            contribution += lifeContribution * ratioLife;
+                        }
+                        // Ataque
+                        if (myTeamDamage == 0)
+                            contribution += damageContribution / 2;
+                        else
+                        {
+                            float ratioLife = (RoundData.damageInflicted / myTeamDamage);
+
+                            contribution += damageContribution * ratioLife;
+                        }
+                        //Heal
+                        if (totalHeal == 0)
+                            contribution += healContribution / 2;
+                        else
+                        {
+                            float ratioLife = (healedOthersLife / totalHeal);
+
+                            contribution += healContribution * ratioLife;
+                        }
+                        break;
+                    case "Healer":
+                        lifeContribution = 33;
+                        damageContribution = 33;
+                        healContribution = 34;
+
+                        // Vida
+                        if (enemyTeamDamage == 0)
+                            contribution += lifeContribution / 2;
+                        else
+                        {
+                            float ratioLife = 1 - (RoundData.damageReceived / enemyTeamDamage);
+
+                            contribution += lifeContribution * ratioLife;
+                        }
+                        // Ataque
+                        if (myTeamDamage == 0)
+                            contribution += damageContribution / 2;
+                        else
+                        {
+                            float ratioLife = (RoundData.damageInflicted / myTeamDamage);
+
+                            contribution += damageContribution * ratioLife;
+                        }
+                        //Heal
+                        if (totalHeal == 0)
+                            contribution += healContribution / 2;
+                        else
+                        {
+                            float ratioLife = (healedOthersLife / totalHeal);
+
+                            contribution += healContribution * ratioLife;
+                        }
+                        break;
+                    case "Duelist":
+                        lifeContribution = 25;
+                        damageContribution = 25;
+                        healContribution = 50;
+
+                        // Vida
+                        if (enemyTeamDamage == 0)
+                            contribution += lifeContribution / 2;
+                        else
+                        {
+                            float ratioLife = 1 - (RoundData.damageReceived / enemyTeamDamage);
+
+                            contribution += lifeContribution * ratioLife;
+                        }
+                        // Ataque
+                        if (myTeamDamage == 0)
+                            contribution += damageContribution / 2;
+                        else
+                        {
+                            float ratioLife = (RoundData.damageInflicted / myTeamDamage);
+
+                            contribution += damageContribution * ratioLife;
+                        }
+                        //Heal
+                        if (totalHeal == 0)
+                            contribution += healContribution / 2;
+                        else
+                        {
+                            float ratioLife = (healedOthersLife / totalHeal);
+
+                            contribution += healContribution * ratioLife;
+                        }
+                        break;
+                    case "None":
+                        lifeContribution = 25;
+                        damageContribution = 25;
+                        healContribution = 50;
+
+                        // Vida
+                        if (enemyTeamDamage == 0)
+                            contribution += lifeContribution / 2;
+                        else
+                        {
+                            float ratioLife = 1 - (RoundData.damageReceived / enemyTeamDamage);
+
+                            contribution += lifeContribution * ratioLife;
+                        }
+                        // Ataque
+                        if (myTeamDamage == 0)
+                            contribution += damageContribution / 2;
+                        else
+                        {
+                            float ratioLife = (RoundData.damageInflicted / myTeamDamage);
+
+                            contribution += damageContribution * ratioLife;
+                        }
+                        //Heal
+                        if (totalHeal == 0)
+                            contribution += healContribution / 2;
+                        else
+                        {
+                            float ratioLife = (healedOthersLife / totalHeal);
+
+                            contribution += healContribution * ratioLife;
+                        }
+                        break;
+                    default: //Error el rol none no deberia existir
+                        lastRole = "UserHistory linea x este rol no deberia existir ERROR";
+                        break;
+                }
                 break;
             case "Duelist":
-                // Vida 50
+                switch (partnerRole)
+                {
+                    case "Sniper":
+                        lifeContribution = 70;
+                        damageContribution = 30;
+                        healContribution = 0;
+
+                        // Vida
+                        if (enemyTeamDamage == 0)
+                            contribution += lifeContribution / 2;
+                        else
+                        {
+                            float ratioLife = 1 - (RoundData.damageReceived / enemyTeamDamage);
+
+                            contribution += lifeContribution * ratioLife;
+                        }
+                        // Ataque
+                        if (myTeamDamage == 0)
+                            contribution += damageContribution / 2;
+                        else
+                        {
+                            float ratioLife = (RoundData.damageInflicted / myTeamDamage);
+
+                            contribution += damageContribution * ratioLife;
+                        }
+                        //Heal
+                        if (totalHeal == 0)
+                            contribution += healContribution / 2;
+                        else
+                        {
+                            float ratioLife = (healedOthersLife / totalHeal);
+
+                            contribution += healContribution * ratioLife;
+                        }
+                        break;
+                    case "Healer":
+                        lifeContribution = 25;
+                        damageContribution = 75;
+                        healContribution = 0;
+
+                        // Vida
+                        if (enemyTeamDamage == 0)
+                            contribution += lifeContribution / 2;
+                        else
+                        {
+                            float ratioLife = 1 - (RoundData.damageReceived / enemyTeamDamage);
+
+                            contribution += lifeContribution * ratioLife;
+                        }
+                        // Ataque
+                        if (myTeamDamage == 0)
+                            contribution += damageContribution / 2;
+                        else
+                        {
+                            float ratioLife = (RoundData.damageInflicted / myTeamDamage);
+
+                            contribution += damageContribution * ratioLife;
+                        }
+                        //Heal
+                        if (totalHeal == 0)
+                            contribution += healContribution / 2;
+                        else
+                        {
+                            float ratioLife = (healedOthersLife / totalHeal);
+
+                            contribution += healContribution * ratioLife;
+                        }
+                        break;
+                    case "Duelist":
+                        lifeContribution = 50;
+                        damageContribution = 50;
+                        healContribution = 0;
+
+                        // Vida
+                        if (enemyTeamDamage == 0)
+                            contribution += lifeContribution / 2;
+                        else
+                        {
+                            float ratioLife = 1 - (RoundData.damageReceived / enemyTeamDamage);
+
+                            contribution += lifeContribution * ratioLife;
+                        }
+                        // Ataque
+                        if (myTeamDamage == 0)
+                            contribution += damageContribution / 2;
+                        else
+                        {
+                            float ratioLife = (RoundData.damageInflicted / myTeamDamage);
+
+                            contribution += damageContribution * ratioLife;
+                        }
+                        //Heal
+                        if (totalHeal == 0)
+                            contribution += healContribution / 2;
+                        else
+                        {
+                            float ratioLife = (healedOthersLife / totalHeal);
+
+                            contribution += healContribution * ratioLife;
+                        }
+                        break;
+                    case "None":
+                        lifeContribution = 40;
+                        damageContribution = 40;
+                        healContribution = 20;
+
+                        // Vida
+                        if (enemyTeamDamage == 0)
+                            contribution += lifeContribution / 2;
+                        else
+                        {
+                            float ratioLife = 1 - (RoundData.damageReceived / enemyTeamDamage);
+
+                            contribution += lifeContribution * ratioLife;
+                        }
+                        // Ataque
+                        if (myTeamDamage == 0)
+                            contribution += damageContribution/2;
+                        else
+                        {
+                            float ratioLife = (RoundData.damageInflicted / myTeamDamage);
+
+                            contribution += damageContribution * ratioLife;
+                        }
+                        //Heal
+                        if (totalHeal == 0)
+                            contribution += healContribution / 2;
+                        else
+                        {
+                            float ratioLife = (healedOthersLife / totalHeal);
+
+                            contribution += healContribution * ratioLife;
+                        }
+                        break;
+                    default: //Error el rol none no deberia existir
+                        lastRole = "UserHistory linea x este rol no deberia existir ERROR";
+                        break;
+                }
+                break;
+            case "None":
+                lifeContribution = 40;
+                damageContribution = 40;
+                healContribution = 20;
+
+                // Vida
                 if (enemyTeamDamage == 0)
-                    contribution += (RoundData.expectedContribution / 2);
+                    contribution += lifeContribution / 2;
                 else
                 {
-                    int ratioLife = RoundData.damageReceived / enemyTeamDamage;
-                    ratioLife *= 100;
-                    float a = ratioLife / (RoundData.expectedContribution / 2);
-                }
-                // Ataque 50
+                    float ratioLife = 1 - (RoundData.damageReceived / enemyTeamDamage);
 
+                    contribution += lifeContribution * ratioLife;
+                }
+                // Ataque
+                if (myTeamDamage == 0)
+                    contribution += damageContribution / 2;
+                else
+                {
+                    float ratioLife = (RoundData.damageInflicted / myTeamDamage);
+
+                    contribution += damageContribution * ratioLife;
+                }
+                //Heal
+                if (totalHeal == 0)
+                    contribution += healContribution / 2;
+                else
+                {
+                    float ratioLife = (healedOthersLife / totalHeal);
+
+                    contribution += healContribution * ratioLife;
+                }
                 break;
             default: //Error el rol none no deberia existir
                 lastRole = "UserHistory linea x este rol no deberia existir ERROR";
