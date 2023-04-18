@@ -169,6 +169,16 @@ public class Match
                 players[i].damageInflicted += 500;
 
                 players[i].hitDistance = (players[i].hitDistance * (players[i].totalShotsEnemy - 1) + distance  / players[i].totalShotsEnemy);
+
+                if(players[i].t == team.blue)
+                {
+                    damageDealtBlue += 500;
+                }
+                else
+                {
+                    damageDealtRed += 500;
+                }
+
             }
         }
     }

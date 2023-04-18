@@ -451,7 +451,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
         int lifeContribution;
         int damageContribution;
         int healContribution;
-        int totalHeal = healedMyLife + healedOthersLife;
+        int totalHeal = RoundData.healedMyLife + RoundData.healedPlayers;
 
         float contribution = 0;
         switch (playerRole)
@@ -464,12 +464,13 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                         damageContribution = 50;
                         healContribution = 5;
 
+
                         // Vida
                         if (enemyTeamDamage == 0)
                             contribution += lifeContribution / 2;
                         else
                         {
-                            float ratioLife = 1 - (RoundData.damageReceived / enemyTeamDamage);
+                            float ratioLife = 1f - (float)((float)RoundData.damageReceived / (float)enemyTeamDamage);
 
                             contribution += lifeContribution * ratioLife;
                         }
@@ -478,7 +479,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                             contribution += damageContribution / 2;
                         else
                         {
-                            float ratioLife = (RoundData.damageInflicted / myTeamDamage);
+                            float ratioLife = ((float)RoundData.damageInflicted / (float)myTeamDamage);
 
                             contribution += damageContribution * ratioLife;
                         }
@@ -487,7 +488,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                             contribution += healContribution / 2;
                         else
                         {
-                            float ratioLife = (healedOthersLife / totalHeal);
+                            float ratioLife = ((float)RoundData.healedPlayers / (float)totalHeal);
 
                             contribution += healContribution * ratioLife;
                         }
@@ -497,12 +498,13 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                         damageContribution = 70;
                         healContribution = 0;
 
+
                         // Vida
                         if (enemyTeamDamage == 0)
                             contribution += lifeContribution / 2;
                         else
                         {
-                            float ratioLife = 1 - (RoundData.damageReceived / enemyTeamDamage);
+                            float ratioLife = 1f - (float)((float)RoundData.damageReceived / (float)enemyTeamDamage);
 
                             contribution += lifeContribution * ratioLife;
                         }
@@ -511,7 +513,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                             contribution += damageContribution / 2;
                         else
                         {
-                            float ratioLife = (RoundData.damageInflicted / myTeamDamage);
+                            float ratioLife = ((float)RoundData.damageInflicted / (float)myTeamDamage);
 
                             contribution += damageContribution * ratioLife;
                         }
@@ -520,7 +522,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                             contribution += healContribution / 2;
                         else
                         {
-                            float ratioLife = (healedOthersLife / totalHeal);
+                            float ratioLife = ((float)RoundData.healedPlayers / (float)totalHeal);
 
                             contribution += healContribution * ratioLife;
                         }
@@ -530,12 +532,13 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                         damageContribution = 50;
                         healContribution = 25;
 
+
                         // Vida
                         if (enemyTeamDamage == 0)
                             contribution += lifeContribution / 2;
                         else
                         {
-                            float ratioLife = 1 - (RoundData.damageReceived / enemyTeamDamage);
+                            float ratioLife = 1f - (float)((float)RoundData.damageReceived / (float)enemyTeamDamage);
 
                             contribution += lifeContribution * ratioLife;
                         }
@@ -544,7 +547,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                             contribution += damageContribution / 2;
                         else
                         {
-                            float ratioLife = (RoundData.damageInflicted / myTeamDamage);
+                            float ratioLife = ((float)RoundData.damageInflicted / (float)myTeamDamage);
 
                             contribution += damageContribution * ratioLife;
                         }
@@ -553,7 +556,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                             contribution += healContribution / 2;
                         else
                         {
-                            float ratioLife = (healedOthersLife / totalHeal);
+                            float ratioLife = ((float)RoundData.healedPlayers / (float)totalHeal);
 
                             contribution += healContribution * ratioLife;
                         }
@@ -563,12 +566,13 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                         damageContribution = 40;
                         healContribution = 20;
 
+
                         // Vida
                         if (enemyTeamDamage == 0)
                             contribution += lifeContribution / 2;
                         else
                         {
-                            float ratioLife = 1 - (RoundData.damageReceived / enemyTeamDamage);
+                            float ratioLife = 1f - (float)((float)RoundData.damageReceived / (float)enemyTeamDamage);
 
                             contribution += lifeContribution * ratioLife;
                         }
@@ -577,7 +581,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                             contribution += damageContribution / 2;
                         else
                         {
-                            float ratioLife = (RoundData.damageInflicted / myTeamDamage);
+                            float ratioLife = ((float)RoundData.damageInflicted / (float)myTeamDamage);
 
                             contribution += damageContribution * ratioLife;
                         }
@@ -586,7 +590,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                             contribution += healContribution / 2;
                         else
                         {
-                            float ratioLife = (healedOthersLife / totalHeal);
+                            float ratioLife = ((float)RoundData.healedPlayers / (float)totalHeal);
 
                             contribution += healContribution * ratioLife;
                         }
@@ -604,12 +608,13 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                         damageContribution = 10;
                         healContribution = 50;
 
+
                         // Vida
                         if (enemyTeamDamage == 0)
                             contribution += lifeContribution / 2;
                         else
                         {
-                            float ratioLife = 1 - (RoundData.damageReceived / enemyTeamDamage);
+                            float ratioLife = 1f - (float)((float)RoundData.damageReceived / (float)enemyTeamDamage);
 
                             contribution += lifeContribution * ratioLife;
                         }
@@ -618,7 +623,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                             contribution += damageContribution / 2;
                         else
                         {
-                            float ratioLife = (RoundData.damageInflicted / myTeamDamage);
+                            float ratioLife = ((float)RoundData.damageInflicted / (float)myTeamDamage);
 
                             contribution += damageContribution * ratioLife;
                         }
@@ -627,7 +632,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                             contribution += healContribution / 2;
                         else
                         {
-                            float ratioLife = (healedOthersLife / totalHeal);
+                            float ratioLife = ((float)RoundData.healedPlayers / (float)totalHeal);
 
                             contribution += healContribution * ratioLife;
                         }
@@ -637,12 +642,13 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                         damageContribution = 33;
                         healContribution = 34;
 
+
                         // Vida
                         if (enemyTeamDamage == 0)
                             contribution += lifeContribution / 2;
                         else
                         {
-                            float ratioLife = 1 - (RoundData.damageReceived / enemyTeamDamage);
+                            float ratioLife = 1f - (float)((float)RoundData.damageReceived / (float)enemyTeamDamage);
 
                             contribution += lifeContribution * ratioLife;
                         }
@@ -651,7 +657,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                             contribution += damageContribution / 2;
                         else
                         {
-                            float ratioLife = (RoundData.damageInflicted / myTeamDamage);
+                            float ratioLife = ((float)RoundData.damageInflicted / (float)myTeamDamage);
 
                             contribution += damageContribution * ratioLife;
                         }
@@ -660,7 +666,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                             contribution += healContribution / 2;
                         else
                         {
-                            float ratioLife = (healedOthersLife / totalHeal);
+                            float ratioLife = ((float)RoundData.healedPlayers / (float)totalHeal);
 
                             contribution += healContribution * ratioLife;
                         }
@@ -670,12 +676,13 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                         damageContribution = 25;
                         healContribution = 50;
 
+
                         // Vida
                         if (enemyTeamDamage == 0)
                             contribution += lifeContribution / 2;
                         else
                         {
-                            float ratioLife = 1 - (RoundData.damageReceived / enemyTeamDamage);
+                            float ratioLife = 1f - (float)((float)RoundData.damageReceived / (float)enemyTeamDamage);
 
                             contribution += lifeContribution * ratioLife;
                         }
@@ -684,7 +691,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                             contribution += damageContribution / 2;
                         else
                         {
-                            float ratioLife = (RoundData.damageInflicted / myTeamDamage);
+                            float ratioLife = ((float)RoundData.damageInflicted / (float)myTeamDamage);
 
                             contribution += damageContribution * ratioLife;
                         }
@@ -693,7 +700,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                             contribution += healContribution / 2;
                         else
                         {
-                            float ratioLife = (healedOthersLife / totalHeal);
+                            float ratioLife = ((float)RoundData.healedPlayers / (float)totalHeal);
 
                             contribution += healContribution * ratioLife;
                         }
@@ -703,12 +710,13 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                         damageContribution = 25;
                         healContribution = 50;
 
+
                         // Vida
                         if (enemyTeamDamage == 0)
                             contribution += lifeContribution / 2;
                         else
                         {
-                            float ratioLife = 1 - (RoundData.damageReceived / enemyTeamDamage);
+                            float ratioLife = 1f - (float)((float)RoundData.damageReceived / (float)enemyTeamDamage);
 
                             contribution += lifeContribution * ratioLife;
                         }
@@ -717,7 +725,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                             contribution += damageContribution / 2;
                         else
                         {
-                            float ratioLife = (RoundData.damageInflicted / myTeamDamage);
+                            float ratioLife = ((float)RoundData.damageInflicted / (float)myTeamDamage);
 
                             contribution += damageContribution * ratioLife;
                         }
@@ -726,7 +734,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                             contribution += healContribution / 2;
                         else
                         {
-                            float ratioLife = (healedOthersLife / totalHeal);
+                            float ratioLife = ((float)RoundData.healedPlayers / (float)totalHeal);
 
                             contribution += healContribution * ratioLife;
                         }
@@ -744,12 +752,13 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                         damageContribution = 30;
                         healContribution = 0;
 
+
                         // Vida
                         if (enemyTeamDamage == 0)
                             contribution += lifeContribution / 2;
                         else
                         {
-                            float ratioLife = 1 - (RoundData.damageReceived / enemyTeamDamage);
+                            float ratioLife = 1f - (float)((float)RoundData.damageReceived / (float)enemyTeamDamage);
 
                             contribution += lifeContribution * ratioLife;
                         }
@@ -758,7 +767,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                             contribution += damageContribution / 2;
                         else
                         {
-                            float ratioLife = (RoundData.damageInflicted / myTeamDamage);
+                            float ratioLife = ((float)RoundData.damageInflicted / (float)myTeamDamage);
 
                             contribution += damageContribution * ratioLife;
                         }
@@ -767,7 +776,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                             contribution += healContribution / 2;
                         else
                         {
-                            float ratioLife = (healedOthersLife / totalHeal);
+                            float ratioLife = ((float)RoundData.healedPlayers / (float)totalHeal);
 
                             contribution += healContribution * ratioLife;
                         }
@@ -777,12 +786,13 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                         damageContribution = 75;
                         healContribution = 0;
 
+
                         // Vida
                         if (enemyTeamDamage == 0)
                             contribution += lifeContribution / 2;
                         else
                         {
-                            float ratioLife = 1 - (RoundData.damageReceived / enemyTeamDamage);
+                            float ratioLife = 1f - (float)((float)RoundData.damageReceived / (float)enemyTeamDamage);
 
                             contribution += lifeContribution * ratioLife;
                         }
@@ -791,7 +801,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                             contribution += damageContribution / 2;
                         else
                         {
-                            float ratioLife = (RoundData.damageInflicted / myTeamDamage);
+                            float ratioLife = ((float)RoundData.damageInflicted / (float)myTeamDamage);
 
                             contribution += damageContribution * ratioLife;
                         }
@@ -800,7 +810,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                             contribution += healContribution / 2;
                         else
                         {
-                            float ratioLife = (healedOthersLife / totalHeal);
+                            float ratioLife = ((float)RoundData.healedPlayers / (float)totalHeal);
 
                             contribution += healContribution * ratioLife;
                         }
@@ -810,12 +820,13 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                         damageContribution = 50;
                         healContribution = 0;
 
+
                         // Vida
                         if (enemyTeamDamage == 0)
                             contribution += lifeContribution / 2;
                         else
                         {
-                            float ratioLife = 1 - (RoundData.damageReceived / enemyTeamDamage);
+                            float ratioLife = 1f - (float)((float)RoundData.damageReceived / (float)enemyTeamDamage);
 
                             contribution += lifeContribution * ratioLife;
                         }
@@ -824,7 +835,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                             contribution += damageContribution / 2;
                         else
                         {
-                            float ratioLife = (RoundData.damageInflicted / myTeamDamage);
+                            float ratioLife = ((float)RoundData.damageInflicted / (float)myTeamDamage);
 
                             contribution += damageContribution * ratioLife;
                         }
@@ -833,7 +844,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                             contribution += healContribution / 2;
                         else
                         {
-                            float ratioLife = (healedOthersLife / totalHeal);
+                            float ratioLife = ((float)RoundData.healedPlayers / (float)totalHeal);
 
                             contribution += healContribution * ratioLife;
                         }
@@ -843,21 +854,22 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                         damageContribution = 40;
                         healContribution = 20;
 
+
                         // Vida
                         if (enemyTeamDamage == 0)
                             contribution += lifeContribution / 2;
                         else
                         {
-                            float ratioLife = 1 - (RoundData.damageReceived / enemyTeamDamage);
+                            float ratioLife = 1f - (float)((float)RoundData.damageReceived / (float)enemyTeamDamage);
 
                             contribution += lifeContribution * ratioLife;
                         }
                         // Ataque
                         if (myTeamDamage == 0)
-                            contribution += damageContribution/2;
+                            contribution += damageContribution / 2;
                         else
                         {
-                            float ratioLife = (RoundData.damageInflicted / myTeamDamage);
+                            float ratioLife = ((float)RoundData.damageInflicted / (float)myTeamDamage);
 
                             contribution += damageContribution * ratioLife;
                         }
@@ -866,7 +878,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                             contribution += healContribution / 2;
                         else
                         {
-                            float ratioLife = (healedOthersLife / totalHeal);
+                            float ratioLife = ((float)RoundData.healedPlayers / (float)totalHeal);
 
                             contribution += healContribution * ratioLife;
                         }
@@ -886,7 +898,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                     contribution += lifeContribution / 2;
                 else
                 {
-                    float ratioLife = 1 - (RoundData.damageReceived / enemyTeamDamage);
+                    float ratioLife = 1f - (float)((float)RoundData.damageReceived / (float)enemyTeamDamage);
 
                     contribution += lifeContribution * ratioLife;
                 }
@@ -895,7 +907,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                     contribution += damageContribution / 2;
                 else
                 {
-                    float ratioLife = (RoundData.damageInflicted / myTeamDamage);
+                    float ratioLife = ((float)RoundData.damageInflicted / (float)myTeamDamage);
 
                     contribution += damageContribution * ratioLife;
                 }
@@ -904,7 +916,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                     contribution += healContribution / 2;
                 else
                 {
-                    float ratioLife = (healedOthersLife / totalHeal);
+                    float ratioLife = ((float)healedOthersLife / (float)totalHeal);
 
                     contribution += healContribution * ratioLife;
                 }
