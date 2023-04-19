@@ -268,9 +268,9 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
         float dps_in_match = ((float)RoundData.damageInflicted) / 120.0f;   //33.3
 
         //PUEDE SER FRANCOTIRADOR O HEALER
-        if (aux > 1.3f && RoundData.healedPlayers > 2500)
+        if (aux > 1.3f && RoundData.healedPlayers > 4000f)
         {
-            if (aux / 1.3f > ((float)RoundData.healedPlayers) / 2500.0f)
+            if (aux / 1.3f > ((float)RoundData.healedPlayers) / 4000f)
             {
                 lastRole = "Sniper";
             }
