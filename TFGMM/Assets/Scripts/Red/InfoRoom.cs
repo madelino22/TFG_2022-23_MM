@@ -170,20 +170,21 @@ public class InfoRoom : GlobalEventListener
                     // HACEMOS NUESTRO MATCHMAKING Y DETERMINAMOS COMO SE FORMAN LOS EQUIPOS
 
                     //evnt.isRed = (contador % 2) == 0;  //PARA QUE SPAWN EVENT SEPA A QUE EQUIPO VA
-                    if (a > 100)
-                    //si la diferencia entre todos los jugadores que se han seleccionado para esta partida es relativamente grande,
-                    //entonces se organizand para que la media de ranking de cada equipo sea lo m´´as pareja posible, así los equipos
-                    //tendrán jugadores parejos dentro de la "diferencia de ranking". De esta manera el mejor de un equipo será muy parecido al 
-                    //mejor del otro
-                    {
                         evnts[jugadoresJoin].isRed = (jugadoresJoin < PLAYEROOM / 2);
-                    }
-                    else
-                    //si la diferencia de ranking entre todos los jugadores es ínfima, entonces se organizan los jugadores en cuanto a rol favorito
-                    //para que así la satisfacción de la partida mejore
-                    {
+                    //if (a > 100)
+                    ////si la diferencia entre todos los jugadores que se han seleccionado para esta partida es relativamente grande,
+                    ////entonces se organizand para que la media de ranking de cada equipo sea lo m´´as pareja posible, así los equipos
+                    ////tendrán jugadores parejos dentro de la "diferencia de ranking". De esta manera el mejor de un equipo será muy parecido al 
+                    ////mejor del otro
+                    //{
+                    //    evnts[jugadoresJoin].isRed = (jugadoresJoin < PLAYEROOM / 2);
+                    //}
+                    //else
+                    ////si la diferencia de ranking entre todos los jugadores es ínfima, entonces se organizan los jugadores en cuanto a rol favorito
+                    ////para que así la satisfacción de la partida mejore
+                    //{
 
-                    }
+                    //}
 
                     if (evnts[jugadoresJoin].isRed)
                         redELOS.Add(sortedList[contador].Value.elo);
