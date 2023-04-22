@@ -37,7 +37,7 @@ def createPlayer(variableNames):
 
     return persona
 
-def updatePlayer(player, kills, deaths, healMe, healOther, bulletsHittedEnemy, winner, winProb=0): #perder 0 ganador 1 empate 0.5
+def updatePlayer(player, kills, deaths, healMe, healOther, bulletsHittedEnemy, winner, winProb, playerContribution): #perder 0 ganador 1 empate 0.5
     player["gamesPlayed"] += 1
     if(winner == 0):
         player["loses"] += 1
@@ -73,9 +73,23 @@ def updatePlayer(player, kills, deaths, healMe, healOther, bulletsHittedEnemy, w
     player["totalShots"] += bulletsHittedEnemy * failBulletRatio
 
 
-
+    oldRanking = player["eloRanking"]
     player["eloRanking"] = calculateElo(player["eloRanking"], player["eloK"],winner ,winProb)
+    eloRankingChange = player["eloRanking"] - oldRanking
+    eloRankingChange = abs(eloRankingChange)
 
+    if(winner == 1):
+        player["eloRanking"] += eloRankingChange * playerContribution
+    elif(winner == 0):
+        player["eloRanking"] -= eloRankingChange * playerContribution
+    else:
+        if(winProb > 0.5):
+            player["eloRanking"] -= eloRankingChange * playerContribution
+        elif(winProb < 0.5):
+            player["eloRanking"] += eloRankingChange * playerContribution
+
+    if(player["eloRanking"] < 0): player["eloRanking"] = 0
+    elif (player["eloRanking"] > 3000): player["eloRanking"] = 3000
 
     return player
 
@@ -83,9 +97,6 @@ def updatePlayer(player, kills, deaths, healMe, healOther, bulletsHittedEnemy, w
 def calculateElo(eloRanking, eloK, SA, probWin):
     
     newElo = eloRanking + eloK *(SA - probWin)
-
-    if(newElo < 0): newElo = 0
-    elif (newElo > 3000): newElo = 3000
     
     return newElo
     
@@ -105,7 +116,6 @@ def match(playerRed1, playerRed2, playerBlue1, playerBlue2):
         redWinProb = ((playerRed1["eloRanking"] + playerRed2["eloRanking"])/sumELO)
         blueWinProb = 1 - redWinProb
 
-
     #Dejo un porcentaje de empate que sea invesamente proporcional a sus posibilidades de ganar
     redWinProbAjust = redWinProb - blueWinProb * 0.1
     blueWinProbAjust = blueWinProb - redWinProb * 0.1
@@ -116,6 +126,14 @@ def match(playerRed1, playerRed2, playerBlue1, playerBlue2):
     drawProb = blueWinProbAjust - redWinProbAjust * 0.1 + redWinProbAjust - blueWinProbAjust * 0.1
 
     winner = random.randrange(0, 100)
+
+    player1Contribution = random.randrange(10, 177) / 100
+    player2Contribution = 1.77 - player1Contribution
+    player3Contribution = random.randrange(10, 177) / 100
+    player4Contribution = 1.77 - player3Contribution
+
+    if(player2Contribution == 0): player2Contribution = 0.1
+    if(player4Contribution == 0): player4Contribution = 0.1
 
     if(winner < drawProb): #Empate
         points = random.randrange(0, 10)
@@ -144,8 +162,12 @@ def match(playerRed1, playerRed2, playerBlue1, playerBlue2):
         if(totalDamage != 0):
             random.randrange(0, totalDamage)
 
-        playerRed1 = updatePlayer(playerRed1, kills1Player, deaths1Player, player2Heal*250, player1Heal*250, hittedPlayer1, 0.5, redWinProb)
-        playerRed2 = updatePlayer(playerRed2, kills2Player, deaths2Player, player1Heal*250, player2Heal*250, totalDamage - hittedPlayer1, 0.5, redWinProb)
+        if(redWinProb > 0.5):
+            playerRed1 = updatePlayer(playerRed1, kills1Player, deaths1Player, player2Heal*250, player1Heal*250, hittedPlayer1, 0.5, redWinProb, player2Contribution)
+            playerRed2 = updatePlayer(playerRed2, kills2Player, deaths2Player, player1Heal*250, player2Heal*250, totalDamage - hittedPlayer1, 0.5, redWinProb, player1Contribution)
+        else:
+            playerRed1 = updatePlayer(playerRed1, kills1Player, deaths1Player, player2Heal*250, player1Heal*250, hittedPlayer1, 0.5, redWinProb, player1Contribution)
+            playerRed2 = updatePlayer(playerRed2, kills2Player, deaths2Player, player1Heal*250, player2Heal*250, totalDamage - hittedPlayer1, 0.5, redWinProb, player2Contribution)
 
         kills3Player = 0
         kills4Player = 0
@@ -164,8 +186,12 @@ def match(playerRed1, playerRed2, playerBlue1, playerBlue2):
         if(totalDamage != 0):
             random.randrange(0, totalDamage)
 
-        playerBlue1 = updatePlayer(playerBlue1, kills3Player, deaths3Player, player3Heal*250, player4Heal*250, hittedPlayer3, 0.5, blueWinProb)
-        playerBlue2 = updatePlayer(playerBlue2, kills4Player, deaths4Player, player4Heal*250, player3Heal*250, totalDamage - hittedPlayer3, 0.5, blueWinProb)
+        if(blueWinProb > 0.5):
+            playerBlue1 = updatePlayer(playerBlue1, kills3Player, deaths3Player, player3Heal*250, player4Heal*250, hittedPlayer3, 0.5, blueWinProb, player4Contribution)
+            playerBlue2 = updatePlayer(playerBlue2, kills4Player, deaths4Player, player4Heal*250, player3Heal*250, totalDamage - hittedPlayer3, 0.5, blueWinProb, player3Contribution)
+        else:
+            playerBlue1 = updatePlayer(playerBlue1, kills3Player, deaths3Player, player3Heal*250, player4Heal*250, hittedPlayer3, 0.5, blueWinProb, player3Contribution)
+            playerBlue2 = updatePlayer(playerBlue2, kills4Player, deaths4Player, player4Heal*250, player3Heal*250, totalDamage - hittedPlayer3, 0.5, blueWinProb, player4Contribution)
 
     elif (winner < drawProb): #Ganra rojo
         pointsRed = random.randrange(1, 10)
@@ -197,8 +223,8 @@ def match(playerRed1, playerRed2, playerBlue1, playerBlue2):
         if(totalDamage != 0):
             random.randrange(0, totalDamage)
 
-        playerRed1 = updatePlayer(playerRed1, kills1Player, deaths1Player, player2Heal*250, player1Heal*250, hittedPlayer1, 1, redWinProb)
-        playerRed2 = updatePlayer(playerRed2, kills2Player, deaths2Player, player1Heal*250, player2Heal*250, totalDamage - hittedPlayer1, 1, redWinProb)
+        playerRed1 = updatePlayer(playerRed1, kills1Player, deaths1Player, player2Heal*250, player1Heal*250, hittedPlayer1, 1, redWinProb, player1Contribution)
+        playerRed2 = updatePlayer(playerRed2, kills2Player, deaths2Player, player1Heal*250, player2Heal*250, totalDamage - hittedPlayer1, 1, redWinProb, player2Contribution)
 
         kills3Player = 0
         kills4Player = 0
@@ -217,8 +243,8 @@ def match(playerRed1, playerRed2, playerBlue1, playerBlue2):
         if(totalDamage != 0):
             random.randrange(0, totalDamage)
 
-        playerBlue1 = updatePlayer(playerBlue1, kills3Player, deaths3Player, player3Heal*250, player4Heal*250, hittedPlayer3, 0, blueWinProb)
-        playerBlue2 = updatePlayer(playerBlue2, kills4Player, deaths4Player, player4Heal*250, player3Heal*250, totalDamage - hittedPlayer3, 0, blueWinProb)
+        playerBlue1 = updatePlayer(playerBlue1, kills3Player, deaths3Player, player3Heal*250, player4Heal*250, hittedPlayer3, 0, blueWinProb, player4Contribution)
+        playerBlue2 = updatePlayer(playerBlue2, kills4Player, deaths4Player, player4Heal*250, player3Heal*250, totalDamage - hittedPlayer3, 0, blueWinProb, player3Contribution)
     else: #Gana azul
         pointsBlue = random.randrange(1, 10)
         pointsRed = 0
@@ -249,8 +275,8 @@ def match(playerRed1, playerRed2, playerBlue1, playerBlue2):
         if(totalDamage != 0):
             random.randrange(0, totalDamage)
 
-        playerRed1 = updatePlayer(playerRed1, kills1Player, deaths1Player, player2Heal*250, player1Heal*250, hittedPlayer1, 0, redWinProb)
-        playerRed2 = updatePlayer(playerRed2, kills2Player, deaths2Player, player1Heal*250, player2Heal*250, totalDamage - hittedPlayer1, 0, redWinProb)
+        playerRed1 = updatePlayer(playerRed1, kills1Player, deaths1Player, player2Heal*250, player1Heal*250, hittedPlayer1, 0, redWinProb, player2Contribution)
+        playerRed2 = updatePlayer(playerRed2, kills2Player, deaths2Player, player1Heal*250, player2Heal*250, totalDamage - hittedPlayer1, 0, redWinProb, player1Contribution)
 
         kills3Player = 0
         kills4Player = 0
@@ -269,14 +295,14 @@ def match(playerRed1, playerRed2, playerBlue1, playerBlue2):
         if(totalDamage != 0):
             random.randrange(0, totalDamage)
 
-        playerBlue1 = updatePlayer(playerBlue1, kills3Player, deaths3Player, player3Heal*250, player4Heal*250, hittedPlayer3, 1, blueWinProb)
-        playerBlue2 = updatePlayer(playerBlue2, kills4Player, deaths4Player, player4Heal*250, player3Heal*250, totalDamage - hittedPlayer3, 1, blueWinProb)
+        playerBlue1 = updatePlayer(playerBlue1, kills3Player, deaths3Player, player3Heal*250, player4Heal*250, hittedPlayer3, 1, blueWinProb, player3Contribution)
+        playerBlue2 = updatePlayer(playerBlue2, kills4Player, deaths4Player, player4Heal*250, player3Heal*250, totalDamage - hittedPlayer3, 1, blueWinProb, player4Contribution)
      
     return playerRed1, playerRed2, playerBlue1, playerBlue2
 
 def main():
 
-    NUMPLAYERS = 2000
+    NUMPLAYERS = 5000
     PLAYERSGAME = 4
     TOTALROUNDS = 500
     MAXELO = 3000
@@ -305,10 +331,9 @@ def main():
     #GENERA PARTIDAS
     for i in range(TOTALROUNDS): #Numero de veces que van a jugar
         bubbleSort(createdPlayers)
+        print("Ronda: ", i)
         for j in range(int(NUMPLAYERS/PLAYERSGAME)): #Numero de partidas
             createdPlayers[j*PLAYERSGAME], createdPlayers[j*PLAYERSGAME + 3], createdPlayers[j*PLAYERSGAME + 2], createdPlayers[j*PLAYERSGAME + 1] = match(createdPlayers[j*PLAYERSGAME], createdPlayers[j*PLAYERSGAME +3], createdPlayers[j*PLAYERSGAME + 2], createdPlayers[j*PLAYERSGAME + 1])
-        if(i%50 == 0):
-            print("Ronda: ", i)
 
     playersELOX = np.zeros(MAXELO + 1)
     playersELOY = np.zeros(MAXELO + 1)
@@ -320,8 +345,10 @@ def main():
         indice = int(createdPlayers[i]["eloRanking"])
         playersELOY[indice] =  playersELOY[indice] + 1
 
-        
     plt.plot(playersELOX, playersELOY)
+    plt.title("Distribucion de ELO")
+    plt.xlabel("ELO")
+    plt.ylabel("Numero de jugadores")
     
     #.............VISUALIZACION-----------------------
 
