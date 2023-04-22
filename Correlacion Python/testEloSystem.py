@@ -78,7 +78,7 @@ def updatePlayer(player, kills, deaths, healMe, healOther, bulletsHittedEnemy, w
     eloRankingChange = player["eloRanking"] - oldRanking
     eloRankingChange = abs(eloRankingChange)
 
-    #playerContribution = 1
+    playerContribution = 1
 
     if(winner == 1):
         player["eloRanking"] += eloRankingChange * playerContribution
@@ -304,9 +304,9 @@ def match(playerRed1, playerRed2, playerBlue1, playerBlue2):
 
 def main():
 
-    NUMPLAYERS = 50
+    NUMPLAYERS = 25000
     PLAYERSGAME = 4
-    TOTALROUNDS = 100
+    TOTALROUNDS = 200
     MAXELO = 3000
     #-------------RECOGIDA DE DATOS----------------
  
@@ -336,11 +336,11 @@ def main():
         print("Ronda: ", i)
         for j in range(int(NUMPLAYERS/PLAYERSGAME)): #Numero de partidas
             createdPlayers[j*PLAYERSGAME], createdPlayers[j*PLAYERSGAME + 3], createdPlayers[j*PLAYERSGAME + 2], createdPlayers[j*PLAYERSGAME + 1] = match(createdPlayers[j*PLAYERSGAME], createdPlayers[j*PLAYERSGAME +3], createdPlayers[j*PLAYERSGAME + 2], createdPlayers[j*PLAYERSGAME + 1])
-        if(i == TOTALROUNDS/4): saveGraph(MAXELO, NUMPLAYERS, createdPlayers, "25", "ELOAvanzado25")
-        elif(i == TOTALROUNDS/2): saveGraph(MAXELO, NUMPLAYERS, createdPlayers, "50", "ELOAvanzado50")
-        elif(i == TOTALROUNDS*3/4): saveGraph(MAXELO, NUMPLAYERS, createdPlayers, "75", "ELOAvanzado75")
+        if(i == TOTALROUNDS/4): saveGraph(MAXELO, NUMPLAYERS, createdPlayers, "25", "ELOSimple25")
+        elif(i == TOTALROUNDS/2): saveGraph(MAXELO, NUMPLAYERS, createdPlayers, "50", "ELOSimple50")
+        elif(i == TOTALROUNDS*3/4): saveGraph(MAXELO, NUMPLAYERS, createdPlayers, "75", "ELOSimple75")
     
-    saveGraph(MAXELO, NUMPLAYERS, createdPlayers, "100", "ELOAvanzado100")
+    saveGraph(MAXELO, NUMPLAYERS, createdPlayers, "100", "ELOSimple100")
 
     #.............VISUALIZACION-----------------------
     plt.show()
