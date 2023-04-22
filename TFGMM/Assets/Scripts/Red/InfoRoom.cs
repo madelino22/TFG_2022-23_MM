@@ -24,6 +24,28 @@ public class InfoRoom : GlobalEventListener
         }
 
         public int elo { get; }
+        public RolEnum GetPlayerRolEnum()
+        {
+
+            RolEnum rol = RolEnum.NONE;
+
+            switch (playerRole)
+            {
+                case "None":
+                    rol = RolEnum.NONE;
+                    break;
+                case "Sniper":
+                    rol = RolEnum.SNIPER;
+                    break;
+                case "Duelist":
+                    rol = RolEnum.DUELIST;
+                    break;
+                case "Healer":
+                    rol = RolEnum.HEALER;
+                    break;
+            }
+            return rol;
+        }
         public string playerRole { get; }
 
         public BoltConnection playerConnection { get; }
@@ -159,53 +181,107 @@ public class InfoRoom : GlobalEventListener
                 int jugadoresJoin = 0;
                 int first = contador;
 
+                bool rolMM = (a <= 50);
+                (int, RolEnum)[] roles = new (int, RolEnum)[PLAYEROOM];
 
 
+                ((int, RolEnum), (int, RolEnum))[] bestPairs = new ((int, RolEnum), (int, RolEnum))[2]; ;
 
-                while (jugadoresJoin < PLAYEROOM)
+
+                if (rolMM)
                 {
-                    //GoGameEvent evnt = GoGameEvent.Create(playersConnections[sortedList[0].Key]);
-                    evnts.Add(GoGameEvent.Create(sortedList[contador].Value.playerConnection));
+                    //si la diferencia entre todos los jugadores que se han seleccionado para esta partida es relativamente grande,
+                    //entonces se organizand para que la media de ranking de cada equipo sea lo m´´as pareja posible, así los equipos
+                    //tendrán jugadores parejos dentro de la "diferencia de ranking". De esta manera el mejor de un equipo será muy parecido al 
+                    //mejor del otro
+                    for (int i = 0; i < PLAYEROOM; i++)
+                    {
+                        roles[i].Item1 = jugadoresJoin + i;
+                        roles[i].Item2 = sortedList[i].Value.GetPlayerRolEnum();
+                    }
+                    bestPairs = ROLES.FindBestRolePairs(roles);
 
-                    // HACEMOS NUESTRO MATCHMAKING Y DETERMINAMOS COMO SE FORMAN LOS EQUIPOS
 
-                    //evnt.isRed = (contador % 2) == 0;  //PARA QUE SPAWN EVENT SEPA A QUE EQUIPO VA
-                        evnts[jugadoresJoin].isRed = (jugadoresJoin < PLAYEROOM / 2);
-                    //if (a > 100)
-                    ////si la diferencia entre todos los jugadores que se han seleccionado para esta partida es relativamente grande,
-                    ////entonces se organizand para que la media de ranking de cada equipo sea lo m´´as pareja posible, así los equipos
-                    ////tendrán jugadores parejos dentro de la "diferencia de ranking". De esta manera el mejor de un equipo será muy parecido al 
-                    ////mejor del otro
-                    //{
-                    //    evnts[jugadoresJoin].isRed = (jugadoresJoin < PLAYEROOM / 2);
-                    //}
-                    //else
-                    ////si la diferencia de ranking entre todos los jugadores es ínfima, entonces se organizan los jugadores en cuanto a rol favorito
-                    ////para que así la satisfacción de la partida mejore
-                    //{
 
-                    //}
 
-                    if (evnts[jugadoresJoin].isRed)
-                        redELOS.Add(sortedList[contador].Value.elo);
-                    else
-                        blueELOS.Add(sortedList[contador].Value.elo);
+                    //Crear los eventos
+                    for (int i = 0; i < PLAYEROOM; i++)
+                    {
+                        evnts.Add(GoGameEvent.Create(sortedList[i + contador].Value.playerConnection));
+                    }
 
-                    if (map == 0)
-                        evnts[jugadoresJoin].ID = "0";
-                    else
-                        evnts[jugadoresJoin].ID = "1";
-                    //playersConnections.RemoveAt(sortedList[0].Key);
-                    //sortedList.RemoveAt(0);
-                    //numPlayers--;
-                    BoltLog.Warn("Jugador " + jugadoresJoin + ", va a " + evnts[jugadoresJoin].ID);
+                    //Team REd
+                    //Player1
+                    evnts[bestPairs[0].Item1.Item1].isRed = false;
+                    redELOS.Add(sortedList[contador].Value.elo);
                     jugadoresJoin++;
                     contador++;
+
+                    evnts[bestPairs[0].Item1.Item1].ID = (map == 0) ? "0" : "1";
+
+                    //Player2
+                    evnts[bestPairs[0].Item2.Item1].isRed = false;
+                    redELOS.Add(sortedList[contador].Value.elo);
+                    jugadoresJoin++;
+                    contador++;
+
+                    evnts[bestPairs[0].Item2.Item1].ID = (map == 0) ? "0" : "1";
+
+
+
+
+                    //Team Blue
+                    //Player1
+                    evnts.Add(GoGameEvent.Create(sortedList[contador].Value.playerConnection));
+                    evnts[bestPairs[1].Item1.Item1].isRed = true;
+                    blueELOS.Add(sortedList[contador].Value.elo);
+                    jugadoresJoin++;
+                    contador++;
+
+                    evnts[bestPairs[1].Item1.Item1].ID = (map == 0) ? "0" : "1";
+
+                    //Player2
+                    evnts[bestPairs[1].Item2.Item1].isRed = true;
+                    blueELOS.Add(sortedList[contador].Value.elo);
+                    jugadoresJoin++;
+                    contador++;
+
+                    evnts[bestPairs[1].Item2.Item1].ID = (map == 0) ? "0" : "1";
+
+
                 }
+                else
+                {
+                    //si la diferencia de ranking entre todos los jugadores es ínfima, entonces se organizan los jugadores en cuanto a rol favorito
+                    //para que así la satisfacción de la partida mejore
+                    while (jugadoresJoin < PLAYEROOM)
+                    {
+                        //GoGameEvent evnt = GoGameEvent.Create(playersConnections[sortedList[0].Key]);
+                        evnts.Add(GoGameEvent.Create(sortedList[contador].Value.playerConnection));
 
+                        // HACEMOS NUESTRO MATCHMAKING Y DETERMINAMOS COMO SE FORMAN LOS EQUIPOS
 
+                        //evnts[jugadoresJoin].isRed = (jugadoresJoin < PLAYEROOM / 2);
 
+                        evnts[jugadoresJoin].isRed = (jugadoresJoin < PLAYEROOM / 2);
 
+                        if (evnts[jugadoresJoin].isRed)
+                            redELOS.Add(sortedList[contador].Value.elo);
+                        else
+                            blueELOS.Add(sortedList[contador].Value.elo);
+
+                        if (map == 0)
+                            evnts[jugadoresJoin].ID = "0";
+                        else
+                            evnts[jugadoresJoin].ID = "1";
+                        //playersConnections.RemoveAt(sortedList[0].Key);
+                        //sortedList.RemoveAt(0);
+                        //numPlayers--;
+                        BoltLog.Warn("Jugador " + jugadoresJoin + ", va a " + evnts[jugadoresJoin].ID);
+                        jugadoresJoin++;
+                        contador++;
+                    }
+                }
 
 
                 int difRed;

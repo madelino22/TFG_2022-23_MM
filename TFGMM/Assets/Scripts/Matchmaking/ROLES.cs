@@ -52,11 +52,11 @@ public static class ROLES
     }
 
 
-    public static (RolEnum, RolEnum)[] FindBestRolePairs(RolEnum[] roles)
+    public static ((int, RolEnum), (int, RolEnum))[] FindBestRolePairs((int, RolEnum)[] roles)
     {
         if (!initialized) Initialize();
 
-        (RolEnum, RolEnum)[] bestPairs = new (RolEnum, RolEnum)[2];
+        ((int, RolEnum), (int, RolEnum))[] bestPairs = new ((int, RolEnum), (int, RolEnum))[2];
         float maxMeanScore = -2f;
         float minDiffScore = -2f;
 
@@ -64,9 +64,9 @@ public static class ROLES
         {
             for (int j = i + 1; j < roles.Length; j++)
             {
-                RolEnum role1 = roles[i];
-                RolEnum role2 = roles[j];
-                float score1 = correlationMatrix[(int)role1, (int)role2];
+                (int, RolEnum) role1 = roles[i];
+                (int, RolEnum) role2 = roles[j];
+                float score1 = correlationMatrix[(int)role1.Item2, (int)role2.Item2];
 
                 int a = i;
 
@@ -82,9 +82,9 @@ public static class ROLES
                     b = (++b % roles.Length);
                 }
 
-                RolEnum role3 = roles[a];
-                RolEnum role4 = roles[b];
-                float score2 = correlationMatrix[(int)role3, (int)role4];
+                (int, RolEnum) role3 = roles[a];
+                (int, RolEnum) role4 = roles[b];
+                float score2 = correlationMatrix[(int)role3.Item2, (int)role4.Item2];
 
                 // Comprobar si el par de roles es mejor que los mejores pares actuales
                 float scoreDiff = Math.Abs(score1 - score2);
