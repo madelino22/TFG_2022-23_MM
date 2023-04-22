@@ -78,6 +78,8 @@ def updatePlayer(player, kills, deaths, healMe, healOther, bulletsHittedEnemy, w
     eloRankingChange = player["eloRanking"] - oldRanking
     eloRankingChange = abs(eloRankingChange)
 
+    #playerContribution = 1
+
     if(winner == 1):
         player["eloRanking"] += eloRankingChange * playerContribution
     elif(winner == 0):
@@ -127,10 +129,10 @@ def match(playerRed1, playerRed2, playerBlue1, playerBlue2):
 
     winner = random.randrange(0, 100)
 
-    player1Contribution = random.randrange(10, 177) / 100
-    player2Contribution = 1.77 - player1Contribution
-    player3Contribution = random.randrange(10, 177) / 100
-    player4Contribution = 1.77 - player3Contribution
+    player1Contribution = random.randrange(10, 190) / 100
+    player2Contribution = 1.9 - player1Contribution
+    player3Contribution = random.randrange(10, 190) / 100
+    player4Contribution = 1.9 - player3Contribution
 
     if(player2Contribution == 0): player2Contribution = 0.1
     if(player4Contribution == 0): player4Contribution = 0.1
@@ -302,9 +304,9 @@ def match(playerRed1, playerRed2, playerBlue1, playerBlue2):
 
 def main():
 
-    NUMPLAYERS = 5000
+    NUMPLAYERS = 50
     PLAYERSGAME = 4
-    TOTALROUNDS = 500
+    TOTALROUNDS = 100
     MAXELO = 3000
     #-------------RECOGIDA DE DATOS----------------
  
@@ -334,7 +336,17 @@ def main():
         print("Ronda: ", i)
         for j in range(int(NUMPLAYERS/PLAYERSGAME)): #Numero de partidas
             createdPlayers[j*PLAYERSGAME], createdPlayers[j*PLAYERSGAME + 3], createdPlayers[j*PLAYERSGAME + 2], createdPlayers[j*PLAYERSGAME + 1] = match(createdPlayers[j*PLAYERSGAME], createdPlayers[j*PLAYERSGAME +3], createdPlayers[j*PLAYERSGAME + 2], createdPlayers[j*PLAYERSGAME + 1])
+        if(i == TOTALROUNDS/4): saveGraph(MAXELO, NUMPLAYERS, createdPlayers, "25", "ELOAvanzado25")
+        elif(i == TOTALROUNDS/2): saveGraph(MAXELO, NUMPLAYERS, createdPlayers, "50", "ELOAvanzado50")
+        elif(i == TOTALROUNDS*3/4): saveGraph(MAXELO, NUMPLAYERS, createdPlayers, "75", "ELOAvanzado75")
+    
+    saveGraph(MAXELO, NUMPLAYERS, createdPlayers, "100", "ELOAvanzado100")
 
+    #.............VISUALIZACION-----------------------
+    plt.show()
+    
+
+def saveGraph(MAXELO, NUMPLAYERS, createdPlayers, percent, fileName):
     playersELOX = np.zeros(MAXELO + 1)
     playersELOY = np.zeros(MAXELO + 1)
 
@@ -345,13 +357,12 @@ def main():
         indice = int(createdPlayers[i]["eloRanking"])
         playersELOY[indice] =  playersELOY[indice] + 1
 
+    plt.clf()
     plt.plot(playersELOX, playersELOY)
-    plt.title("Distribucion de ELO")
+    plt.title("Distribucion de ELO " + percent + "% de las partidas")
     plt.xlabel("ELO")
     plt.ylabel("Numero de jugadores")
+    plt.savefig("./Graficas/" + fileName + ".png")
     
-    #.............VISUALIZACION-----------------------
-
-    plt.show()
 
 main()
