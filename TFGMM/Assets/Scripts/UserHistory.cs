@@ -86,6 +86,15 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
     public int totalShots = 0;
     public float distanceMedia = 0;
 
+    //Referencia a Firebase
+    DatabaseReference reference;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        reference = FirebaseDatabase.DefaultInstance.RootReference;
+    }
+
     public void loadInfo(DataSnapshot snapshot)
     {
         userName = snapshot.Child("userName").Value.ToString();
@@ -397,51 +406,73 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
 
         if (diffElo < 1) diffElo = 1;
 
+        float diffSum = diffElo + diffContr;
+        float diffRest = diffElo - diffContr;
+        float a = 0;
         switch (winner)
         {
             case team.red:
                 if (RoundData.isRed)
                 {
-                    eloRanking += diffElo + diffContr;
+                    a = diffSum;
+                    eloRanking += a;
                 }
                 else
                 {
-                    eloRanking -= diffElo - diffContr;
+                    a = -diffRest;
+                    eloRanking += a;
                 }
                 break;
             case team.blue:
                 if (!RoundData.isRed)
                 {
-                    eloRanking -= diffElo - diffContr;
+                    a = -diffRest;
+                    eloRanking += a;
                 }
                 else
                 {
-                    eloRanking += diffElo + diffContr;
+                    a = diffSum;
+                    eloRanking += a;
                 }
                 break;
             case team.none:
                 if (E > 0.5)
                 {
-                    eloRanking -= diffElo - diffContr;
+                    a = -diffRest;
+                    eloRanking += a;
                 }
                 else if (E < 0.5)
                 {
-                    eloRanking += diffElo + diffContr;
+                    a = diffSum;
+                    eloRanking += a;
                 }
                 else
                 {
                     if (eloMultiplayer > 1)
                     {
-                        eloRanking += diffElo + diffContr;
+                        a = diffSum;
+                        eloRanking += a;
                     }
                     else if (eloMultiplayer < 1) //Sio es igual a 1 es que ha hecho lo que deberia y nos da igual
                     {
-                        eloRanking -= diffElo - diffContr;
+                        a = -diffRest;
+                        eloRanking += a;
                     }
                 }
                 break;
         }
 
+        reference.Child("Matches").Child(nameLastGamePlayed).Child(userName).Child("eloWon").SetValueAsync(a).ContinueWith(task =>
+        {
+            if (task.IsCompleted)
+            {
+                Debug.Log("saved Data Profile");
+            }
+            else
+            {
+                Debug.Log("No se han enviado los datos");
+            }
+        });
 
         Debug.Log("Expectativa contribucion: " + RoundData.expectedContribution);
     }
