@@ -29,6 +29,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
     public int zzlastGameSaved = 0;
     //ELO
     public float eloRanking = 1500;
+	public float eloLastChange = 0;
     public float eloK = 40;
     //MEDIAS
     public float killsDeathsRatioAverage = 0;
@@ -92,7 +93,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
     // Start is called before the first frame update
     void Start()
     {
-        reference = FirebaseDatabase.DefaultInstance.RootReference;
+       // reference = FirebaseDatabase.DefaultInstance.RootReference;
     }
 
     public void loadInfo(DataSnapshot snapshot)
@@ -462,17 +463,18 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                 break;
         }
 
-        reference.Child("Matches").Child(nameLastGamePlayed).Child(userName).Child("eloWon").SetValueAsync(a).ContinueWith(task =>
-        {
-            if (task.IsCompleted)
-            {
-                Debug.Log("saved Data Profile");
-            }
-            else
-            {
-                Debug.Log("No se han enviado los datos");
-            }
-        });
+		eloLastChange = a;
+        // reference.child("matches").child(namelastgameplayed).child(username).child("elowon").setvalueasync(a).continuewith(task =>
+        // {
+            // if (task.iscompleted)
+            // {
+                // debug.log("saved data profile");
+            // }
+            // else
+            // {
+                // debug.log("no se han enviado los datos");
+            // }
+        // });
 
         Debug.Log("Expectativa contribucion: " + RoundData.expectedContribution);
     }
