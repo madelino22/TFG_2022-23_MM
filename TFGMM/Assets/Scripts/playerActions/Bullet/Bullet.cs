@@ -33,7 +33,7 @@ public class Bullet : MonoBehaviour
         if(!BoltNetwork.IsServer)
             shootSound.Play();
 
-        positionInit = transform.position;
+        positionInit = this.transform.position;
     }
 
 
@@ -68,7 +68,7 @@ public class Bullet : MonoBehaviour
 
                 Debug.Log("AUX: Spawneo la bala" + creatorID + " se le dio a " + wasHitID);
 
-                float distance = Vector3.Distance(transform.position, positionInit);
+                float distance = Vector3.Distance(this.transform.position, positionInit);
 
                 target.GetComponent<PlayerCallback>().loseLife(redWasHit, creatorID, wasHitID, distance);
             }

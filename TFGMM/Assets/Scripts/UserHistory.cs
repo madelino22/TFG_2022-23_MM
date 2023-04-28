@@ -85,7 +85,8 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
     public int losesNone = 0;
 
     public int totalShots = 0;
-    public float distanceMedia = 0;
+    public float distanciaTotal = 0;
+    public float distanciaMedia = 0;
 
     //Referencia a Firebase
     DatabaseReference reference;
@@ -119,7 +120,8 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
         eloRanking = int.Parse(snapshot.Child("eloRanking").Value.ToString());
         eloK = float.Parse(snapshot.Child("eloK").Value.ToString());
         zzlastGameSaved = int.Parse(snapshot.Child("zzlastGameSaved").Value.ToString());
-        distanceMedia = float.Parse(snapshot.Child("distanceMedia").Value.ToString());
+        distanciaTotal = float.Parse(snapshot.Child("distanciaTotal").Value.ToString());
+        distanciaMedia = float.Parse(snapshot.Child("distanciaMedia").Value.ToString());
 
         nameLastGamePlayed = snapshot.Child("nameLastGamePlayed").Value.ToString();
         //PLAYER ROLE
@@ -181,9 +183,10 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
         gamesPlayed++;
         Debug.Log("MI compañero es: " + partnerRole);
 
-        float distanciaMediaPartida = RoundData.totalDistance / RoundData.hitEnemyShoots;
-        distanceMedia = (distanceMedia * gamesPlayed - 1) / gamesPlayed;
+        float distanciaMediaPartida = RoundData.totalDistance / (float)RoundData.hitEnemyShoots;
+        distanciaTotal = (distanciaTotal + distanciaMediaPartida);
 
+        distanciaMedia = distanciaTotal / (float)gamesPlayed;
 
         damageReceived += RoundData.damageReceived;
         damageInflicted += RoundData.damageInflicted;

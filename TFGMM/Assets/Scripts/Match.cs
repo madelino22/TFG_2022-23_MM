@@ -168,7 +168,7 @@ public class Match
                 players[i].totalShotsEnemy++;
                 players[i].damageInflicted += 500;
 
-                players[i].hitDistance = (players[i].hitDistance * (players[i].totalShotsEnemy - 1) + distance  / players[i].totalShotsEnemy);
+                players[i].hitDistance = players[i].hitDistance  + distance;
 
                 if(players[i].t == team.blue)
                 {
