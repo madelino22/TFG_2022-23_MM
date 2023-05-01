@@ -30,6 +30,9 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
     //ELO
     public float eloRanking = 1500;
 	public float eloLastChange = 0;
+	public float eloDiffChange = 0;
+	public float eloContrChange = 0;
+	public float eloMultChange = 0;
     public float eloK = 40;
     //MEDIAS
     public float killsDeathsRatioAverage = 0;
@@ -410,6 +413,10 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
 
         if (diffElo < 1) diffElo = 1;
 
+        eloDiffChange = diffElo;
+        eloContrChange = diffContr;
+        eloMultChange = eloMultiplayer;
+
         float diffSum = diffElo + diffContr;
         float diffRest = diffElo - diffContr;
         float a = 0;
@@ -418,37 +425,85 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
             case team.red:
                 if (RoundData.isRed)
                 {
-                    a = diffSum;
-                    eloRanking += a;
+                    if (eloMultiplayer > 1)
+                    {
+                        a = diffSum;
+                        eloRanking += a;
+                    }
+                    else
+                    {
+                        a = diffRest;
+                        eloRanking += a;
+                    }
                 }
                 else
                 {
-                    a = -diffRest;
-                    eloRanking += a;
+                    if (eloMultiplayer > 1)
+                    {
+                        a = -diffRest;
+                        eloRanking += a;
+                    }
+                    else
+                    {
+                        a = -diffSum;
+                        eloRanking += a;
+                    }
                 }
                 break;
             case team.blue:
                 if (!RoundData.isRed)
                 {
-                    a = -diffRest;
-                    eloRanking += a;
+                    if (eloMultiplayer > 1)
+                    {
+                        a = diffSum;
+                        eloRanking += a;
+                    }
+                    else
+                    {
+                        a = diffRest;
+                        eloRanking += a;
+                    }
                 }
                 else
                 {
-                    a = diffSum;
-                    eloRanking += a;
+                    if (eloMultiplayer > 1)
+                    {
+                        a = -diffRest;
+                        eloRanking += a;
+                    }
+                    else
+                    {
+                        a = -diffSum;
+                        eloRanking += a;
+                    }
                 }
                 break;
             case team.none:
                 if (E > 0.5)
                 {
-                    a = -diffRest;
-                    eloRanking += a;
+                    if (eloMultiplayer > 1)
+                    {
+                        a = -diffRest;
+                        eloRanking += a;
+                    }
+                    else
+                    {
+                        a = -diffSum;
+                        eloRanking += a;
+                    }
                 }
                 else if (E < 0.5)
                 {
-                    a = diffSum;
-                    eloRanking += a;
+                    if (eloMultiplayer > 1)
+                    {
+                        a = diffSum;
+                        eloRanking += a;
+                    }
+                    else
+                    {
+                        a = diffRest;
+                        eloRanking += a;
+                    }
                 }
                 else
                 {
@@ -459,7 +514,7 @@ public class UserHistory //: Photon.Bolt.IProtocolToken
                     }
                     else if (eloMultiplayer < 1) //Sio es igual a 1 es que ha hecho lo que deberia y nos da igual
                     {
-                        a = -diffRest;
+                        a = diffRest;
                         eloRanking += a;
                     }
                 }
