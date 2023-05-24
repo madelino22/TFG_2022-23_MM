@@ -43,7 +43,6 @@ def Firebase(dic, data, variableNames, user_names):
         elif result < 0: # Blue won
             winner_team = 1
 
-
         # Default value
         for v in variableNames:
             dic[v] = np.concatenate((dic[v], [0])) # anyadimos una columna/team mas al diccionario
@@ -72,9 +71,70 @@ def Firebase(dic, data, variableNames, user_names):
 
     return dic, variableNames, user_names
 
+
+# PARTE 2:==============================================================================
+def BigFive(dic, user_names, file_name, variableNames): #'a.csv'
+    "PROCESAMOS EL CSV DE BIG FIVE"
+
+    # Guardamos el nombre de las variables
+    variableNames = np.concatenate((variableNames, ["Extraversion", "Amabilidad", "Responsabilidad", "Apertura", "Neuroticismo"]))
+    dic["Extraversion"] = []
+    dic["Amabilidad"] = []
+    dic["Responsabilidad"] = []
+    dic["Apertura"] = []
+    dic["Neuroticismo"] = []
+
+    with open(file_name, newline='', encoding='utf-8') as archivo_csv: #sin el utf-8 petaba
+        lector_csv = csv.reader(archivo_csv)
+        next(lector_csv)
+
+        # RECORREMOS LOS USARIOS DE FIREBASE
+        for user_name in user_names:
+            encontrado = False
+
+            # BUSCAR FILA EN CSV
+            for fila in lector_csv:
+                nombre = fila[1]
+                nombre = CorrectString(nombre)
+
+                if nombre == user_name:
+                    encontrado = True
+                    ex = fila[5]
+                    ex2=fila[7]
+                    ex3=fila[9]
+                    ex4=fila[11]
+                    ex5=fila[13]
+                    #print(nombre, ex, ex2, ex3, ex4, ex5)
+                    res=int(ex)
+                    res2=int(ex2)
+                    res3=int(ex3)
+                    res4=int(ex4)
+                    res5=int(ex5)
+
+                    extraversion = res/12*100
+                    amabilidad = (res2/12)*100
+                    responsabilidad = (res3/12) * 100
+                    apertura = (res4/12) * 100
+                    neuroticismo = (res5/12)*100
+
+                    dic["Extraversion"] = np.concatenate((dic["Extraversion"], [extraversion]))
+                    dic["Amabilidad"] = np.concatenate((dic["Amabilidad"], [amabilidad]))
+                    dic["Responsabilidad"] =  np.concatenate((dic["Responsabilidad"], [responsabilidad]))
+                    dic["Apertura"] = np.concatenate((dic["Apertura"], [apertura]))
+                    dic["Neuroticismo"] = np.concatenate((dic["Neuroticismo"], [neuroticismo]))
+                    archivo_csv.seek(0) # Volvemos al principio del archivo
+                    break
+
+            if encontrado == False:
+                print("ERROR: Nombre " + user_name + " no existe en Big Five.")
+
+            archivo_csv.seek(0) # Volvemos al principio del archivo
+    return dic, variableNames
+
 # MAIN==================================================================================
 def main():
     firebase_file = 'Firebase/PruebasMM6.json'
+    big_five_file = 'BigFivePruebaFinal.csv'
     
     #-------------RECOGIDA DE DATOS----------------
     # df = {
@@ -97,6 +157,10 @@ def main():
     # PARTE 1:==============================================================================
     #Añadir datos del Firebase al diccionario
     dic, variableNames, user_names = Firebase(dic, data, variableNames, user_names)
+
+    # PARTE 2:==============================================================================
+    # Añadir los datos de Big Five al dicionario
+    dic, variableNames = BigFive(dic, user_names, big_five_file, variableNames)
 
     # form dataframe
     df = pd.DataFrame(dic, columns=variableNames) # EMPTY DATAFRAME???????????'
