@@ -33,7 +33,6 @@ def Firebase(dic, data, variableNames, user_names):
     for v in variableNames:
         dic[v] = []
 
-    index = 0
     # Guardamos los datos
     for p in data['Matches']: #Partida0, 1, 2, etc  
         result = data['Matches'][p]['pointsRed'] - data['Matches'][p]['pointsBlue']
@@ -42,10 +41,6 @@ def Firebase(dic, data, variableNames, user_names):
             winner_team = 0
         elif result < 0: # Blue won
             winner_team = 1
-
-        # Default value
-        for v in variableNames:
-            dic[v] = np.concatenate((dic[v], [0])) # anyadimos una columna/team mas al diccionario
 
         # Guardamos nombres de integrantes en cada equipo
         for u in data['Matches'][p]:
@@ -59,15 +54,21 @@ def Firebase(dic, data, variableNames, user_names):
                 # GUARDAR DATOS
                 for v in variableNames:
                     if v != 'Won' and v != 'Draw' and v != 'Lost':
-                        dic[v][index] = data['Matches'][p][u][v]
-                    else:
+                        dic[v] = np.concatenate((dic[v], [data['Matches'][p][u][v]]))
+                    elif v == 'Won':
                         if winner_team == data['Matches'][p][u]['t']:
-                            dic['Won'][index] = 1
+                            dic['Won'] =  np.concatenate((dic['Won'], [1]))
+                            dic['Draw'] = np.concatenate((dic['Draw'], [0]))
+                            dic['Lost'] =  np.concatenate((dic['Lost'], [0]))
                         elif winner_team == -1:
-                            dic['Draw'][index] = 1
+                            dic['Draw'] = np.concatenate((dic['Draw'], [1]))
+                            dic['Won'] =  np.concatenate((dic['Won'], [0]))
+                            dic['Lost'] =  np.concatenate((dic['Lost'], [0]))
                         else:
-                            dic['Lost'][index] = 1
-        index += 1
+                            dic['Lost'] =  np.concatenate((dic['Lost'], [1]))
+                            dic['Won'] =  np.concatenate((dic['Won'], [0]))
+                            dic['Draw'] = np.concatenate((dic['Draw'], [0]))
+      
 
     return dic, variableNames, user_names
 
@@ -162,6 +163,7 @@ def main():
     # Añadir los datos de Big Five al dicionario
     dic, variableNames = BigFive(dic, user_names, big_five_file, variableNames)
 
+    print(5)
     # form dataframe
     df = pd.DataFrame(dic, columns=variableNames) # EMPTY DATAFRAME???????????'
 
